@@ -1,0 +1,102 @@
+<h1 id="swagger-notes">Swagger Notes</h1>
+<p>The <a href="https://status-page.mybluemix.net/">status page app</a> has a companion app called <a href="https://status-page-api.mybluemix.net/">status-page-api</a>  </p>
+<p>To look at the code for this project you can create a new directory and then run</p>
+<pre><code> git clone https://hub.jazz.net/git/oneibmcloud/status-page-api
+</code></pre><p>To create the API we used Swagger and some Swagger tools.</p>
+<ul>
+<li><a href="http://swagger.io">Swagger</a> - a specification for creating a REST API</li>
+<li><a href="https://github.com/swagger-api/swagger-node">swagger-node</a> - A Node module for using Swagger</li>
+<li><a href="https://github.com/swagger-api/swagger-editor">swagger-editor</a> - A web based UI for editing a swagger file</li>
+<li><a href="https://github.com/swagger-api/swagger-ui">swagger-ui</a> - Creates a user friendly view of your API</li>
+</ul>
+<h2 id="how-to-use-swagger">How to use Swagger</h2>
+<p>A simple overveiw on how to use these tools can be used can be found at this blog post. This is highly recommended reading for creating your own api project:</p>
+<p><a href="http://robferguson.org/2015/06/06/build-your-microservices-api-with-swagger/">http://robferguson.org/2015/06/06/build-your-microservices-api-with-swagger/</a></p>
+<h2 id="details-on-how-status-page-api-was-created">Details on how status-page-api was created</h2>
+<h4 id="create-a-new-swagger-project-for-your-application">Create a new swagger project for your application</h4>
+<pre><code>swagger project create status-api (choose express when prompted)
+</code></pre><ul>
+<li>this creates a &#39;status-api&#39; directory which is the root of your swagger projec. You should also make this the root of your Bluemix app, i.e., your .git folder and manifest.yml files should be here</li>
+</ul>
+<h4 id="start-the-swagger-server">Start the swagger server</h4>
+<ul>
+<li>Now you can start the app by running: <code>swagger project start status-api</code> in your terminal</li>
+</ul>
+<h4 id="swagger-editor">Swagger Editor</h4>
+<ul>
+<li>In a new terminal tab run: <code>swagger project edit</code> to start creating your API. This command will load a new browser window where you can edit your swagger file</li>
+</ul>
+<h4 id="update-your-code">Update your code</h4>
+<ul>
+<li>Edit your api/controllers/*.js file to match up with what you specified in your swagger file</li>
+<li>Edit your your app.js file.  For example:</li>
+</ul>
+<pre><code>&#39;use strict&#39;;
+
+var SwaggerExpress = require(&#39;swagger-express-mw&#39;);
+var SwaggerUi = require(&#39;swagger-tools/middleware/swagger-ui&#39;);
+var app = require(&#39;express&#39;)();
+
+module.exports = app; // for testing
+
+var config = {
+  appRoot: __dirname // required config
+};
+
+SwaggerExpress.create(config, function(err, swaggerExpress) {
+  if (err) { throw err; }
+
+  // add swagger-ui -- this creates the human readable version of your api by going to localhost:port/docs/
+  app.use(SwaggerUi(swaggerExpress.runner.swagger));
+
+  // install middleware
+  swaggerExpress.register(app);
+
+  var port = process.env.VCAP_APP_PORT || 3001; //make Bluemix happy
+  app.listen(port);
+
+  console.log(&#39;try this:\ncurl http://127.0.0.1:&#39; + port + &#39;/applications&#39;);
+});
+</code></pre><h4 id="deploy-to-bluemix">Deploy to Bluemix</h4>
+<ul>
+<li>Create a manifest.yml file in your root directory (in the same directory as your package.json).  Example:</li>
+</ul>
+<pre><code>applications:
+- disk_quota: 1024M
+  host: status-staging-api
+  name: status-staging-api
+  command: node app.js
+  path: .
+  domain: oneibmcloud.com
+  instances: 4
+  memory: 256M
+  env:
+    NODE_ENV: staging
+</code></pre><ul>
+<li><p>your Bluemix pipeline will need to have a Build and Deploy phase.  </p>
+<ul>
+<li>The build phase should have a script that just does an npm install:</li>
+</ul>
+<pre><code>#!/bin/bash
+npm install
+</code></pre></li>
+</ul>
+<h4 id="accessing-your-api">Accessing your api</h4>
+<ul>
+<li>You can use curl from your local machine or just go to any of these links from your browser<ul>
+<li><a href="https://status-page-api.mybluemix.net/">https://status-page-api.mybluemix.net/</a></li>
+<li><a href="https://status-page-api.mybluemix.net/applications/">https://status-page-api.mybluemix.net/applications/</a> - test a get request to /applications/</li>
+<li><a href="https://status-page-api.mybluemix.net/applications/1234">https://status-page-api.mybluemix.net/applications/1234</a> - test a get request to /applications/ with a parameter of 1234</li>
+</ul>
+</li>
+</ul>
+<h4 id="view-the-online-documentation-for-your-application">View the online documentation for your application</h4>
+<ul>
+<li><a href="https://status-page-api.mybluemix.net/docs">https://status-page-api.mybluemix.net/docs</a></li>
+</ul>
+<h4 id="reference">Reference</h4>
+<ul>
+<li><a href="https://github.com/swagger-api/swagger-node">https://github.com/swagger-api/swagger-node</a></li>
+<li><a href="http://robferguson.org/2015/06/06/build-your-microservices-api-with-swagger/">http://robferguson.org/2015/06/06/build-your-microservices-api-with-swagger/</a></li>
+<li><a href="https://community.apigee.com/questions/4877/getting-started-with-swagger-node-apigee-127-and-s.html">https://community.apigee.com/questions/4877/getting-started-with-swagger-node-apigee-127-and-s.html</a></li>
+</ul>

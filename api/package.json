@@ -1,0 +1,33 @@
+{
+  "name": "tutorial-app-api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "DevOps tutorial app - API Project",
+  "keywords": [],
+  "author": "alperg",
+  "license": "MIT",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "marked": "^0.3.3",
+    "swagger-express-mw": "0.0.x",
+    "swagger-tools": "^0.8.7"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "should": "^5.2.0",
+    "supertest": "^0.15.0",
+    "gulp": "^3.9.0",
+    "gulp-bower": "0.0.10",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-csslint": "^0.1.5",
+    "gulp-htmllint": "*",
+    "run-sequence": "*",
+    "gulp-karma": "*",
+    "gulp-mocha": "*"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
