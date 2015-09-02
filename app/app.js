@@ -1,4 +1,7 @@
-require('newrelic');
+if(process.env.NEWRELIC_KEY && process.env.NEWRELIC_KEY != "") {
+  require('newrelic');
+}
+
 var http = require('http'),
     port = (process.env.VCAP_APP_PORT || 3000);
 
