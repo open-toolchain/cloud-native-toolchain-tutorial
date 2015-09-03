@@ -12,28 +12,26 @@ var path = require('path');
 var appHome = path.join(process.cwd(), 'app');
 global.appHome = appHome;
 
-var rewire = require("rewire"),
-    chai = require("chai"),
-    expect = chai.expect;
+var rewire = require('rewire');
+var chai = require('chai');
+var expect = chai.expect;
 
-chai.config.includeStack = false ;
+chai.config.includeStack = false;
 
-var rewire_revert = false ;
+var rewire_revert = false;
 
-describe("my test suite", function(){
-	beforeEach(function(){
+describe('my test suite', function() {
+  beforeEach(function() {
 
-	});
+  });
 
-	afterEach(function(){
+  afterEach(function() {
 
-	});
-	
-	it("test case", function(done){
-		expect(true).to.be.equal(true);
-		done();
-	});
+  });
+
+  it('test case', function(done) {
+    expect(true).to.be.equal(true);
+    done();
+  });
 
 });
-
-
