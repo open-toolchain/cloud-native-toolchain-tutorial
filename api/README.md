@@ -1,9 +1,9 @@
 # Swagger Notes
-The [status page app]( https://status-page.mybluemix.net/) has a companion app called [status-page-api]( https://status-page-api.mybluemix.net/)  
+The [status page app]( https://tutorial-app.mybluemix.net/) has a companion app called [tutorial-app-api]( https://tutorial-app-api.mybluemix.net/)  
 
 To look at the code for this project you can create a new directory and then run
 ```
- git clone https://hub.jazz.net/git/oneibmcloud/status-page-api
+ git clone https://hub.jazz.net/git/oneibmcloud/tutorial-app-api
 ```
 
 To create the API we used Swagger and some Swagger tools.
@@ -19,7 +19,7 @@ A simple overveiw on how to use these tools can be used can be found at this blo
 http://robferguson.org/2015/06/06/build-your-microservices-api-with-swagger/
 
 
-## Details on how status-page-api was created
+## Details on how tutorial-app-api was created
 
 #### Create a new swagger project for your application
 ```
@@ -93,12 +93,12 @@ applications:
 
 #### Accessing your api
 * You can use curl from your local machine or just go to any of these links from your browser
-  * https://status-page-api.mybluemix.net/
-  * https://status-page-api.mybluemix.net/applications/ - test a get request to /applications/
-  * https://status-page-api.mybluemix.net/applications/1234 - test a get request to /applications/ with a parameter of 1234
+  * https://tutorial-app-api.mybluemix.net/
+  * https://tutorial-app-api.mybluemix.net/applications/ - test a get request to /applications/
+  * https://tutorial-app-api.mybluemix.net/applications/1234 - test a get request to /applications/ with a parameter of 1234
 
 #### View the online documentation for your application
-* https://status-page-api.mybluemix.net/docs
+* https://tutorial-app-api.mybluemix.net/docs
 
 #### Reference
 * https://github.com/swagger-api/swagger-node
