@@ -65,7 +65,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /hello/{name}:
+  /hello:
     # binds app logic to a route (api/controllers/hello_world.js)
     x-swagger-router-controller: hello_world
     get:
@@ -74,10 +74,9 @@ paths:
       operationId: hello
       parameters:
         - name: name
-          in: path
+          in: query
           description: name
-          # the path params are explicitly required by the spec
-          required: true
+          required: false
           type: string
       responses:
         "200":
