@@ -1,13 +1,14 @@
 applications:
 - disk_quota: 1024M
-  host: tutorial-app-staging
-  name: tutorial-app-staging
+  host: devops-tutorial-staging
+  name: devops-tutorial-staging
   command: node app.js
   path: .
   domain: oneibmcloud.com
   instances: 4
   memory: 256M
   env:
+    NODE_ENV: staging
     NODE_ENV: staging
     SSO_CLIENT_ID: jBcqNai5j2TD2ZBIwHCJ
     SSO_CLIENT_SECRET: caZEUDkX5vUwdmQj7b46

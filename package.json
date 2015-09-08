@@ -1,25 +1,45 @@
 {
-  "name": "tutorial-app",
-  "version": "0.0.1",
-  "description": "DevOps tutorial app",
-  "main": "index.js",
+  "name": "devops-tutorial",
+  "version": "0.0.2",
+  "private": true,
+  "description": "DevOps Tutorial App",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "keywords": [],
   "author": "alperg",
   "license": "MIT",
+  "main": "app.js",
   "dependencies": {
-    "gulp-bower": "0.0.10",
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "^4.13.1",
+    "hbs": "~3.1.0",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0",
+    "marked": "^0.3.3",
+    "swagger-express-mw": "0.0.x",
+    "swagger-tools": "^0.8.7",
     "newrelic": "^1.20.2"
   },
   "devDependencies": {
     "async": "*",
     "del": "^1.2.0",
+    "mocha": "^2.2.5",
+    "should": "^5.2.0",
+    "supertest": "^0.15.0",
     "gulp": "^3.9.0",
     "gulp-util": "^3.0.6",
+    "gulp-bower": "0.0.10",
+    "gulp-jscs": "^1.6.0",
     "gulp-jshint": "^1.11.2",
     "gulp-csslint": "^0.1.5",
     "gulp-htmllint": "*",
     "gulp-license-finder": "*",
     "run-sequence": "*",
-    "gulp-mocha": "^2.1.2",
+    "gulp-karma": "*",
+    "gulp-mocha": "*",
     "gulp-jscs": "^1.6.0",
     "bower-license": "*",
     "chai": "^1.10.0",
@@ -41,6 +61,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://hub.jazz.net/git/oneibmcloud/tutorial-app"
+    "url": "https://github.com/oneibmcloud/devops-tutorial-1.git"
   }
 }

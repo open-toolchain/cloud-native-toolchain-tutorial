@@ -47,8 +47,7 @@ gulp.task('lint-css', function() {
 
 // Uses the .htmllintrc file with some default configurations. Update the .htmllintrc file based on the project requirements
 gulp.task('lint-html', function() {
-  return gulp.src(paths.html)
-  .pipe(htmllint({
+  return gulp.src(paths.html).pipe(htmllint({
     htmllintrc: true,
   }));
 });
@@ -90,6 +89,8 @@ gulp.task('dev-backend', function() {
 gulp.task('dev-setup', function() {
   return bower();
 });
+
+gulp.task('dev-unit', ['dev-karma','dev-backend']);
 
 /*
  call test execution for load test

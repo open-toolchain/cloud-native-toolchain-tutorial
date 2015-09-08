@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['tutorial-app'],
+  app_name: ['devops-tutorial'],
   /**
    * Your New Relic license key.
    */

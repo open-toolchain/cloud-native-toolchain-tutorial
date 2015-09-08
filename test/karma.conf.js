@@ -16,21 +16,23 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+
       //Include any components needed
       //'.bower_components/angular/angular.js',
 
-		  //Include the files to test
+      //Include the files to test
       //'app/static/**/*.js',
 
-		  //Include the test files
+      //Include the test files
       'tests/unit/frontend/**/*.js',
-      
+
       //{pattern: 'tests/fixtures/**/*.json', watched: true, served: true, included: false}
     ],
 
     // list of files to exclude
     //note: karma HATES files with requires in them
     exclude: [
+
       //'buildTools/grunt-install-dependencies/Gruntfile.js',
     ],
 
@@ -53,6 +55,7 @@ module.exports = function(config) {
     //install these with npm
     reporters: ['spec', 'coverage'],
     plugins: [
+
       //'karma-chrome-launcher',
       //'karma-firefox-launcher',
       //'karma-ie-launcher',

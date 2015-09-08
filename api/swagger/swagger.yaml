@@ -1,16 +1,17 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
+  version: "0.0.2"
   title: Tutorial API
 # during dev, should point to your local machine
-#host: localhost:3001
-host: tutorial-api.mybluemix.net
+host: localhost:3000
+#host: tutorial-api.mybluemix.net
 # basePath prefixes all resource paths
 basePath: /
 #
 schemes:
   # tip: remove http to make production-grade
-  - https
+  #- https
+  - http
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
@@ -51,6 +52,31 @@ paths:
         - name: appId
           in: path
           description: returns an application object for the given id
+          # the path params are explicitly required by the spec
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successß
+          schema:
+            $ref: "#/definitions/Application"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /hello/{name}:
+    # binds app logic to a route (api/controllers/hello_world.js)
+    x-swagger-router-controller: hello_world
+    get:
+      description: Returns Hello + ' ' + name
+      # used as the method name of the controller inside hello_world.js
+      operationId: hello
+      parameters:
+        - name: name
+          in: path
+          description: name
+          # the path params are explicitly required by the spec
           required: true
           type: string
       responses:
