@@ -97,9 +97,13 @@ textarea {
 
 body {
   min-height: 100%;
-  background-color: #26343f;
+  background-color: #3B4B54;
   color: #FFFFFF;
   overflow: hidden;
+}
+
+body a {
+  color: #18a7db;
 }
 
 .header {
@@ -141,7 +145,7 @@ body {
 
 .header .button-link .devopsservices-text {
   font-weight: 300;
-  margin: 0 0 0 20px;
+  margin: 0 0 0 15px;
   font-size: 14px;
   color: #FFFFFF;
 }
@@ -155,7 +159,7 @@ body {
 .header .app-title {
   font-size: 14px;
   color: #FFFFFF;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .content {
@@ -164,6 +168,13 @@ body {
   padding: 20px;
   font-weight: normal;
   font-size: 14px;
+  background-color: #3B4B54;
+}
+
+.content p span.description {
+  font-size: 11px;
+  font-weight: lighter;
+  color: #88f933;
 }
 
 /* ==========================================================================
