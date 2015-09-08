@@ -50,6 +50,7 @@ Create your new IBM DevOps project now!
 
 ## Accessing your api
   You can use curl from your local machine or just go to any of these links from your browser
+
     - https://[your-app-name].mybluemix.net/
     - https://[your-app-name].mybluemix.net/applications/ - test a get request to /applications/
     - https://[your-app-name].mybluemix.net/applications/1234 - test a get request to /applications/ with a parameter of 1234
