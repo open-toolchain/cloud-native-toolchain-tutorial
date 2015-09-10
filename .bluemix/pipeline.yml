@@ -21,7 +21,7 @@ stages:
     script: |-
       #!/bin/bash
       # invoke tests here
-      ./node_modules/.bin/mocha --recursive -R xunit test/api/ > testresult.xml
+      ./node_modules/.bin/mocha --recursive -R xunit test/api/ > test/testresult.xml
     enable_tests: true
     test_file_pattern: test/testresult.xml
 - name: Deploy to test
