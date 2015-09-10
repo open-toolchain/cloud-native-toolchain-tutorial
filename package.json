@@ -23,12 +23,7 @@
     "swagger-express-mw": "0.0.x",
     "swagger-tools": "^0.8.7",
     "newrelic": "^1.20.2",
-    "mocha": "^2.2.5",
-    "bin": {
-      "mocha": "./bin/mocha",
-      "_mocha": "./bin/_mocha"
-    }
-  },
+    "mocha": "^2.2.5"
   },
   "devDependencies": {
     "async": "*",
