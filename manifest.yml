@@ -1,5 +1,16 @@
 applications:
-- name: devops-tutorial
+- disk_quota: 1024M
+  host: devops-tutorial-staging
+  name: devops-tutorial-staging
+  command: node app.js
   path: .
+  domain: oneibmcloud.com
   instances: 1
   memory: 128M
+  env:
+    NODE_ENV: staging
+    NODE_ENV: staging
+    SSO_CLIENT_ID: jBcqNai5j2TD2ZBIwHCJ
+    SSO_CLIENT_SECRET: caZEUDkX5vUwdmQj7b46
+    APM_PROXY_ID: c1fc523661c14d508cc357a50b29a48b
+    APM_PROXY_SECRET: d78af18753ef45bd8eb29668816ad552
