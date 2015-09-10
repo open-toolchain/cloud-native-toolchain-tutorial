@@ -22,8 +22,7 @@
     "marked": "^0.3.3",
     "swagger-express-mw": "0.0.x",
     "swagger-tools": "^0.8.7",
-    "newrelic": "^1.20.2",
-    "mocha": "^2.2.5"
+    "newrelic": "^1.20.2"
   },
   "devDependencies": {
     "async": "*",
@@ -52,7 +51,8 @@
     "karma-mocha": "~0.1.10",
     "karma-chai": "~0.1.0",
     "karma-sinon": "~1.0.4",
-    "karma-spec-reporter": "*"
+    "karma-spec-reporter": "*",
+    "xunit-file": "~0.0.7"
   },
   "engines": {
     "node": ">=0.10.0"

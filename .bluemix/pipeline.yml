@@ -16,20 +16,16 @@ stages:
       # This change log can be used later to be included in notifications
       git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
       cat changelog.txt
-  - name: Build
-    type: builder
-    build_type: npm
-    script: |-
-      #!/bin/bash
-      npm install
   - name: UnitTest
     type: tester
     script: |-
       #!/bin/bash
       # invoke tests here
-      ./node_modules/mocha/bin/mocha --recursive -R xunit test/api/ > test/testresult.xml
+      npm install
+      #node ./node_modules/mocha/bin/mocha --recursive -R xunit test/api/ > test/testresult.xml
+      node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
     enable_tests: true
-    test_file_pattern: test/testresult.xml
+    test_file_pattern: xunit.xml
 - name: Deploy to test
   inputs:
   - type: job
