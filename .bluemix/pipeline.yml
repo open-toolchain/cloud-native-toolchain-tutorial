@@ -16,6 +16,14 @@ stages:
       # This change log can be used later to be included in notifications
       git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
       cat changelog.txt
+  - name: UnitTest
+    type: tester
+    script: |-
+      #!/bin/bash
+      # invoke tests here
+      node node_modules/.bin/mocha -R xunit > test/testresult.xml test/api/controllers
+    enable_tests: true
+    test_file_pattern: test/testresult.xml
 - name: Deploy to test
   inputs:
   - type: job
