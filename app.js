@@ -77,9 +77,10 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   var port = process.env.VCAP_APP_PORT || 3000;
   app.listen(port);
 
-  console.log('Listening port ' + port);
-  console.log('To access the api directly, try this:');
-  console.log('curl http://127.0.0.1:' + port + '/applications\n');
+  //The console logging must be removed as the test xml file will not be generated correctly, which will cause the build to fail.
+  //console.log('Listening port ' + port);
+  //console.log('To access the api directly, try this:');
+  //console.log('curl http://127.0.0.1:' + port + '/applications\n');
 });
 
 // catch 404 and forward to error handler
