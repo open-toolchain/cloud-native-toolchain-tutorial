@@ -6,7 +6,7 @@
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 
-if (process.env.NEWRELIC_KEY && process.env.NEWRELIC_KEY != '') {
+if (process.env.NEWRELIC_LICENSE_KEY && process.env.NEWRELIC_LICENSE_KEY != '') {
   require('newrelic');
 }
 
