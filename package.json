@@ -22,7 +22,8 @@
     "marked": "^0.3.3",
     "swagger-express-mw": "0.0.x",
     "swagger-tools": "^0.8.7",
-    "newrelic": "^1.20.2"
+    "newrelic": "^1.20.2",
+    "mocha": "^2.2.5"
   },
   "devDependencies": {
     "async": "*",
@@ -41,7 +42,6 @@
     "run-sequence": "*",
     "gulp-karma": "*",
     "gulp-mocha": "*",
-    "gulp-jscs": "^1.6.0",
     "bower-license": "*",
     "chai": "^1.10.0",
     "mocha-text-cov": "^0.1.0",
