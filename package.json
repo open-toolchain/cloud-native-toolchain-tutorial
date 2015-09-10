@@ -5,7 +5,7 @@
   "description": "DevOps Tutorial App",
   "scripts": {
     "start": "node app.js",
-    "test": "mocha test/api/controllers"
+    "test": "./node_modules/.bin/mocha --recursive -R xunit test/api/ > testresult.xml"
   },
   "keywords": [],
   "author": "alperg",
@@ -23,7 +23,9 @@
     "swagger-express-mw": "0.0.x",
     "swagger-tools": "^0.8.7",
     "newrelic": "^1.20.2",
-    "mocha": "^2.2.5"
+    "unit": "0.1.0",
+    "mocha": "^2.2.5",
+    "mocha-text-cov": "^0.1.0"
   },
   "devDependencies": {
     "async": "*",
