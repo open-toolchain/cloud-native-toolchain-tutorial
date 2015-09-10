@@ -22,7 +22,6 @@ stages:
       #!/bin/bash
       # invoke tests here
       npm install
-      #node ./node_modules/mocha/bin/mocha --recursive -R xunit test/api/ > test/testresult.xml
       node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
     enable_tests: true
     test_file_pattern: xunit.xml
