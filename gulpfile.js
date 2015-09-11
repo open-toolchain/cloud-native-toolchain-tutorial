@@ -130,7 +130,7 @@ test.end();
 
 while (!done) {
   setTimeout(function() {
-    status = https.get(url + '/tests/' + test.id, function(res) {
+    status = https.get(url + '/test/' + test.id, function(res) {
       console.log('Got response: ' + res.statusCode);
 
       if (status.status > 2) {
