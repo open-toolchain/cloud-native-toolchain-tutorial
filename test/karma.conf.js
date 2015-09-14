@@ -24,7 +24,7 @@ module.exports = function(config) {
       //'app/static/**/*.js',
 
       //Include the test files
-      'tests/unit/frontend/**/*.js',
+      'test/unit/frontend/**/*.js',
 
       //{pattern: 'tests/fixtures/**/*.json', watched: true, served: true, included: false}
     ],
