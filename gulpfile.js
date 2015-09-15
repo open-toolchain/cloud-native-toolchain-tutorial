@@ -76,10 +76,11 @@ gulp.task('dev-mocha', function() {
       ignoreLeaks: true,
       ui: 'bdd',
       colors: true,
-      reporter: 'mocha-junit-reporter',
-      reporterOptions: {
-        mochaFile: 'test/mocha-results.xml',
-      },
+      reporter: 'xunit-file',
+
+      // reporterOptions: {
+      //   mochaFile: 'test/mocha-results.xml',
+      // },
     }));
 });
 
