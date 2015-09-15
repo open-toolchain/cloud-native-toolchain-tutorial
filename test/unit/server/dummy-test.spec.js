@@ -29,7 +29,7 @@ describe('my test suite', function() {
 
   });
 
-  it('test case', function(done) {
+  it('mocha test case', function(done) {
     expect(true).to.be.equal(true);
     done();
   });

@@ -33,7 +33,7 @@ module.exports = function(config) {
     //note: karma HATES files with requires in them
     exclude: [
 
-      //'buildTools/grunt-install-dependencies/Gruntfile.js',
+      //'exclude.js',
     ],
 
     // preprocess matching files before serving them to the browser
@@ -52,8 +52,13 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    //install these with npm
-    reporters: ['spec', 'coverage'],
+    // install these with npm
+    reporters: ['jenkins', 'spec', 'coverage', 'progress', 'dots'],
+
+    jenkinsReporter: {
+      outputFile: 'test/karma-results.xml',
+    },
+
     plugins: [
 
       //'karma-chrome-launcher',
@@ -65,7 +70,9 @@ module.exports = function(config) {
       'karma-chai',
       'karma-sinon',
       'karma-spec-reporter',
+      'karma-jenkins-reporter',
       'karma-coverage',
+      'karma-jasmine',
     ],
 
     // web server port
