@@ -16,7 +16,7 @@ stages:
       # This change log can be used later to be included in notifications
       git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
       cat changelog.txt
-  - name: UnitTest
+  - name: Unit-Test-Api
     type: tester
     script: |-
       #!/bin/bash
