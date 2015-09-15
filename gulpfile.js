@@ -76,11 +76,9 @@ gulp.task('dev-mocha', function() {
       ignoreLeaks: true,
       ui: 'bdd',
       colors: true,
-      reporter: 'mocha-jenkins-reporter',
+      reporter: 'mocha-junit-reporter',
       reporterOptions: {
-        junit_report_name: 'Mocha Tests',
-        junit_report_path: 'test/mocha-results.xml',
-        junit_report_stack: 1, //used to enable writing the stack trace for failed tests
+        mochaFile: 'test/mocha-results.xml',
       },
     }));
 });

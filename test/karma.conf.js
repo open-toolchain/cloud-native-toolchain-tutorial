@@ -1,9 +1,3 @@
-//Licensed Materials - Property of IBM
-//
-//@ Copyright IBM Corp. 2014  All Rights Reserved
-//
-//US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
-
 module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns
@@ -53,10 +47,10 @@ module.exports = function(config) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     // install these with npm
-    reporters: ['jenkins', 'spec', 'coverage', 'progress', 'dots'],
+    reporters: ['junit', 'spec', 'coverage', 'progress', 'dots'],
 
-    jenkinsReporter: {
-      outputFile: 'test/karma-results.xml',
+    junitReporter: {
+      outputDir: 'test',
     },
 
     plugins: [
@@ -70,7 +64,7 @@ module.exports = function(config) {
       'karma-chai',
       'karma-sinon',
       'karma-spec-reporter',
-      'karma-jenkins-reporter',
+      'karma-junit-reporter',
       'karma-coverage',
       'karma-jasmine',
     ],
