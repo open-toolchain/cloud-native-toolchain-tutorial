@@ -79,9 +79,9 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   app.listen(port);
 
   //The console logging must be removed as the test xml file will not be generated correctly, which will cause the build to fail.
-  //console.log('Listening port ' + port);
-  //console.log('To access the api directly, try this:');
-  //console.log('curl http://127.0.0.1:' + port + '/applications\n');
+  console.log('Listening port ' + port);
+  console.log('To access the api directly, try this:');
+  console.log('curl http://127.0.0.1:' + port + '/applications\n');
 });
 
 // catch 404 and forward to error handler
