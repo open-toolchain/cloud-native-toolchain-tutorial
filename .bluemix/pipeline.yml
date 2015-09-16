@@ -181,5 +181,30 @@ stages:
     script: |
       #!/bin/bash
       cf rename "${CF_APP}-blue" "${CF_APP}-green"
+  - name: Deploy Saucelabs
+    type: deployer
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: Sauce-testStageSetsURL
+    script: |
+      #!/bin/bash
+      cf push "${CF_APP}"
+      export CF_APP_NAME="$CF_APP"
+      # view logs
+      #cf logs "${CF_APP}" --recent
+  - name: Test SauceLabs
+    type: tester
+    extension_id: ibm.devops.services.pipeline.saucelabs
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+    ACCESS: Access Key Here
+    DL_ASSETS: 'true'
+    SELECT_CMD: npm saucelabs-test
+    USER_ID: Sauce User ID Here
+    COMMAND: '#!/bin/bash'
   - name: Notify
     type: builder
