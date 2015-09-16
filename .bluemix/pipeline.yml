@@ -109,7 +109,7 @@ stages:
   - name: SpeedCurve
     type: tester
     script: "#!/bin/bash\n# invoke tests here\ncurl \"https://api.speedcurve.com/v1/deploy\"\
-      \ -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=\"${CF_APP}-${BUILD_NUMBER} "
+      \ -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER} "
     enable_tests: true
     test_file_pattern: test/speedcurve.xml
 - name: Setup Prod
