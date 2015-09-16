@@ -42,6 +42,7 @@
     "gulp-util": "^3.0.6",
     "jasmine-core": "^2.3.4",
     "jshint": "latest",
+    "jshint-junit-reporter": "^0.2.2",
     "karma": "https://registry.npmjs.org/karma/-/karma-0.12.28.tgz",
     "karma-chai": "~0.1.0",
     "karma-coverage": "^0.3.1",
