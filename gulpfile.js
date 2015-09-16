@@ -24,12 +24,12 @@ gulp.task('default', function(callback) {
 });
 
 gulp.task('lint-js', shell.task(
-    ['node_modules/.bin/jshint app.js routes/ public/javascripts api/controllers  --reporter=node_modules/jshint-junit-reporter/reporter.js > test/jslint.xml'],
+    ['node_modules/.bin/jshint app.js routes/ public/javascripts api/controllers --reporter=node_modules/jshint-junit-reporter/reporter.js > test/jslint.xml'],
     { cwd: __dirname, ignoreErrors: false }
 ));
 
 gulp.task('lint-css', shell.task(
-    ['node_modules/.bin/csslint public/**/*.css  --format=junit-xml > test/csslint.xml'],
+    ['node_modules/.bin/csslint public/**/*.css --warnings=box-model,ids --format=junit-xml > test/csslint.xml'],
     { cwd: __dirname, ignoreErrors: false }
 ));
 
