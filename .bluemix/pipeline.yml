@@ -16,7 +16,7 @@ stages:
       # This change log can be used later to be included in notifications
       git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
       cat changelog.txt
-  - name: Unit-Test-Karma
+  - name: Karma-UnitTest
     type: tester
     script: |-
       #!/bin/bash
@@ -25,7 +25,7 @@ stages:
       node ./node_modules/gulp/bin/gulp dev-karma
     enable_tests: true
     test_file_pattern: test/*.xml
-  - name: Unit-Test-Mocha
+  - name: Mocha-UnitTest
     type: tester
     script: |-
       #!/bin/bash
@@ -33,8 +33,8 @@ stages:
       npm install
       node ./node_modules/gulp/bin/gulp dev-mocha
     enable_tests: true
-    test_file_pattern: test/*.xml
-  - name: Unit-Test-Api
+    test_file_pattern: xunit.xml
+  - name: Mocha-Api-UnitTest
     type: tester
     script: |-
       #!/bin/bash

@@ -3,7 +3,7 @@ var gulp = require('gulp');
 //These paths need to be changed based on the location of the respective files on your application
 var paths = {
   html:['views/**/*.html'],
-  css:['public/**/*.css','routes/**/*.css'],
+  css:['public/**/*.css'],
   js:['public/**/*.js','routes/**/*.js','app.js'],
 };
 var runSequence = require('run-sequence');
@@ -13,7 +13,7 @@ var bower = require('gulp-bower');
 var jshint = require('gulp-jshint');
 var csslint = require('gulp-csslint');
 var htmllint = require('gulp-htmllint');
-var reporter = require('gulp-jshint-xml-file-reporter');
+var shell = require('gulp-shell');
 
 /*
 Gulp tasks for linting
@@ -23,29 +23,15 @@ gulp.task('default', function(callback) {
   runSequence('lint', 'dev-unit', callback);
 });
 
-gulp.task('lint-js', function() {
-  return gulp.src(paths.js)
-  .pipe(jshint())
-  .pipe(jshint.reporter(reporter))
-  .on('end', reporter.writeFile({
-    format: 'junit',
-    filePath: 'test/jshint-results.xml',
-    alwaysReport: true,
-  }));
-});
+gulp.task('lint-js', shell.task(
+    ['node_modules/.bin/jshint app.js routes/ public/javascripts api/controllers  --reporter=node_modules/jshint-junit-reporter/reporter.js > test/jslint.xml'],
+    { cwd: __dirname, ignoreErrors: false }
+));
 
-// Uses the .csslintrc file with some default configurations. Update the .csslintrc file based on the project requirements
-gulp.task('lint-css', function() {
-  return gulp.src(paths.css)
-  .pipe(csslint());
-
-  //.pipe(csslint.reporter(reporter))
-  // .on('end', reporter.writeFile({
-  //   format: 'junit',
-  //   filePath: 'test/csslint-results.xml',
-  //   alwaysReport: true,
-  // }));
-});
+gulp.task('lint-css', shell.task(
+    ['node_modules/.bin/csslint public/**/*.css  --format=junit-xml > test/csslint.xml'],
+    { cwd: __dirname, ignoreErrors: false }
+));
 
 // Uses the .htmllintrc file with some default configurations. Update the .htmllintrc file based on the project requirements
 gulp.task('lint-html', function() {
