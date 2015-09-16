@@ -52,18 +52,6 @@ stages:
       node ./node_modules/gulp/bin/gulp lint
     enable_tests: true
     test_file_pattern: test/*.xml
-  - name: Test SauceLabs
-    type: tester
-    extension_id: ibm.devops.services.pipeline.saucelabs
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-    ACCESS: Access Key Here
-    DL_ASSETS: 'true'
-    SELECT_CMD: npm saucelabs-test
-    USER_ID: Sauce User ID Here
-    COMMAND: '#!/bin/bash'
 - name: Deploy to Test
   inputs:
   - type: job
@@ -195,3 +183,27 @@ stages:
       cf rename "${CF_APP}-blue" "${CF_APP}-green"
   - name: Notify
     type: builder
+- name: Test with Sauce Labs
+  inputs:
+  - type: job
+    stage: Build
+    job: Build
+  triggers:
+  - type: stage
+  properties:
+  - name: APP_URL
+    value: http://my-app.mybluemix.net/
+    type: text
+  jobs:
+  - name: Test
+    type: tester
+    extension_id: ibm.devops.services.pipeline.saucelabs
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+    ACCESS: SauceLabs Access Key Here
+    DL_ASSETS: 'true'
+    SELECT_CMD: npm saucelabs-test
+    USER_ID: SauceLabs User ID Here
+    COMMAND: '#!/bin/bash'
