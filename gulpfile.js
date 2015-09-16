@@ -10,9 +10,6 @@ var runSequence = require('run-sequence');
 var karma = require('karma').server;
 var mocha = require('gulp-mocha');
 var bower = require('gulp-bower');
-var jshint = require('gulp-jshint');
-var csslint = require('gulp-csslint');
-var htmllint = require('gulp-htmllint');
 var shell = require('gulp-shell');
 
 /*
@@ -29,17 +26,11 @@ gulp.task('lint-js', shell.task(
 ));
 
 gulp.task('lint-css', shell.task(
-    ['node_modules/.bin/csslint public/**/*.css --warnings=box-model,ids --format=junit-xml > test/csslint.xml'],
+    ['node_modules/.bin/csslint public/**/*.css --ignore=box-model,ids --format=junit-xml > test/csslint.xml'],
     { cwd: __dirname, ignoreErrors: false }
 ));
 
-// Uses the .htmllintrc file with some default configurations. Update the .htmllintrc file based on the project requirements
-gulp.task('lint-html', function() {
-  return gulp.src(paths.html)
-  .pipe(htmllint());
-});
-
-gulp.task('lint', ['lint-js','lint-css','lint-html']);
+gulp.task('lint', ['lint-js','lint-css']);
 
 /*
 Gulp tasks for unit tests
