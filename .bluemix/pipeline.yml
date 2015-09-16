@@ -52,7 +52,7 @@ stages:
       node ./node_modules/gulp/bin/gulp lint
     enable_tests: true
     test_file_pattern: test/*.xml
-- name: Deploy to test
+- name: Deploy to Test
   inputs:
   - type: job
     stage: Build
@@ -92,20 +92,30 @@ stages:
       cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
   - name: Notify
     type: builder
-- name: Run tests
+- name: Run Tests - Performance & Scale
   inputs:
   - type: job
-    stage: Deploy to test
+    stage: Deploy to Test
     job: Notify
   triggers:
   - type: stage
+  properties:
+  - name: SPEED_CURVE_LICENSE_KEY
+    value: XXX
+    type: text
   jobs:
   - name: Saucelabs
     type: builder
-- name: Setup prod
+  - name: SpeedCurve
+    type: tester
+    script: "#!/bin/bash\n# invoke tests here\ncurl \"https://api.speedcurve.com/v1/deploy\"\
+      \ -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=\"${CF_APP}-${BUILD_NUMBER} "
+    enable_tests: true
+    test_file_pattern: test/speedcurve.xml
+- name: Setup Prod
   inputs:
   - type: job
-    stage: Run tests
+    stage: Run Tests - Performance & Scale
     job: Saucelabs
   triggers:
   - type: stage
@@ -127,10 +137,10 @@ stages:
         mkdir .newrelic
         echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
       fi
-- name: Push to prod
+- name: Push to Prod
   inputs:
   - type: job
-    stage: Setup prod
+    stage: Setup Prod
     job: New Relic
   triggers:
   - type: stage
@@ -153,7 +163,6 @@ stages:
       cf start "${CF_APP}-blue"
   - name: Drop Green
     type: deployer
-    target:
     target:
       url: ${CF_TARGET_URL}
       organization: ${CF_ORGANIZATION}
