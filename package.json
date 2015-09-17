@@ -63,6 +63,7 @@
     "lodash": "latest",
     "mocha": "^2.2.5",
     "mocha-junit-reporter": "^1.6.1",
+    "mocha-jenkins-reporter": "^0.1.9",
     "mocha-text-cov": "^0.1.0",
     "rewire": "*",
     "run-sequence": "*",

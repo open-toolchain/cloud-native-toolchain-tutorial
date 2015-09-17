@@ -167,6 +167,7 @@ stages:
         cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
         cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
       fi
+      export CF_APP_NAME="$CF_APP"
       cf start "${CF_APP}-blue"
   - name: Drop Green
     type: deployer
@@ -188,7 +189,7 @@ stages:
     script: |
       #!/bin/bash
       cf rename "${CF_APP}-blue" "${CF_APP}-green"
-  - name: SauceLabs Test
+  - name: Sauce Labs Test
     type: tester
     extension_id: ibm.devops.services.pipeline.saucelabs
     target:
@@ -197,8 +198,11 @@ stages:
       space: ${CF_SPACE}
     ACCESS: SauceLabs Access Key here
     DL_ASSETS: 'true'
-    SELECT_CMD: npm test
+    SELECT_CMD: custom
     USER_ID: SauceLabs User ID here
-    COMMAND: '#!/bin/bash'
+    COMMAND: |-
+      #!/bin/bash
+      npm install
+      npm run saucelabs-test
   - name: Notify
     type: builder
