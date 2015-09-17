@@ -188,7 +188,7 @@ stages:
     script: |
       #!/bin/bash
       cf rename "${CF_APP}-blue" "${CF_APP}-green"
-- name: SauceLabs Test
+  - name: SauceLabs Test
     type: tester
     extension_id: ibm.devops.services.pipeline.saucelabs
     target:
