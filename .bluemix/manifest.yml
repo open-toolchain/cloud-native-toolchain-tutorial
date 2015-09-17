@@ -1,5 +1,0 @@
-applications:
-- name: devops-tutorial
-  path: .
-  instances: 1
-  memory: 128M
