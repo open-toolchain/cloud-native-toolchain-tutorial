@@ -144,6 +144,13 @@ stages:
     job: New Relic
   triggers:
   - type: stage
+  properties:
+  - name: CF_APP_NAME
+    value: ''
+    type: text
+  - name: APP_URL
+    value: ''
+    type: text
   jobs:
   - name: Deploy Blue
     type: deployer
@@ -181,5 +188,17 @@ stages:
     script: |
       #!/bin/bash
       cf rename "${CF_APP}-blue" "${CF_APP}-green"
+- name: SauceLabs Test
+    type: tester
+    extension_id: ibm.devops.services.pipeline.saucelabs
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+    ACCESS: SauceLabs Access Key here
+    DL_ASSETS: 'true'
+    SELECT_CMD: npm test
+    USER_ID: SauceLabs User ID here
+    COMMAND: '#!/bin/bash'
   - name: Notify
     type: builder
