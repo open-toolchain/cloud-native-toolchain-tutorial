@@ -198,7 +198,7 @@ stages:
           space: '${CF_SPACE}'
         ACCESS: '${SAUCE_ACCESS_KEY}'
         DL_ASSETS: 'false'
-        SELECT_CMD: 'grunt test:sauce:parallel'
+        SELECT_CMD: 'custom'
         USER_ID: '${SAUCE_USERNAME}'
         COMMAND: |-
           #!/bin/bash
