@@ -151,6 +151,9 @@ stages:
       - name: SAUCE_ACCESS_KEY
         value: ''
         type: text
+      - name: SLACK_WEBHOOK_PATH
+        value: ''
+        type: text
     jobs:
       - name: Deploy Blue
         type: deployer
@@ -202,3 +205,7 @@ stages:
           #npm run test
       - name: Notify
         type: builder
+        build_type: shell
+        script: |-
+          #!/bin/bash
+          curl -X POST --data-urlencode 'payload={"channel": "#otc-bot-testchannel", "username": "webhookbot", "text": "DevOps Tutorial App - Deployment done.", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
