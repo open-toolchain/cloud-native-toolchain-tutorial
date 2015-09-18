@@ -137,7 +137,7 @@ stages:
 - name: Push to Prod
   inputs:
   - type: job
-    stage: Setup Prod
+    stage: Run Tests - Performance & Scale
     job: New Relic
   triggers:
   - type: stage
