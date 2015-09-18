@@ -127,17 +127,10 @@ stages:
       - name: New Relic
         type: builder
         build_type: shell
-        script: >-
-          #!/bin/bash
-          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
-          then
-            echo "NewRelic is disabled. Please specify your API NewRelic API key.";
-          else
-            npm install newrelic
-            cp node_modules/newrelic/newrelic.js ./
-            mkdir .newrelic
-            echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
-          fi
+        script: "#!/bin/bash \nif [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ]; \nthen\n  echo\
+          \ \"NewRelic is disabled. Please specify your API NewRelic API key.\";\nelse\n\
+          \  npm install newrelic\n  cp node_modules/newrelic/newrelic.js ./\n  mkdir\
+          \ .newrelic\n  echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;\nfi"
   - name: Push to Prod
     inputs:
       - type: job
@@ -166,18 +159,11 @@ stages:
           organization: '${CF_ORGANIZATION}'
           space: '${CF_SPACE}'
           application: '${CF_APP}'
-        script: >
-          #!/bin/bash
-          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-          if [ -f .newrelic/key ];
-          then
-            export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
-            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
-            cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
-          fi
-          export CF_APP_NAME="$CF_APP"
-          export APP_URL="https://$URL"
-          cf start "${CF_APP}-blue"
+        script: "#!/bin/bash \ncf push \"${CF_APP}-blue\" -n \"${CF_APP}\" --no-start\
+          \ \nif [ -f .newrelic/key ]; \nthen\n  export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`\n\
+          \  cf set-env \"${CF_APP}-blue\" NEW_RELIC_LICENSE_KEY \"${NEW_RELIC_LICENSE_KEY}\"\
+          \n  cf set-env \"${CF_APP}-blue\" NEW_RELIC_APP_NAME \"${CF_APP}\"\nfi \nexport\
+          \ CF_APP_NAME=\"$CF_APP\" \nexport APP_URL=\"https://$URL\" \ncf start \"${CF_APP}-blue\""
       - name: Drop Green
         type: deployer
         target:
