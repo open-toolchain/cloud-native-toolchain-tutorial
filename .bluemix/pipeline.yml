@@ -200,6 +200,7 @@ stages:
           cf rename "${CF_APP}-blue" "${CF_APP}-green"
       - name: Sauce Labs Tests
         type: tester
+        fail_stage: false
         extension_id: ibm.devops.services.pipeline.saucelabs
         target:
           url: '${CF_TARGET_URL}'
