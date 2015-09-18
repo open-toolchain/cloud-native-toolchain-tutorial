@@ -1,206 +1,208 @@
 ---
 stages:
-- name: Build & Run Unit Tests
-  inputs:
-  - type: git
-    branch: master
-  triggers:
-  - type: commit
-  jobs:
-  - name: Changelog
-    type: builder
-    build_type: shell
-    script: |-
-      #!/bin/bash
-      # This script just dumps the changes included in this build into a file named changelog.txt
-      # This change log can be used later to be included in notifications
-      git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
-      cat changelog.txt
-  - name: Karma-UnitTest
-    type: tester
-    script: |-
-      #!/bin/bash
-      # invoke tests here
-      npm install
-      node ./node_modules/gulp/bin/gulp dev-karma
-    enable_tests: true
-    test_file_pattern: test/*.xml
-  - name: Mocha-UnitTest
-    type: tester
-    script: |-
-      #!/bin/bash
-      # invoke tests here
-      npm install
-      node ./node_modules/gulp/bin/gulp dev-mocha
-    enable_tests: true
-    test_file_pattern: xunit.xml
-  - name: Mocha-Api-UnitTest
-    type: tester
-    script: |-
-      #!/bin/bash
-      # invoke tests here
-      npm install
-      node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
-    enable_tests: true
-    test_file_pattern: xunit.xml
-  - name: Lint
-    type: tester
-    script: |-
-      #!/bin/bash
-      # invoke tests here
-      npm install
-      node ./node_modules/gulp/bin/gulp lint
-    enable_tests: true
-    test_file_pattern: test/*.xml
-  - name: Slack Notification
-    type: tester
-    script: |-
-      #!/bin/bash
-      curl -X POST --data-urlencode 'payload={"channel": "#otc-bot-testchannel", "username": "webhookbot", "text": "DevOps Tutorial App - All tests passed.", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
-- name: Deploy to Test
-  inputs:
-  - type: job
-    stage: Build & Run Unit Tests
-    job: Changelog
-  triggers:
-  - type: stage
-  jobs:
-  - name: Deploy Blue
-    type: deployer
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-      application: ${CF_APP}
-    script: |
-      #!/bin/bash
-      cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
-  - name: Drop Green
-    type: deployer
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-      application: ${CF_APP}
-    script: |
-      #!/bin/bash
-      cf delete "${CF_APP}-test-green" --f
-  - name: Blue->Green
-    type: deployer
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-      application: ${CF_APP}
-    script: |
-      #!/bin/bash
-      cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
-  - name: Notify
-    type: builder
-- name: Run Tests - Performance & Scale
-  inputs:
-  - type: job
-    stage: Deploy to Test
-    job: Notify
-  triggers:
-  - type: stage
-  properties:
-  - name: NEW_RELIC_LICENSE_KEY
-    value: xxx
-    type: text
-  - name: SPEED_CURVE_LICENSE_KEY
-    value: ''
-    type: text
-  jobs:
-  - name: Saucelabs
-    type: builder
-  - name: SpeedCurve
-    type: tester
-    script: "#!/bin/bash\n# invoke tests here\ncurl \"https://api.speedcurve.com/v1/deploy\"\
-      \ -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER} "
-    enable_tests: true
-    test_file_pattern: test/speedcurve.xml
-  - name: New Relic
-    type: builder
-    build_type: shell
-    script: |-
-      #!/bin/bash
-      if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
-      then
-        echo "NewRelic is disabled.  Please specify your API NewRelic API key.";
-      else
-        npm install newrelic
-        cp node_modules/newrelic/newrelic.js ./
-        mkdir .newrelic
-        echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
-      fi
-- name: Push to Prod
-  inputs:
-  - type: job
-    stage: Run Tests - Performance & Scale
-    job: New Relic
-  triggers:
-  - type: stage
-  properties:
-  - name: CF_APP_NAME
-    value: ''
-    type: text
-  - name: APP_URL
-    value: ''
-    type: text
-  jobs:
-  - name: Deploy Blue
-    type: deployer
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-      application: ${CF_APP}
-    script: |
-      #!/bin/bash
-      cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-      if [ -f .newrelic/key ]; then
-        export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
-        cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
-        cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
-      fi
-      export CF_APP_NAME="$CF_APP"
-      export APP_URL="https://$URL"
-      cf start "${CF_APP}-blue"
-  - name: Drop Green
-    type: deployer
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-      application: ${CF_APP}
-    script: |
-      #!/bin/bash
-      cf delete "${CF_APP}-green" --f
-  - name: Blue->Green
-    type: deployer
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-      application: ${CF_APP}
-    script: |
-      #!/bin/bash
-      cf rename "${CF_APP}-blue" "${CF_APP}-green"
-  - name: Sauce Labs Tests
-    type: tester
-    extension_id: ibm.devops.services.pipeline.saucelabs
-    target:
-      url: ${CF_TARGET_URL}
-      organization: ${CF_ORGANIZATION}
-      space: ${CF_SPACE}
-    ACCESS: ${SAUCE_ACCESS_KEY}
-    DL_ASSETS: 'false'
-    SELECT_CMD: grunt test:sauce:parallel
-    USER_ID: ${SAUCE_USERNAME}
-    COMMAND: |-
-      #!/bin/bash
-      npm install
-      npm run test
-  - name: Notify
-    type: builder
+  - name: 'Build & Run Unit Tests'
+    inputs:
+      - type: git
+        branch: master
+    triggers:
+      - type: commit
+    jobs:
+      - name: Changelog
+        type: builder
+        build_type: shell
+        script: >-
+          #!/bin/bash
+          # This script just dumps the changes included in this build into a file
+          named changelog.txt
+          # This change log can be used later to be included in notifications
+          git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
+          cat changelog.txt
+      - name: Karma-UnitTest
+        type: tester
+        script: |-
+          #!/bin/bash
+          # invoke tests here
+          npm install
+          node ./node_modules/gulp/bin/gulp dev-karma
+        enable_tests: true
+        test_file_pattern: 'test/*.xml'
+      - name: Mocha-UnitTest
+        type: tester
+        script: |-
+          #!/bin/bash
+          # invoke tests here
+          npm install
+          node ./node_modules/gulp/bin/gulp dev-mocha
+        enable_tests: true
+        test_file_pattern: xunit.xml
+      - name: Mocha-Api-UnitTest
+        type: tester
+        script: |-
+          #!/bin/bash
+          # invoke tests here
+          npm install
+          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
+        enable_tests: true
+        test_file_pattern: xunit.xml
+      - name: Lint
+        type: tester
+        script: |-
+          #!/bin/bash
+          # invoke tests here
+          npm install
+          node ./node_modules/gulp/bin/gulp lint
+        enable_tests: true
+        test_file_pattern: 'test/*.xml'
+      - name: Slack Notification
+        type: tester
+        script: |-
+          #!/bin/bash
+          curl -X POST --data-urlencode 'payload={"channel": "#otc-bot-testchannel", "username": "webhookbot", "text": "DevOps Tutorial App - All tests passed.", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
+  - name: Deploy to Test
+    inputs:
+      - type: job
+        stage: 'Build & Run Unit Tests'
+        job: Changelog
+    triggers:
+      - type: stage
+    jobs:
+      - name: Deploy Blue
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |
+          #!/bin/bash
+          cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
+      - name: Drop Green
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |
+          #!/bin/bash
+          cf delete "${CF_APP}-test-green" --f
+      - name: 'Blue->Green'
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |
+          #!/bin/bash
+          cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
+      - name: Notify
+        type: builder
+  - name: 'Run Tests - Performance & Scale'
+    inputs:
+      - type: job
+        stage: Deploy to Test
+        job: Notify
+    triggers:
+      - type: stage
+    properties:
+      - name: NEW_RELIC_LICENSE_KEY
+        value: xxx
+        type: text
+      - name: SPEED_CURVE_LICENSE_KEY
+        value: ''
+        type: text
+    jobs:
+      - name: Saucelabs
+        type: builder
+      - name: SpeedCurve
+        type: tester
+        script: "#!/bin/bash\n# invoke tests here\ncurl \"https://api.speedcurve.com/v1/deploy\" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER} "
+        enable_tests: true
+        test_file_pattern: test/speedcurve.xml
+      - name: New Relic
+        type: builder
+        build_type: shell
+        script: >-
+          #!/bin/bash
+          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
+          then
+            echo "NewRelic is disabled.  Please specify your API NewRelic API
+          key.";
+          else
+            npm install newrelic
+            cp node_modules/newrelic/newrelic.js ./
+            mkdir .newrelic
+            echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
+          fi
+  - name: Push to Prod
+    inputs:
+      - type: job
+        stage: 'Run Tests - Performance & Scale'
+        job: New Relic
+    triggers:
+      - type: stage
+    properties:
+      - name: CF_APP_NAME
+        value: ''
+        type: text
+      - name: APP_URL
+        value: ''
+        type: text
+    jobs:
+      - name: Deploy Blue
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: >
+          #!/bin/bash
+          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
+          if [ -f .newrelic/key ]; then
+            export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
+            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY
+          "${NEW_RELIC_LICENSE_KEY}"
+            cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
+          fi
+          export CF_APP_NAME="$CF_APP"
+          export APP_URL="https://$URL"
+          cf start "${CF_APP}-blue"
+      - name: Drop Green
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |
+          #!/bin/bash
+          cf delete "${CF_APP}-green" --f
+      - name: 'Blue->Green'
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |
+          #!/bin/bash
+          cf rename "${CF_APP}-blue" "${CF_APP}-green"
+      - name: Sauce Labs Tests
+        type: tester
+        extension_id: ibm.devops.services.pipeline.saucelabs
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+        ACCESS: '${SAUCE_ACCESS_KEY}'
+        DL_ASSETS: 'false'
+        SELECT_CMD: 'grunt test:sauce:parallel'
+        USER_ID: '${SAUCE_USERNAME}'
+        COMMAND: |-
+          #!/bin/bash
+          npm install
+          npm run test
+      - name: Notify
+        type: builder
