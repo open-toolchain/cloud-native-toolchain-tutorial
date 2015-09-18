@@ -38,8 +38,8 @@ describe('saucelabs (' + desired.browserName + ')', function() {
   before(function(done) {
     var username = process.env.SAUCE_USERNAME;
     var accessKey = process.env.SAUCE_ACCESS_KEY;
-    browser = wd.promiseChainRemote(process.env.HOST, process.env.PORT, username, accessKey);
-    console.log('browser:', browser);
+    browser = wd.promiseChainRemote('ondemand.saucelabs.com', 80, username, accessKey);
+
     if (process.env.VERBOSE) {
 
       // optional logging
@@ -73,7 +73,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
     browser
       .get(url)
       .title()
-      .should.become('Hello World')
+      .should.become('DevOps Tutorial App')
       .nodeify(done);
   });
 
@@ -83,7 +83,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
       browser
         .get(url)
         .title()
-        .should.become('Hello World')
+        .should.become('DevOps Tutorial App')
         .nodeify(done);
     });
 
@@ -91,7 +91,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
       browser
         .get(url)
         .title()
-        .should.become('Hello World')
+        .should.become('DevOps Tutorial App')
         .nodeify(done);
     });
 
@@ -101,7 +101,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
     browser
       .get(url)
       .title()
-      .should.become('Hello World')
+      .should.become('DevOps Tutorial App')
       .nodeify(done);
   });
 
@@ -109,7 +109,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
     browser
         .get(url)
         .title()
-        .should.become('Hello World')
+        .should.become('DevOps Tutorial App')
         .nodeify(done);
   });
 
@@ -117,7 +117,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
     browser
       .get(url)
       .title()
-      .should.become('Hello World')
+      .should.become('DevOps Tutorial App')
       .nodeify(done);
   });
 
@@ -125,7 +125,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
     browser
       .get(url)
       .title()
-      .should.become('Hello World')
+      .should.become('DevOps Tutorial App')
       .nodeify(done);
   });
 
@@ -133,7 +133,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
     browser
       .get(url)
       .title()
-      .should.become('Hello World')
+      .should.become('DevOps Tutorial App')
       .nodeify(done);
   });
 
@@ -143,7 +143,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
       browser
         .get(url)
         .title()
-        .should.become('Hello World')
+        .should.become('DevOps Tutorial App')
         .nodeify(done);
     });
 
@@ -151,7 +151,7 @@ describe('saucelabs (' + desired.browserName + ')', function() {
       browser
         .get(url)
         .title()
-        .should.become('Hello World')
+        .should.become('DevOps Tutorial App')
         .nodeify(done);
     });
 

@@ -4,6 +4,10 @@ stages:
     inputs:
       - type: git
         branch: master
+    properties:
+      - name: SLACK_WEBHOOK_PATH
+        value: 'https://hooks.slack.com/services/'
+        type: text
     triggers:
       - type: commit
     jobs:
@@ -127,8 +131,7 @@ stages:
           #!/bin/bash
           if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
           then
-            echo "NewRelic is disabled.  Please specify your API NewRelic API
-          key.";
+            echo "NewRelic is disabled. Please specify your API NewRelic API key.";
           else
             npm install newrelic
             cp node_modules/newrelic/newrelic.js ./
@@ -149,6 +152,12 @@ stages:
       - name: APP_URL
         value: ''
         type: text
+      - name: SAUCE_USERNAME
+        value: ''
+        type: text
+      - name: SAUCE_ACCESS_KEY
+        value: ''
+        type: text
     jobs:
       - name: Deploy Blue
         type: deployer
@@ -160,10 +169,10 @@ stages:
         script: >
           #!/bin/bash
           cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-          if [ -f .newrelic/key ]; then
+          if [ -f .newrelic/key ];
+          then
             export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
-            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY
-          "${NEW_RELIC_LICENSE_KEY}"
+            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
             cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
           fi
           export CF_APP_NAME="$CF_APP"
@@ -202,7 +211,7 @@ stages:
         USER_ID: '${SAUCE_USERNAME}'
         COMMAND: |-
           #!/bin/bash
-          npm install
-          npm run test
+          #npm install
+          #npm run test
       - name: Notify
         type: builder

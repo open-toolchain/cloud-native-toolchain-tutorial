@@ -21,7 +21,7 @@ var gruntConfig = {
           junit_report_stack: 1,
         },
       },
-      src: ['test/sauce/**/*-specs.js'],
+      src: ['test/sauce/saucelabs-specs.js'],
     },
   },
   jshint: {
@@ -35,7 +35,7 @@ var gruntConfig = {
       options: {
         jshintrc: 'test/.jshintrc',
       },
-      src: ['test/sauce/**/*.js'],
+      src: ['test/sauce/*.js'],
     },
   },
   concurrent: {
