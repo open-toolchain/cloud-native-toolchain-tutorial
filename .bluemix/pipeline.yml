@@ -52,6 +52,11 @@ stages:
       node ./node_modules/gulp/bin/gulp lint
     enable_tests: true
     test_file_pattern: test/*.xml
+  - name: Slack Notification
+    type: tester
+    script: |-
+      #!/bin/bash
+      curl -X POST --data-urlencode 'payload={"channel": "#otc-bot-testchannel", "username": "webhookbot", "text": "DevOps Tutorial App - All tests passed.", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
 - name: Deploy to Test
   inputs:
   - type: job
