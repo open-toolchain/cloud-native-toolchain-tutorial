@@ -210,7 +210,5 @@ stages:
       #!/bin/bash
       npm install
       npm run test
-    enable_tests: true
-    test_file_pattern: 'test/*.xml'
   - name: Notify
     type: builder
