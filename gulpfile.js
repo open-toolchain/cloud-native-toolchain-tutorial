@@ -21,7 +21,7 @@ gulp.task('default', function(callback) {
 });
 
 gulp.task('lint-js', shell.task(
-    ['node_modules/.bin/jshint app.js routes/ public/javascripts api/controllers --reporter=node_modules/jshint-junit-reporter/reporter.js > test/jslint.xml'],
+    ['node_modules/.bin/jshint app.js routes/ --reporter=node_modules/jshint-junit-reporter/reporter.js > test/jslint.xml'],
     { cwd: __dirname, ignoreErrors: false }
 ));
 
