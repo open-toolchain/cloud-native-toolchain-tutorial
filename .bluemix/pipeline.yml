@@ -1,6 +1,6 @@
 ---
 stages:
-- name: Build
+- name: Build & Run Unit Tests
   inputs:
   - type: git
     branch: master
@@ -105,8 +105,11 @@ stages:
   triggers:
   - type: stage
   properties:
+  - name: NEW_RELIC_LICENSE_KEY
+    value: xxx
+    type: text
   - name: SPEED_CURVE_LICENSE_KEY
-    value: XXX
+    value: ''
     type: text
   jobs:
   - name: Saucelabs
@@ -117,17 +120,6 @@ stages:
       \ -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER} "
     enable_tests: true
     test_file_pattern: test/speedcurve.xml
-- name: Setup Prod
-  inputs:
-  - type: job
-    stage: Run Tests - Performance & Scale
-    job: Saucelabs
-  triggers:
-  - type: stage
-  properties:
-  - name: NEW_RELIC_LICENSE_KEY
-    value: xxx
-  jobs:
   - name: New Relic
     type: builder
     build_type: shell
@@ -203,7 +195,7 @@ stages:
       organization: ${CF_ORGANIZATION}
       space: ${CF_SPACE}
     ACCESS: ${SAUCE_ACCESS_KEY}
-    DL_ASSETS: 'true'
+    DL_ASSETS: 'false'
     SELECT_CMD: grunt test:sauce:parallel
     USER_ID: ${SAUCE_USERNAME}
     COMMAND: |-
