@@ -60,7 +60,7 @@ stages:
 - name: Deploy to Test
   inputs:
   - type: job
-    stage: Build
+    stage: Build & Run Unit Tests
     job: Changelog
   triggers:
   - type: stage
