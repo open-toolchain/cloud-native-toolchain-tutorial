@@ -3,12 +3,7 @@
 
 var _ = require('lodash');
 
-//var desireds = require('./desireds');
-var browsers = {
-  chrome: {browserName: 'chrome'},
-  firefox: {browserName: 'firefox'},
-  explorer: {browserName: 'internet explorer'},
-};
+var desireds = require('./desireds');
 
 var gruntConfig = {
   env: {
@@ -21,9 +16,9 @@ var gruntConfig = {
         reporter: 'mocha-jenkins-reporter',
         reporterOptions:
         {
-          junit_report_name: 'Tests',
+          junit_report_name: 'Sauce Tests',
           junit_report_path: 'test/saucelabs-results.xml',
-          junit_report_stac: 1,
+          junit_report_stack: 1,
         },
       },
       src: ['test/sauce/**/*-specs.js'],
@@ -40,7 +35,7 @@ var gruntConfig = {
       options: {
         jshintrc: 'test/.jshintrc',
       },
-      src: ['test/**/*.js'],
+      src: ['test/sauce/**/*.js'],
     },
   },
   concurrent: {
@@ -58,9 +53,9 @@ var gruntConfig = {
   },
 };
 
-_.forIn(browsers, function(browser, key) {
+_.forIn(desireds, function(desired, key) {
   gruntConfig.env[key] = {
-    DESIRED: JSON.stringify(browser),
+    DESIRED: JSON.stringify(desired),
   };
   gruntConfig.concurrent['test-sauce'].push('test:sauce:' + key);
 });
@@ -80,11 +75,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['test:sauce:' + _(browsers).keys().first()]);
+  grunt.registerTask('default', ['test:sauce:' + _(desireds).keys().first()]);
 
-  _.forIn(browsers, function(browser, key) {
+  _.forIn(desireds, function(desired, key) {
     grunt.registerTask('test:sauce:' + key, ['env:' + key, 'simplemocha:sauce']);
   });
 
-  grunt.registerTask('test:sauce:parallel', ['concurrent:test-sauce']);
+  grunt.registerTask('test', ['concurrent:test-sauce']);
 };

@@ -11,8 +11,21 @@
     "lint": "gulp lint",
     "test": "grunt test:sauce:parallel"
   },
-  "keywords": [],
-  "author": "alperg",
+  "keywords": [
+    "bluemix",
+    "bluemix devops",
+    "bluemix deploy",
+    "bluemix sample",
+    "bluemix pipeline",
+    "bluemix tutorial"
+  ],
+  "author": "IBM Corp.",
+  "contributors": [
+    {
+      "name": "Alper Gokcehan",
+      "email": "alper.gokcehan@us.ibm.com"
+    }
+  ],
   "licenses": [
     {
       "type": "MIT",
@@ -41,15 +54,17 @@
   "devDependencies": {
     "async": "*",
     "bower-license": "*",
-    "chai": "^1.10.0",
+    "chai": "^3.2.0",
+    "chai-as-promised": "^5.1.0",
+    "colors": "latest",
     "csslint": "^0.10.0",
     "del": "^1.2.0",
     "grunt": "~0.4.5",
-    "grunt-env": "latest",
-    "grunt-contrib-jshint": "latest",
-    "grunt-simple-mocha": "latest",
     "grunt-concurrent": "latest",
+    "grunt-contrib-jshint": "latest",
     "grunt-contrib-watch": "latest",
+    "grunt-env": "latest",
+    "grunt-simple-mocha": "latest",
     "gulp": "^3.9.0",
     "gulp-bower": "0.0.10",
     "gulp-jshint": "^1.11.2",
@@ -71,13 +86,14 @@
     "karma-spec-reporter": "*",
     "lodash": "latest",
     "mocha": "^2.2.5",
-    "mocha-junit-reporter": "^1.6.1",
     "mocha-jenkins-reporter": "^0.1.9",
+    "mocha-junit-reporter": "^1.6.1",
     "mocha-text-cov": "^0.1.0",
     "rewire": "*",
     "run-sequence": "*",
     "should": "^5.2.0",
     "supertest": "^0.15.0",
+    "wd": "^0.3.12",
     "xunit-file": "~0.0.7"
   },
   "engines": {
