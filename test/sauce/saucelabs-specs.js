@@ -4,7 +4,16 @@ require('colors');
 var _ = require('lodash');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
-var url = process.env.APP_URL;
+
+var url = 'http://localhost:3000';
+
+if (process.env.APP_URL && process.env.APP_URL !== '') {
+  url = process.env.APP_URL;
+}
+
+var assert = require('assert');
+var testEventTS = new Date().getTime();
+var testEventDesc = 'Sauce Test Event TS: ' + testEventTS;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -22,7 +31,7 @@ if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
 
 // http configuration, not needed for simple runs
 wd.configureHttp({
-  timeout: 60000,
+  timeout: 600000,
   retryDelay: 15000,
   retries: 5,
 });
@@ -31,13 +40,14 @@ var desired = JSON.parse(process.env.DESIRED || '{browserName: "chrome"}');
 desired.name = 'example with ' + desired.browserName;
 desired.tags = ['tutorial'];
 
-describe('saucelabs (' + desired.browserName + ')', function() {
+describe('tutorial (' + desired.browserName + ')', function() {
   var browser;
   var allPassed = true;
 
   before(function(done) {
     var username = process.env.SAUCE_USERNAME;
     var accessKey = process.env.SAUCE_ACCESS_KEY;
+
     browser = wd.promiseChainRemote('ondemand.saucelabs.com', 80, username, accessKey);
 
     if (process.env.VERBOSE) {
@@ -69,35 +79,35 @@ describe('saucelabs (' + desired.browserName + ')', function() {
       .nodeify(done);
   });
 
-  it('should get home page', function(done) {
-    browser
-      .get(url)
-      .title()
-      .should.become('DevOps Tutorial App')
-      .nodeify(done);
-  });
+  it('Pre post event', function(done) {
+    var request = require('request');
+    var options = {
+      uri: url + '/event?source=custom&hook=' + process.env.SAUCE_HOOK_ID,
+      headers: {
+        'Content-type': 'application/json',
+      },
+      agentOptions: {
+        rejectUnauthorized: false,
+      },
+      method: 'POST',
+      json: {
+        '@timestamp': testEventTS,
+        severity_type: 'error',
+        severity: 'Error',
+        env: process.env.NODE_ENV,
+        text: 'Event from Sauce Labs Test',
+        description: testEventDesc,
+        source: 'custom',
+      },
+    };
 
-  _.times(2, function(i) { // repeat twice
-
-    it('should authenticate the user (' + i + ')', function(done) {
-      browser
-        .get(url)
-        .title()
-        .should.become('DevOps Tutorial App')
-        .nodeify(done);
+    request(options, function(error, res, body) {
+      assert(!error && res.statusCode === 200);
+      done();
     });
-
-    it('should log user out(' + i + ')', function(done) {
-      browser
-        .get(url)
-        .title()
-        .should.become('DevOps Tutorial App')
-        .nodeify(done);
-    });
-
   });
 
-  it('should check incorrect login', function(done) {
+  it('landing page', function(done) {
     browser
       .get(url)
       .title()
@@ -105,55 +115,4 @@ describe('saucelabs (' + desired.browserName + ')', function() {
       .nodeify(done);
   });
 
-  it('should send user authentication email', function(done) {
-    browser
-        .get(url)
-        .title()
-        .should.become('DevOps Tutorial App')
-        .nodeify(done);
-  });
-
-  it('should load settings for user', function(done) {
-    browser
-      .get(url)
-      .title()
-      .should.become('DevOps Tutorial App')
-      .nodeify(done);
-  });
-
-  it('should change user\'s password', function(done) {
-    browser
-      .get(url)
-      .title()
-      .should.become('DevOps Tutorial App')
-      .nodeify(done);
-  });
-
-  it('should accept user\'s credit card information', function(done) {
-    browser
-      .get(url)
-      .title()
-      .should.become('DevOps Tutorial App')
-      .nodeify(done);
-  });
-
-  _.times(2, function(i) { // repeat twice
-
-    it('should clear cache (' + i + ')', function(done) {
-      browser
-        .get(url)
-        .title()
-        .should.become('DevOps Tutorial App')
-        .nodeify(done);
-    });
-
-    it('should load user into to cache(' + i + ')', function(done) {
-      browser
-        .get(url)
-        .title()
-        .should.become('DevOps Tutorial App')
-        .nodeify(done);
-    });
-
-  });
 });

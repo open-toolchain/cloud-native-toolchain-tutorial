@@ -201,8 +201,15 @@ stages:
         USER_ID: '${SAUCE_USERNAME}'
         COMMAND: |-
           #!/bin/bash
-          #npm install
-          #npm run test
+          echo $SAUCE_USERNAME
+
+          npm install -g mocha grunt grunt-init
+          git clone https://github.com/saucelabs/grunt-init-sauce.git ~/.grunt-init/sauce
+
+          npm install
+          ./node_modules/bower/bin/bower install
+
+          grunt
       - name: Notify
         type: builder
         build_type: shell
