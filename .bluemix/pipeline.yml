@@ -116,6 +116,9 @@ stages:
       - name: SPEED_CURVE_LICENSE_KEY
         value: ''
         type: text
+      - name: LOAD_IMPACT_API_TOKEN
+        value: ''
+        type: text
     jobs:
       - name: Saucelabs
         type: builder
@@ -131,6 +134,12 @@ stages:
           \ \"NewRelic is disabled. Please specify your API NewRelic API key.\";\nelse\n\
           \  npm install newrelic\n  cp node_modules/newrelic/newrelic.js ./\n  mkdir\
           \ .newrelic\n  echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;\nfi"
+      - name: Scale test
+        type: tester
+        script: |
+          #!/bin/bash
+          # invoke tests here
+          curl -X POST https://api.loadimpact.com/v2/test-configs/3117396/start -u ${LOAD_IMPACT_API_TOKEN}
   - name: Push to Prod
     inputs:
       - type: job
