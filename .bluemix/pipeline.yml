@@ -119,9 +119,6 @@ stages:
       - name: LOAD_IMPACT_API_TOKEN
         value: ''
         type: text
-      - name: LOAD_IMPACT_TEST_NAME
-        value: ''
-        type: text
       - name: LOAD_IMPACT_USER_SCENARIO_ID
         value: ''
         type: text
