@@ -70,7 +70,7 @@ stages:
     triggers:
       - type: stage
     jobs:
-      - name: Deploy Blue
+      - name: Deploy
         type: deployer
         target:
           url: '${CF_TARGET_URL}'
@@ -80,25 +80,7 @@ stages:
         script: |
           #!/bin/bash
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
-      - name: Drop Green
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |
-          #!/bin/bash
           cf delete "${CF_APP}-test-green" --f
-      - name: 'Blue->Green'
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |
-          #!/bin/bash
           cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
       - name: Notify
         type: builder
@@ -116,18 +98,6 @@ stages:
       - name: SPEED_CURVE_LICENSE_KEY
         value: ''
         type: text
-      - name: LOAD_IMPACT_API_TOKEN
-        value: ''
-        type: text
-      - name: LOAD_IMPACT_USER_SCENARIO_ID
-        value: ''
-        type: text
-      - name: LOAD_IMPACT_TEST_NAME
-        value: ''
-        type: text
-      - name: APP_URL
-        value: ''
-        type: text
     jobs:
       - name: Saucelabs
         type: builder
@@ -143,13 +113,6 @@ stages:
           \ \"NewRelic is disabled. Please specify your API NewRelic API key.\";\nelse\n\
           \  npm install newrelic\n  cp node_modules/newrelic/newrelic.js ./\n  mkdir\
           \ .newrelic\n  echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;\nfi"
-      - name: Load Impact Test
-        type: tester
-        script: |
-          #!/bin/bash
-          # invoke tests here
-          curl -X POST "https://api.loadimpact.com/v2/test-configs" -u "${LOAD_IMPACT_API_TOKEN}:" \
-          -H "Content-Type: application/json" -d '{ "config": { "load_schedule": [ { "duration": 3, "users": 50 } ], "tracks": [ { "clips": [ { "percent": 100, "user_scenario_id": ${LOAD_IMPACT_USER_SCENARIO_ID} } ], "loadzone": "amazon:us:ashburn" } ], "user_type": "sbu" }, "name": "${LOAD_IMPACT_TEST_NAME}", "url": "${APP_URL}" }'
   - name: Push to Prod
     inputs:
       - type: job
@@ -173,8 +136,20 @@ stages:
       - name: SLACK_WEBHOOK_PATH
         value: ''
         type: text
+      - name: LOAD_IMPACT_API_TOKEN
+        value: ''
+        type: text
+      - name: LOAD_IMPACT_USER_SCENARIO_ID
+        value: ''
+        type: text
+      - name: LOAD_IMPACT_TEST_NAME
+        value: ''
+        type: text
+      - name: APP_URL
+        value: ''
+        type: text
     jobs:
-      - name: Deploy Blue
+      - name: Deploy
         type: deployer
         target:
           url: '${CF_TARGET_URL}'
@@ -185,27 +160,8 @@ stages:
           \ \nif [ -f .newrelic/key ]; \nthen\n  export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`\n\
           \  cf set-env \"${CF_APP}-blue\" NEW_RELIC_LICENSE_KEY \"${NEW_RELIC_LICENSE_KEY}\"\
           \n  cf set-env \"${CF_APP}-blue\" NEW_RELIC_APP_NAME \"${CF_APP}\"\nfi \nexport\
-          \ CF_APP_NAME=\"$CF_APP\" \nexport APP_URL=\"https://$URL\" \ncf start \"${CF_APP}-blue\""
-      - name: Drop Green
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |
-          #!/bin/bash
-          cf delete "${CF_APP}-green" --f
-      - name: 'Blue->Green'
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |
-          #!/bin/bash
-          cf rename "${CF_APP}-blue" "${CF_APP}-green"
+          \ CF_APP_NAME=\"$CF_APP\" \nexport APP_URL=\"https://$URL\" \ncf start \"${CF_APP}-blue\" \n
+          \ cf delete \"${CF_APP}-green\" --f \ncf rename \"${CF_APP}-blue\" \"${CF_APP}-green\""
       - name: Sauce Labs Tests
         type: tester
         fail_stage: false
@@ -235,3 +191,10 @@ stages:
         script: |-
           #!/bin/bash
           curl -X POST --data-urlencode 'payload={"channel": "#otc-bot-testchannel", "username": "webhookbot", "text": "DevOps Tutorial App - Deployment done.", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
+      - name: Load Impact Test
+        type: tester
+        script: |
+          #!/bin/bash
+          # invoke tests here
+          curl -X POST "https://api.loadimpact.com/v2/test-configs" -u "${LOAD_IMPACT_API_TOKEN}:" \
+          -H "Content-Type: application/json" -d '{ "config": { "load_schedule": [ { "duration": 3, "users": 50 } ], "tracks": [ { "clips": [ { "percent": 100, "user_scenario_id": ${LOAD_IMPACT_USER_SCENARIO_ID} } ], "loadzone": "amazon:us:ashburn" } ], "user_type": "sbu" }, "name": "${LOAD_IMPACT_TEST_NAME}", "url": "${APP_URL}" }'
