@@ -149,7 +149,8 @@ stages:
           #!/bin/bash
           # invoke tests here
           curl -X POST "https://api.loadimpact.com/v2/test-configs" -u "${LOAD_IMPACT_API_TOKEN}:" \
-          -H "Content-Type: application/json" -d '{ "config": { "load_schedule": [ { "duration": 3, "users": 50 } ], "tracks": [ { "clips": [ { "percent": 100, "user_scenario_id": ${LOAD_IMPACT_USER_SCENARIO_ID} ], "loadzone": "amazon:us:ashburn" } ], "user_type": "sbu" }, "name": "${LOAD_IMPACT_TEST_NAME}", "url": "${APP_URL}" }'
+          -H "Content-Type: application/json" \
+          -d "{ 'config': { 'load_schedule': [ { 'duration': 3, 'users': 50 } ], 'tracks': [ { 'clips': [ { 'percent': 100, 'user_scenario_id': ${LOAD_IMPACT_USER_SCENARIO_ID} ], 'loadzone': 'amazon:us:ashburn' } ], 'user_type': 'sbu' }, 'name': '${LOAD_IMPACT_TEST_NAME}', 'url': '${APP_URL}' }"
   - name: Push to Prod
     inputs:
       - type: job
