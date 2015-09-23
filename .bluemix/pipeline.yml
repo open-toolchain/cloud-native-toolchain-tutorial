@@ -119,6 +119,18 @@ stages:
       - name: LOAD_IMPACT_API_TOKEN
         value: ''
         type: text
+      - name: LOAD_IMPACT_TEST_NAME
+        value: ''
+        type: text
+      - name: LOAD_IMPACT_USER_SCENARIO_ID
+        value: ''
+        type: text
+      - name: LOAD_IMPACT_TEST_NAME
+        value: ''
+        type: text
+      - name: APP_URL
+        value: ''
+        type: text
     jobs:
       - name: Saucelabs
         type: builder
@@ -134,12 +146,13 @@ stages:
           \ \"NewRelic is disabled. Please specify your API NewRelic API key.\";\nelse\n\
           \  npm install newrelic\n  cp node_modules/newrelic/newrelic.js ./\n  mkdir\
           \ .newrelic\n  echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;\nfi"
-      - name: Scale test
+      - name: Load Impact Test
         type: tester
         script: |
           #!/bin/bash
           # invoke tests here
-          curl -X POST https://api.loadimpact.com/v2/test-configs/3117396/start -u ${LOAD_IMPACT_API_TOKEN}
+          curl -X POST "https://api.loadimpact.com/v2/test-configs" -u "${LOAD_IMPACT_API_TOKEN}:" \
+          -H "Content-Type: application/json" -d '{ "config": { "load_schedule": [ { "duration": 3, "users": 50 } ], "tracks": [ { "clips": [ { "percent": 100, "user_scenario_id": ${LOAD_IMPACT_USER_SCENARIO_ID} ], "loadzone": "amazon:us:ashburn" } ], "user_type": "sbu" }, "name": "${LOAD_IMPACT_TEST_NAME}", "url": "${APP_URL}" }'
   - name: Push to Prod
     inputs:
       - type: job
