@@ -1,4 +1,4 @@
-# DevOps Tutorial Application
+# DevOps Tutorial Application (In progress)
 
 [DevOps](https://en.wikipedia.org/wiki/DevOps) promises to improve both development and operational efficiencies while enhancing partnership with customers.
 More than doing the same things faster, DevOps relies on establishing a good delivery pipeline spanning from ideation to monitoring.
@@ -10,16 +10,14 @@ Each tool included an explanation of how to get and use IDs for each service.
 
 Create your new IBM DevOps project now!
 
+
 ## Build
 
   - Use IDS to build.
   - Use IBM DevOps Services projects to build and deploy the application to the IBM Bluemix platform
   - Use GitHub for source control and code review
-  - Use OSS linting tools
-  - Use karma and PhantomJS for unit testing
-  - Use SauceLabs for functional testing
   - Build and deploy to IBM Bluemix using the IDS pipeline and blue-green deployments on IBM Bluemix
-  - Use SpeedCurve for performance testing
+  - Use Slack integration for build notifications
 
 
 ## Deploy
@@ -36,16 +34,19 @@ Create your new IBM DevOps project now!
   ```
 
 
-## Collaborate
+## Unit tests
 
-  - Use IDS Track and Plan for planning releases and tracking work
+  - Use Karma and PhantomJS for unit testing
+  - [Use OSS Linting tools](docs/Linters.md)
 
 
-## Scale
+## Performance & Scale tests
 
   - Use Fastly to boost performance
   - Use Load Impact for site load test
   - Use [New Relic](docs/NewRelic.md) to monitor the site
+  - Use SpeedCurve for performance testing
+  - Use SauceLabs for functional testing
 
 
 ## Accessing your api
@@ -54,6 +55,10 @@ Create your new IBM DevOps project now!
   - https://[your-app-name].mybluemix.net/hello?name=joe - Get request to /hello with a query string parameter of 'name=joe'
   - https://[your-app-name].mybluemix.net/applications/ - Get request to /applications/
   - https://[your-app-name].mybluemix.net/applications/1234 - Get request to /applications/ with a path parameter of '1234'
+
+
+## Accessing your api using Swagger
+  - [Read the swagger instructions](docs/Swagger.md)
 
 
 ## View the online documentation for your application

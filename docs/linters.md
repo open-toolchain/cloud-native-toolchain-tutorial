@@ -1,5 +1,3 @@
-[Link to linters wiki page](https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/Wb15a0cf106d2_4791_b793_d19268ca55d4/page/Linters) | [Documentation table of contents](TOC.md)
-
 # Linters in reference application
 
 A [lint](http://en.wikipedia.org/wiki/Lint_programming_tool) tool performs static analysis of source code and flags patterns that might be errors or otherwise cause problems for the developer. More information about the linters used in this reference application can be found below:
@@ -31,4 +29,3 @@ A [lint](http://en.wikipedia.org/wiki/Lint_programming_tool) tool performs stati
 - Configurations can be found in the `gulpfile.js` in the task named `lint-css`
 - The path for the files to be linted can be changed in the `gulpfile.js` in the `paths.css` object
 - The basic configuration settings for csslint can be found in the `.csslintrc` file. Visit this [LINK] (https://github.com/CSSLint/csslint/wiki/Rules) to add/edit more configurations in the `.csslintrc` file.
-
