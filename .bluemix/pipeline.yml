@@ -4,12 +4,12 @@ stages:
     inputs:
       - type: git
         branch: master
+    triggers:
+      - type: commit
     properties:
       - name: SLACK_WEBHOOK_PATH
         value: 'https://hooks.slack.com/services/'
         type: text
-    triggers:
-      - type: commit
     jobs:
       - name: Changelog
         type: builder
@@ -25,7 +25,6 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          # invoke tests here
           npm install
           node ./node_modules/gulp/bin/gulp dev-karma
         enable_tests: true
@@ -34,7 +33,6 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          # invoke tests here
           npm install
           node ./node_modules/gulp/bin/gulp dev-mocha
         enable_tests: true
@@ -43,7 +41,6 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          # invoke tests here
           npm install
           node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
         enable_tests: true
@@ -52,7 +49,6 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          # invoke tests here
           npm install
           node ./node_modules/gulp/bin/gulp lint
         enable_tests: true
@@ -101,16 +97,25 @@ stages:
     jobs:
       - name: SpeedCurve
         type: tester
-        script: "#!/bin/bash\n# invoke tests here\ncurl \"https://api.speedcurve.com/v1/deploy\" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER} "
+        script: |
+          #!/bin/bash
+          curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
         enable_tests: true
         test_file_pattern: test/speedcurve.xml
       - name: New Relic
         type: builder
         build_type: shell
-        script: "#!/bin/bash \nif [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ]; \nthen\n  echo\
-          \ \"NewRelic is disabled. Please specify your API NewRelic API key.\";\nelse\n\
-          \  npm install newrelic\n  cp node_modules/newrelic/newrelic.js ./\n  mkdir\
-          \ .newrelic\n  echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;\nfi"
+        script: |
+          #!/bin/bash
+          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
+          then
+            echo "NewRelic is disabled. Please specify your NewRelic API key.";
+          else
+            npm install newrelic
+            cp node_modules/newrelic/newrelic.js ./
+            mkdir .newrelic
+            echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
+          fi
   - name: Push to Prod
     inputs:
       - type: job
@@ -119,9 +124,6 @@ stages:
     triggers:
       - type: stage
     properties:
-      - name: CF_APP_NAME
-        value: ''
-        type: text
       - name: APP_URL
         value: ''
         type: text
@@ -148,12 +150,19 @@ stages:
           organization: '${CF_ORGANIZATION}'
           space: '${CF_SPACE}'
           application: '${CF_APP}'
-        script: "#!/bin/bash \ncf push \"${CF_APP}-blue\" -n \"${CF_APP}\" --no-start\
-          \ \nif [ -f .newrelic/key ]; \nthen\n  export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`\n\
-          \  cf set-env \"${CF_APP}-blue\" NEW_RELIC_LICENSE_KEY \"${NEW_RELIC_LICENSE_KEY}\"\
-          \n  cf set-env \"${CF_APP}-blue\" NEW_RELIC_APP_NAME \"${CF_APP}\"\nfi \nexport\
-          \ CF_APP_NAME=\"$CF_APP\" \nexport APP_URL=\"https://$URL\" \ncf start \"${CF_APP}-blue\" \n
-          \ cf delete \"${CF_APP}-green\" --f \ncf rename \"${CF_APP}-blue\" \"${CF_APP}-green\""
+        script: |
+          #!/bin/bash
+          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
+          if [ -f .newrelic/key ];
+          then
+            export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
+            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
+            cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
+          fi
+          export CF_APP_NAME="$CF_APP"
+          cf start "${CF_APP}-blue"
+          cf delete "${CF_APP}-green" --f 
+          cf rename "${CF_APP}-blue" "${CF_APP}-green"
       - name: Sauce Labs Tests
         type: tester
         fail_stage: false
@@ -168,15 +177,8 @@ stages:
         USER_ID: '${SAUCE_USERNAME}'
         COMMAND: |-
           #!/bin/bash
-          echo $SAUCE_USERNAME
-
-          npm install -g mocha grunt grunt-init
-          git clone https://github.com/saucelabs/grunt-init-sauce.git ~/.grunt-init/sauce
-
           npm install
-          ./node_modules/bower/bin/bower install
-
-          grunt
+          npm test
       - name: Notify
         type: builder
         build_type: shell
@@ -187,5 +189,4 @@ stages:
         type: tester
         script: |
           #!/bin/bash
-          # invoke tests here
           curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
