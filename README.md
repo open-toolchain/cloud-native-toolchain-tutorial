@@ -37,7 +37,7 @@ Create your new IBM DevOps project now!
 ## Unit tests
 
   - Use Karma and PhantomJS for unit testing
-  - [Use OSS Linting tools](docs/Linters.md)
+  - [Use OSS Linting tools](docs/linters.md)
 
 
 ## Performance & Scale tests
