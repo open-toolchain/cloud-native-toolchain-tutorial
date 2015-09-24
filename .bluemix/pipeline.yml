@@ -14,10 +14,9 @@ stages:
       - name: Changelog
         type: builder
         build_type: shell
-        script: >-
+        script: |-
           #!/bin/bash
-          # This script just dumps the changes included in this build into a file
-          named changelog.txt
+          # This script just dumps the changes included in this build into a file named changelog.txt
           # This change log can be used later to be included in notifications
           git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
           cat changelog.txt
@@ -73,7 +72,7 @@ stages:
           organization: '${CF_ORGANIZATION}'
           space: '${CF_SPACE}'
           application: '${CF_APP}'
-        script: |
+        script: |-
           #!/bin/bash
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
           cf delete "${CF_APP}-test-green" --f
@@ -97,7 +96,7 @@ stages:
     jobs:
       - name: SpeedCurve
         type: tester
-        script: |
+        script: |-
           #!/bin/bash
           curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
         enable_tests: true
@@ -105,7 +104,7 @@ stages:
       - name: New Relic
         type: builder
         build_type: shell
-        script: |
+        script: |-
           #!/bin/bash
           if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
           then
@@ -150,7 +149,7 @@ stages:
           organization: '${CF_ORGANIZATION}'
           space: '${CF_SPACE}'
           application: '${CF_APP}'
-        script: |
+        script: |-
           #!/bin/bash
           cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
           if [ -f .newrelic/key ];
@@ -161,7 +160,7 @@ stages:
           fi
           export CF_APP_NAME="$CF_APP"
           cf start "${CF_APP}-blue"
-          cf delete "${CF_APP}-green" --f 
+          cf delete "${CF_APP}-green" --f
           cf rename "${CF_APP}-blue" "${CF_APP}-green"
       - name: Sauce Labs Tests
         type: tester
@@ -187,6 +186,6 @@ stages:
           curl -X POST --data-urlencode 'payload={"channel": "#otc-bot-testchannel", "username": "webhookbot", "text": "DevOps Tutorial App - Deployment done.", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
       - name: Load Impact Test
         type: tester
-        script: |
+        script: |-
           #!/bin/bash
           curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
