@@ -5,7 +5,7 @@ var _ = require('lodash');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 
-var url = 'http://localhost:3000';
+var url = 'http://localhost:3000/';
 
 if (process.env.APP_URL && process.env.APP_URL !== '') {
   url = process.env.APP_URL;
@@ -107,11 +107,11 @@ describe('tutorial (' + desired.browserName + ')', function() {
     });
   });
 
-  it('landing page', function(done) {
+  it('Landing page', function(done) {
     browser
       .get(url)
       .title()
-      .should.become('DevOps Tutorial App')
+      .should.become(url)
       .nodeify(done);
   });
 
