@@ -11,7 +11,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_CHANNEL_NAME
-        value: '#otc-bot-testchannel'
+        value: 'otc-bot-testchannel'
         type: text
       - name: SLACK_USER_NAME
         value: 'webhookbot'
@@ -65,7 +65,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"channel": "${SLACK_CHANNEL_NAME}", "username": "${SLACK_USER_NAME}", "text": "${SLACK_MESSAGE}", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
+          curl -X POST --data-urlencode 'payload={"channel": "#${SLACK_CHANNEL_NAME}", "username": "${SLACK_USER_NAME}", "text": "${SLACK_MESSAGE}", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
   - name: Deploy to Test
     inputs:
       - type: job
@@ -100,6 +100,34 @@ stages:
       - name: SPEED_CURVE_LICENSE_KEY
         value: ''
         type: text
+    jobs:
+      - name: SpeedCurve
+        type: tester
+        script: |-
+          #!/bin/bash
+          curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
+      - name: New Relic
+        type: builder
+        build_type: shell
+        script: |-
+          #!/bin/bash
+          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
+          then
+            echo "NewRelic is disabled. Please specify your NewRelic API key.";
+          else
+            npm install newrelic
+            cp node_modules/newrelic/newrelic.js ./
+            mkdir .newrelic
+            echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
+          fi
+  - name: Push to Prod
+    inputs:
+      - type: job
+        stage: 'Run Tests - Performance & Scale'
+        job: New Relic
+    triggers:
+      - type: stage
+    properties:
       - name: APP_URL
         value: ''
         type: text
@@ -115,63 +143,11 @@ stages:
       - name: LOAD_IMPACT_TEST_URL
         value: 'https://api.loadimpact.com/v2/test-configs/{id}/start'
         type: text
-    jobs:
-      - name: SpeedCurve
-        type: tester
-        script: |-
-          #!/bin/bash
-          curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
-        enable_tests: true
-        test_file_pattern: test/speedcurve.xml
-      - name: New Relic
-        type: builder
-        build_type: shell
-        script: |-
-          #!/bin/bash
-          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
-          then
-            echo "NewRelic is disabled. Please specify your NewRelic API key.";
-          else
-            npm install newrelic
-            cp node_modules/newrelic/newrelic.js ./
-            mkdir .newrelic
-            echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
-          fi
-      - name: Sauce Labs Tests
-        type: tester
-        enable_tests: true
-        test_file_pattern: test/*.xml
-        extension_id: ibm.devops.services.pipeline.saucelabs
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-        ACCESS: '${SAUCE_ACCESS_KEY}'
-        DL_ASSETS: 'false'
-        SELECT_CMD: 'custom'
-        USER_ID: '${SAUCE_USERNAME}'
-        COMMAND: |-
-          #!/bin/bash
-          npm install
-          npm test
-      - name: Load Impact Test
-        type: tester
-        script: |-
-          #!/bin/bash
-          curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
-  - name: Push to Prod
-    inputs:
-      - type: job
-        stage: 'Run Tests - Performance & Scale'
-        job: New Relic
-    triggers:
-      - type: stage
-    properties:
       - name: SLACK_WEBHOOK_PATH
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_CHANNEL_NAME
-        value: '#otc-bot-testchannel'
+        value: 'otc-bot-testchannel'
         type: text
       - name: SLACK_USER_NAME
         value: 'webhookbot'
@@ -200,9 +176,31 @@ stages:
           cf start "${CF_APP}-blue"
           cf delete "${CF_APP}-green" --f
           cf rename "${CF_APP}-blue" "${CF_APP}-green"
+      - name: Sauce Labs Tests
+        type: tester
+        enable_tests: true
+        test_file_pattern: test/*.xml
+        extension_id: ibm.devops.services.pipeline.saucelabs
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+        ACCESS: '${SAUCE_ACCESS_KEY}'
+        DL_ASSETS: 'false'
+        SELECT_CMD: 'custom'
+        USER_ID: '${SAUCE_USERNAME}'
+        COMMAND: |-
+          #!/bin/bash
+          npm install
+          npm test
+      - name: Load Impact Test
+        type: tester
+        script: |-
+          #!/bin/bash
+          curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
       - name: Slack Notification
         type: builder
         build_type: shell
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"channel": "${SLACK_CHANNEL_NAME}", "username": "${SLACK_USER_NAME}", "text": "${SLACK_MESSAGE}", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
+          curl -X POST --data-urlencode 'payload={"channel": "#${SLACK_CHANNEL_NAME}", "username": "${SLACK_USER_NAME}", "text": "${SLACK_MESSAGE}", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
