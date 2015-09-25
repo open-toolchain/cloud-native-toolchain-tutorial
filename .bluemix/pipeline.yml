@@ -86,6 +86,8 @@ stages:
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
           cf delete "${CF_APP}-test-green" --f
           cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
+      - name: Notify
+        type: builder
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
@@ -106,6 +108,8 @@ stages:
         script: |-
           #!/bin/bash
           curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
+        enable_tests: true
+        test_file_pattern: test/speedcurve.xml
       - name: New Relic
         type: builder
         build_type: shell
