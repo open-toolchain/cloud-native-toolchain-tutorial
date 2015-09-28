@@ -11,7 +11,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_MESSAGE
-        value: 'DevOps Tutorial App - All tests passed.'
+        value: '${CF_APP} - All tests passed.'
         type: text
     jobs:
       - name: Changelog
@@ -102,8 +102,6 @@ stages:
         script: |-
           #!/bin/bash
           curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
-        enable_tests: true
-        test_file_pattern: test/speedcurve.xml
       - name: New Relic
         type: builder
         build_type: shell
@@ -145,7 +143,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_MESSAGE
-        value: 'DevOps Tutorial App - Deployment done.'
+        value: '${CF_APP} - Deployment done.'
         type: text
     jobs:
       - name: Deploy
