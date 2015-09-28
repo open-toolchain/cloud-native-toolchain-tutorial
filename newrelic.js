@@ -12,7 +12,7 @@ exports.config = {
   /**
    * Your New Relic license key.
    */
-  license_key: process.env.NEWRELIC_KEY,
+  license_key: process.env.NEW_RELIC_LICENSE_KEY,
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
@@ -21,4 +21,13 @@ exports.config = {
      */
     level: 'info',
   },
+};
+
+exports.init = function() {
+  if (process.env.NEW_RELIC_LICENSE_KEY && process.env.NEW_RELIC_LICENSE_KEY !== '') {
+    console.log('New Relic in use.');
+    require('newrelic');
+  } else {
+    console.log('New Relic not in use.');
+  }
 };

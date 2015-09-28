@@ -7,11 +7,6 @@
  */
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
-
-if (process.env.NEW_RELIC_LICENSE_KEY && process.env.NEW_RELIC_LICENSE_KEY !== '') {
-  require('newrelic');
-}
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -20,6 +15,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = require('express')();
+
+require('./newrelic').init();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
