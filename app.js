@@ -16,7 +16,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = require('express')();
 
-require('./newrelic').init();
+require('./newrelic').initialize();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
