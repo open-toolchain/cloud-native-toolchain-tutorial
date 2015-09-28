@@ -10,12 +10,6 @@ stages:
       - name: SLACK_WEBHOOK_PATH
         value: 'https://hooks.slack.com/services/{key}'
         type: text
-      - name: SLACK_CHANNEL_NAME
-        value: 'otc-bot-testchannel'
-        type: text
-      - name: SLACK_USER_NAME
-        value: 'webhookbot'
-        type: text
       - name: SLACK_MESSAGE
         value: 'DevOps Tutorial App - All tests passed.'
         type: text
@@ -65,7 +59,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"channel": "#${SLACK_CHANNEL_NAME}", "username": "${SLACK_USER_NAME}", "text": "${SLACK_MESSAGE}", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
+          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
   - name: Deploy to Test
     inputs:
       - type: job
@@ -150,12 +144,6 @@ stages:
       - name: SLACK_WEBHOOK_PATH
         value: 'https://hooks.slack.com/services/{key}'
         type: text
-      - name: SLACK_CHANNEL_NAME
-        value: 'otc-bot-testchannel'
-        type: text
-      - name: SLACK_USER_NAME
-        value: 'webhookbot'
-        type: text
       - name: SLACK_MESSAGE
         value: 'DevOps Tutorial App - Deployment done.'
         type: text
@@ -207,4 +195,4 @@ stages:
         build_type: shell
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"channel": "#${SLACK_CHANNEL_NAME}", "username": "${SLACK_USER_NAME}", "text": "${SLACK_MESSAGE}", "icon_emoji": ":ghost:"}' ${SLACK_WEBHOOK_PATH}
+          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
