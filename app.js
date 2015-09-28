@@ -5,6 +5,16 @@
 /**
  * Module dependencies.
  */
+var ENV_VAR_NAME = 'NEW_RELIC_LICENSE_KEY';
+var NewRelicLicenseKey = process.env[ENV_VAR_NAME];
+
+if (NewRelicLicenseKey) {
+  console.log('New Relic in use.');
+  require('newrelic');
+} else {
+  console.log('New Relic not in use.');
+}
+
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var express = require('express');
@@ -15,8 +25,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = require('express')();
-
-require('./newrelic').initialize();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
