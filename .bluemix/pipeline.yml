@@ -67,6 +67,13 @@ stages:
         job: Changelog
     triggers:
       - type: stage
+    properties:
+      - name: SAUCE_USERNAME
+        value: ''
+        type: text
+      - name: SAUCE_ACCESS_KEY
+        value: ''
+        type: text
     jobs:
       - name: Deploy
         type: deployer
@@ -82,6 +89,23 @@ stages:
           cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
       - name: Notify
         type: builder
+      - name: Sauce Labs Tests
+        type: tester
+        enable_tests: true
+        test_file_pattern: test/*.xml
+        extension_id: ibm.devops.services.pipeline.saucelabs
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+        ACCESS: '${SAUCE_ACCESS_KEY}'
+        DL_ASSETS: 'false'
+        SELECT_CMD: 'custom'
+        USER_ID: '${SAUCE_USERNAME}'
+        COMMAND: |-
+          #!/bin/bash
+          npm install
+          npm test
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
@@ -127,12 +151,6 @@ stages:
       - name: APP_URL
         value: ''
         type: text
-      - name: SAUCE_USERNAME
-        value: ''
-        type: text
-      - name: SAUCE_ACCESS_KEY
-        value: ''
-        type: text
       - name: LOAD_IMPACT_LICENSE_KEY
         value: ''
         type: text
@@ -166,23 +184,6 @@ stages:
           cf start "${CF_APP}-blue"
           cf delete "${CF_APP}-green" --f
           cf rename "${CF_APP}-blue" "${CF_APP}-green"
-      - name: Sauce Labs Tests
-        type: tester
-        enable_tests: true
-        test_file_pattern: test/*.xml
-        extension_id: ibm.devops.services.pipeline.saucelabs
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-        ACCESS: '${SAUCE_ACCESS_KEY}'
-        DL_ASSETS: 'false'
-        SELECT_CMD: 'custom'
-        USER_ID: '${SAUCE_USERNAME}'
-        COMMAND: |-
-          #!/bin/bash
-          npm install
-          npm test
       - name: Load Impact Test
         type: tester
         script: |-
