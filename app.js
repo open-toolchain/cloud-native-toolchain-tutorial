@@ -5,7 +5,8 @@
 /**
  * Module dependencies.
  */
-require('./newrelic').initialize();
+var nr = require('./newrelic.js');
+nr.initialize();
 
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
