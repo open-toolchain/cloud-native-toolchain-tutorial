@@ -96,8 +96,6 @@ stages:
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
           cf delete "${CF_APP}-test-green" --f
           cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
-      - name: Notify
-        type: builder
       - name: Sauce Labs Tests
         type: tester
         enable_tests: true
@@ -115,6 +113,11 @@ stages:
           #!/bin/bash
           npm install
           npm test
+      - name: Slack Notification
+        type: tester
+        script: |-
+          #!/bin/bash
+          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
