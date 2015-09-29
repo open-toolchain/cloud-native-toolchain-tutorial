@@ -3,7 +3,6 @@ applications:
   host: devops-tutorial
   name: devops-tutorial
   command: node app.js
-  buildpack: https://github.com/oneibmcloud/devops-tutorial-1
   path: .
   domain: mybluemix.net
   instances: 1
