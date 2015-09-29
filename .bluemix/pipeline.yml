@@ -11,7 +11,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_MESSAGE
-        value: '${CF_APP} - Build done & all tests passed.'
+        value: '${CF_APP_NAME} - Build done & all tests passed.'
         type: text
     jobs:
       - name: Changelog
