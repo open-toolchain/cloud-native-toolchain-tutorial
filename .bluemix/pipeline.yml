@@ -11,7 +11,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_MESSAGE
-        value: '${CF_APP} - All tests passed.'
+        value: '${CF_APP} - Build done & all tests passed.'
         type: text
     jobs:
       - name: Changelog
@@ -68,11 +68,20 @@ stages:
     triggers:
       - type: stage
     properties:
+      - name: APP_URL
+        value: 'http://${CF_APP}-test.mybluemix.net/'
+        type: text
       - name: SAUCE_USERNAME
         value: ''
         type: text
       - name: SAUCE_ACCESS_KEY
         value: ''
+        type: text
+      - name: SLACK_WEBHOOK_PATH
+        value: 'https://hooks.slack.com/services/{key}'
+        type: text
+      - name: SLACK_MESSAGE
+        value: '${CF_APP} - Test deployment done.'
         type: text
     jobs:
       - name: Deploy
@@ -148,9 +157,6 @@ stages:
     triggers:
       - type: stage
     properties:
-      - name: APP_URL
-        value: ''
-        type: text
       - name: LOAD_IMPACT_LICENSE_KEY
         value: ''
         type: text
@@ -161,7 +167,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_MESSAGE
-        value: '${CF_APP} - Deployment done.'
+        value: '${CF_APP} - Prod deployment done.'
         type: text
     jobs:
       - name: Deploy
