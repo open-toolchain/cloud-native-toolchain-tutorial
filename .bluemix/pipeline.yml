@@ -101,15 +101,30 @@ stages:
     inputs:
       - type: job
         stage: Deploy to Test
-        job: Notify
+        job: Build
     triggers:
       - type: stage
     properties:
+      - name: APP_URL
+        value: 'http://${CF_APP}.mybluemix.net/'
+        type: text
       - name: NEW_RELIC_LICENSE_KEY
         value: xxx
         type: text
       - name: SPEED_CURVE_LICENSE_KEY
         value: ''
+        type: text
+      - name: SAUCE_USERNAME
+        value: ''
+        type: text
+      - name: SAUCE_ACCESS_KEY
+        value: ''
+        type: text
+      - name: LOAD_IMPACT_LICENSE_KEY
+        value: ''
+        type: text
+      - name: LOAD_IMPACT_TEST_URL
+        value: 'https://api.loadimpact.com/v2/test-configs/{id}/start'
         type: text
     jobs:
       - name: SpeedCurve
@@ -131,56 +146,6 @@ stages:
             mkdir .newrelic
             echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
           fi
-  - name: Push to Prod
-    inputs:
-      - type: job
-        stage: 'Run Tests - Performance & Scale'
-        job: New Relic
-    triggers:
-      - type: stage
-    properties:
-      - name: LOAD_IMPACT_LICENSE_KEY
-        value: ''
-        type: text
-      - name: LOAD_IMPACT_TEST_URL
-        value: 'https://api.loadimpact.com/v2/test-configs/{id}/start'
-        type: text
-      - name: SLACK_WEBHOOK_PATH
-        value: 'https://hooks.slack.com/services/{key}'
-        type: text
-      - name: SLACK_MESSAGE
-        value: '${CF_APP} - Prod deployment done.'
-        type: text
-      - name: APP_URL
-        value: 'http://${CF_APP}.mybluemix.net/'
-        type: text
-      - name: SAUCE_USERNAME
-        value: ''
-        type: text
-      - name: SAUCE_ACCESS_KEY
-        value: ''
-        type: text
-    jobs:
-      - name: Deploy
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |-
-          #!/bin/bash
-          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-          if [ -f .newrelic/key ];
-          then
-            export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
-            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
-            cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
-          fi
-          export CF_APP_NAME="$CF_APP"
-          cf start "${CF_APP}-blue"
-          cf delete "${CF_APP}-green" --f
-          cf rename "${CF_APP}-blue" "${CF_APP}-green"
       - name: Sauce Labs Tests
         type: tester
         enable_tests: true
@@ -203,6 +168,45 @@ stages:
         script: |-
           #!/bin/bash
           curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
+  - name: Push to Prod
+    inputs:
+      - type: job
+        stage: 'Run Tests - Performance & Scale'
+        job: New Relic
+    triggers:
+      - type: stage
+    properties:
+      - name: SLACK_WEBHOOK_PATH
+        value: 'https://hooks.slack.com/services/{key}'
+        type: text
+      - name: SLACK_MESSAGE
+        value: '${CF_APP} - Prod deployment done.'
+        type: text
+    jobs:
+      - name: Deploy
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |-
+          #!/bin/bash
+          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
+          if [ -f .newrelic/key ];
+          then
+            export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
+            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
+            cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
+          fi
+          export CF_APP_NAME="$CF_APP"
+          cf start "${CF_APP}-blue"
+          cf delete "${CF_APP}-green" --f
+          cf rename "${CF_APP}-blue" "${CF_APP}-green"
+          #
+          # Instant Purging removes content from Fastly immediately so it can be refreshed from your origin servers.
+          # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
+          curl -X PURGE http://${CF_APP}.mybluemix.net
       - name: Slack Notification
         type: builder
         build_type: shell
