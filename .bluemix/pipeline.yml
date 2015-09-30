@@ -71,12 +71,6 @@ stages:
       - name: APP_URL
         value: 'http://${CF_APP}-test.mybluemix.net/'
         type: text
-      - name: SAUCE_USERNAME
-        value: ''
-        type: text
-      - name: SAUCE_ACCESS_KEY
-        value: ''
-        type: text
       - name: SLACK_WEBHOOK_PATH
         value: 'https://hooks.slack.com/services/{key}'
         type: text
@@ -96,23 +90,8 @@ stages:
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
           cf delete "${CF_APP}-test-green" --f
           cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
-      - name: Sauce Labs Tests
-        type: tester
-        enable_tests: true
-        test_file_pattern: test/*.xml
-        extension_id: ibm.devops.services.pipeline.saucelabs
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-        ACCESS: '${SAUCE_ACCESS_KEY}'
-        DL_ASSETS: 'false'
-        SELECT_CMD: 'custom'
-        USER_ID: '${SAUCE_USERNAME}'
-        COMMAND: |-
-          #!/bin/bash
-          npm install
-          npm test
+      - name: Build
+        type: builder
       - name: Slack Notification
         type: tester
         script: |-
@@ -172,7 +151,18 @@ stages:
       - name: SLACK_MESSAGE
         value: '${CF_APP} - Prod deployment done.'
         type: text
+      - name: APP_URL
+        value: 'http://${CF_APP}.mybluemix.net/'
+        type: text
+      - name: SAUCE_USERNAME
+        value: ''
+        type: text
+      - name: SAUCE_ACCESS_KEY
+        value: ''
+        type: text
     jobs:
+      - name: Build
+        type: builder
       - name: Deploy
         type: deployer
         target:
@@ -193,6 +183,23 @@ stages:
           cf start "${CF_APP}-blue"
           cf delete "${CF_APP}-green" --f
           cf rename "${CF_APP}-blue" "${CF_APP}-green"
+      - name: Sauce Labs Tests
+        type: tester
+        enable_tests: true
+        test_file_pattern: test/*.xml
+        extension_id: ibm.devops.services.pipeline.saucelabs
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+        ACCESS: '${SAUCE_ACCESS_KEY}'
+        DL_ASSETS: 'false'
+        SELECT_CMD: 'custom'
+        USER_ID: '${SAUCE_USERNAME}'
+        COMMAND: |-
+          #!/bin/bash
+          npm install
+          npm test
       - name: Load Impact Test
         type: tester
         script: |-
