@@ -11,7 +11,7 @@ stages:
         value: 'https://hooks.slack.com/services/{key}'
         type: text
       - name: SLACK_MESSAGE
-        value: '${CF_APP_NAME} - Build done & all tests passed.'
+        value: 'Build done & all tests passed.'
         type: text
     jobs:
       - name: Changelog
@@ -59,7 +59,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          curl -X POST --data-urlencode 'payload={"text": "${CF_TARGET_URL} - ${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
   - name: Deploy to Test
     inputs:
       - type: job
@@ -106,7 +106,7 @@ stages:
       - type: stage
     properties:
       - name: APP_URL
-        value: 'http://${CF_APP}.mybluemix.net/'
+        value: 'http://${CF_APP}-test.mybluemix.net/'
         type: text
       - name: NEW_RELIC_LICENSE_KEY
         value: xxx
