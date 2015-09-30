@@ -161,8 +161,6 @@ stages:
         value: ''
         type: text
     jobs:
-      - name: Build
-        type: builder
       - name: Deploy
         type: deployer
         target:
