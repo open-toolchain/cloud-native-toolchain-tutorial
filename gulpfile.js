@@ -53,11 +53,12 @@ gulp.task('dev-mocha', function() {
       ignoreLeaks: true,
       ui: 'bdd',
       colors: true,
-      reporter: 'xunit-file',
-
-      // reporterOptions: {
-      //   mochaFile: 'test/mocha-results.xml',
-      // },
+      reporter: 'mocha-jenkins-reporter',
+      reporterOptions: {
+        junit_report_name: 'Mocha Unit Tests for Server',
+        junit_report_path: 'test/mocha-report.xml',
+        junit_report_stack: 1,
+      },
     }));
 });
 

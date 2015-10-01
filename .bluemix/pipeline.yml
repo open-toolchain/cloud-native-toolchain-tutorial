@@ -23,31 +23,7 @@ stages:
           # This change log can be used later to be included in notifications
           git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
           cat changelog.txt
-      - name: Karma-UnitTest
-        type: tester
-        script: |-
-          #!/bin/bash
-          npm install
-          node ./node_modules/gulp/bin/gulp dev-karma
-        enable_tests: true
-        test_file_pattern: 'test/*.xml'
-      - name: Mocha-UnitTest
-        type: tester
-        script: |-
-          #!/bin/bash
-          npm install
-          node ./node_modules/gulp/bin/gulp dev-mocha
-        enable_tests: true
-        test_file_pattern: xunit.xml
-      - name: Mocha-Api-UnitTest
-        type: tester
-        script: |-
-          #!/bin/bash
-          npm install
-          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
-        enable_tests: true
-        test_file_pattern: xunit.xml
-      - name: Lint
+      - name: Linting
         type: tester
         script: |-
           #!/bin/bash
@@ -55,11 +31,24 @@ stages:
           node ./node_modules/gulp/bin/gulp lint
         enable_tests: true
         test_file_pattern: 'test/*.xml'
+      - name: Unit Tests
+        type: tester
+        script: |-
+          #!/bin/bash
+          npm install
+          # Karma Unit Test, output file: test/*.xml
+          node ./node_modules/gulp/bin/gulp dev-karma
+          # Mocha Unit Test, output file: test/*.xml
+          node ./node_modules/gulp/bin/gulp dev-mocha
+          # Mocha Api Unit Test, output file: xunit.xml
+          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
+        enable_tests: true
+        test_file_pattern: '*.xml, test/*.xml'
       - name: Slack Notification
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"text": "${CF_TARGET_URL} - ${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
   - name: Deploy to Test
     inputs:
       - type: job
@@ -90,8 +79,6 @@ stages:
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
           cf delete "${CF_APP}-test-green" --f
           cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
-      - name: Build
-        type: builder
       - name: Slack Notification
         type: tester
         script: |-
@@ -100,8 +87,8 @@ stages:
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
-        stage: Deploy to Test
-        job: Build
+        stage: 'Build & Run Unit Tests'
+        job: Changelog
     triggers:
       - type: stage
     properties:
