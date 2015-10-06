@@ -8,7 +8,7 @@ stages:
       - type: commit
     properties:
       - name: SLACK_WEBHOOK_PATH
-        value: 'https://hooks.slack.com/services/{key}'
+        value: ''
         type: text
       - name: SLACK_MESSAGE
         value: 'Build done & all tests passed.'
@@ -27,7 +27,15 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          npm install
+          npm install csslint
+          npm install gulp
+          npm install gulp-bower
+          npm install gulp-mocha
+          npm install gulp-shell
+          npm install jshint
+          npm install jshint-junit-reporter
+          npm install karma
+          npm install run-sequence
           node ./node_modules/gulp/bin/gulp lint
         enable_tests: true
         test_file_pattern: 'test/*.xml'
@@ -61,7 +69,7 @@ stages:
         value: 'http://${CF_APP}-test.mybluemix.net/'
         type: text
       - name: SLACK_WEBHOOK_PATH
-        value: 'https://hooks.slack.com/services/{key}'
+        value: ''
         type: text
       - name: SLACK_MESSAGE
         value: '${CF_APP} - Test deployment done.'
@@ -155,7 +163,7 @@ stages:
         script: |-
           #!/bin/bash
           curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
-  - name: Push to Prod
+  - name: Deploy to Prod
     inputs:
       - type: job
         stage: 'Run Tests - Performance & Scale'
@@ -164,7 +172,7 @@ stages:
       - type: stage
     properties:
       - name: SLACK_WEBHOOK_PATH
-        value: 'https://hooks.slack.com/services/{key}'
+        value: ''
         type: text
       - name: SLACK_MESSAGE
         value: '${CF_APP} - Prod deployment done.'
