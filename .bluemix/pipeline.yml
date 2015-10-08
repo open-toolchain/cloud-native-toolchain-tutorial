@@ -56,7 +56,12 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          if [ ${SLACK_WEBHOOK_PATH} == ''];
+          then
+            echo 'Slack WebHook Path is empty!'
+          else
+            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          fi
   - name: Deploy to Test
     inputs:
       - type: job
@@ -91,7 +96,12 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          if [ ${SLACK_WEBHOOK_PATH} == ''];
+          then
+            echo 'Slack WebHook Path is empty!'
+          else
+            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          fi
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
@@ -126,7 +136,12 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
+          if [ ${SPEED_CURVE_LICENSE_KEY} == ''];
+          then
+            echo 'Speed Curve License Key is empty!'
+          else
+            curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
+          fi
       - name: New Relic
         type: builder
         build_type: shell
@@ -162,7 +177,12 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
+          if [ ${LOAD_IMPACT_TEST_URL} == ''] || [ ${LOAD_IMPACT_LICENSE_KEY} == ''];
+          then
+            echo 'Load Impact Test URL or License Key is empty!'
+          else
+            curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
+          fi
   - name: Deploy to Prod
     inputs:
       - type: job
@@ -207,4 +227,9 @@ stages:
         build_type: shell
         script: |-
           #!/bin/bash
-          curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          if [ ${SLACK_WEBHOOK_PATH} == ''];
+          then
+            echo 'Slack WebHook Path is empty!'
+          else
+            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+          fi

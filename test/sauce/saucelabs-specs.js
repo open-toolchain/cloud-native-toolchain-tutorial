@@ -20,7 +20,7 @@ chai.should();
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 // checking sauce credential
-if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
+if (process.env.SAUCE_USERNAME == '' || process.env.SAUCE_ACCESS_KEY == '') {
   console.warn(
     '\nPlease configure your sauce credential:\n\n' +
     'export SAUCE_USERNAME=<SAUCE_USERNAME>\n' +
