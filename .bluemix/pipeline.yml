@@ -152,7 +152,6 @@ stages:
           then
             echo "New Relic is disabled. Please specify your NewRelic API key.";
           else
-            npm install newrelic
             cp node_modules/newrelic/newrelic.js ./
             mkdir .newrelic
             echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
