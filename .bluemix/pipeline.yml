@@ -1,235 +1,250 @@
 ---
 stages:
-  - name: 'Build & Run Unit Tests'
-    inputs:
-      - type: git
-        branch: master
-    triggers:
-      - type: commit
-    properties:
-      - name: SLACK_WEBHOOK_PATH
-        value: ''
-        type: text
-      - name: SLACK_MESSAGE
-        value: 'Build done & all tests passed.'
-        type: text
-    jobs:
-      - name: Changelog
-        type: builder
-        build_type: shell
-        script: |-
-          #!/bin/bash
-          # This script just dumps the changes included in this build into a file named changelog.txt
-          # This change log can be used later to be included in notifications
-          git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
-          cat changelog.txt
-      - name: Linting
-        type: tester
-        script: |-
-          #!/bin/bash
-          npm install csslint
-          npm install gulp
-          npm install gulp-bower
-          npm install gulp-mocha
-          npm install gulp-shell
-          npm install jshint
-          npm install jshint-junit-reporter
-          npm install karma
-          npm install run-sequence
-          node ./node_modules/gulp/bin/gulp lint
-        enable_tests: true
-        test_file_pattern: 'test/*.xml'
-      - name: Unit Tests
-        type: tester
-        script: |-
-          #!/bin/bash
-          npm install
-          # Karma Unit Test, output file: test/*.xml
-          node ./node_modules/gulp/bin/gulp dev-karma
-          # Mocha Unit Test, output file: test/*.xml
-          node ./node_modules/gulp/bin/gulp dev-mocha
-          # Mocha Api Unit Test, output file: xunit.xml
-          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
-        enable_tests: true
-        test_file_pattern: '*.xml, test/*.xml'
-      - name: Slack Notification
-        type: tester
-        script: |-
-          #!/bin/bash
-          if [ ${SLACK_WEBHOOK_PATH} == ''];
-          then
-            echo 'Slack WebHook Path is empty!'
-          else
-            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
-          fi
-  - name: Deploy to Test
-    inputs:
-      - type: job
-        stage: 'Build & Run Unit Tests'
-        job: Changelog
-    triggers:
-      - type: stage
-    properties:
-      - name: APP_URL
-        value: 'http://${CF_APP}-test.mybluemix.net/'
-        type: text
-      - name: SLACK_WEBHOOK_PATH
-        value: ''
-        type: text
-      - name: SLACK_MESSAGE
-        value: '${CF_APP} - Test deployment done.'
-        type: text
-    jobs:
-      - name: Deploy
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |-
-          #!/bin/bash
-          cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
-          cf delete "${CF_APP}-test-green" --f
-          cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
-      - name: Slack Notification
-        type: tester
-        script: |-
-          #!/bin/bash
-          if [ ${SLACK_WEBHOOK_PATH} == ''];
-          then
-            echo 'Slack WebHook Path is empty!'
-          else
-            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
-          fi
-  - name: 'Run Tests - Performance & Scale'
-    inputs:
-      - type: job
-        stage: 'Build & Run Unit Tests'
-        job: Changelog
-    triggers:
-      - type: stage
-    properties:
-      - name: APP_URL
-        value: 'http://${CF_APP}-test.mybluemix.net/'
-        type: text
-      - name: NEW_RELIC_LICENSE_KEY
-        value: xxx
-        type: text
-      - name: SPEED_CURVE_LICENSE_KEY
-        value: ''
-        type: text
-      - name: SAUCE_USERNAME
-        value: ''
-        type: text
-      - name: SAUCE_ACCESS_KEY
-        value: ''
-        type: text
-      - name: LOAD_IMPACT_LICENSE_KEY
-        value: ''
-        type: text
-      - name: LOAD_IMPACT_TEST_URL
-        value: 'https://api.loadimpact.com/v2/test-configs/{id}/start'
-        type: text
-    jobs:
-      - name: SpeedCurve
-        type: tester
-        script: |-
-          #!/bin/bash
-          if [ ${SPEED_CURVE_LICENSE_KEY} == ''];
-          then
-            echo 'Speed Curve License Key is empty!'
-          else
-            curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
-          fi
-      - name: New Relic
-        type: builder
-        build_type: shell
-        script: |-
-          #!/bin/bash
-          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
-          then
-            echo "NewRelic is disabled. Please specify your NewRelic API key.";
-          else
-            npm install newrelic
-            cp node_modules/newrelic/newrelic.js ./
-            mkdir .newrelic
-            echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
-          fi
-      - name: Sauce Labs Tests
-        type: tester
-        enable_tests: true
-        test_file_pattern: test/*.xml
-        extension_id: ibm.devops.services.pipeline.saucelabs
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-        ACCESS: '${SAUCE_ACCESS_KEY}'
-        DL_ASSETS: 'false'
-        SELECT_CMD: 'custom'
-        USER_ID: '${SAUCE_USERNAME}'
-        COMMAND: |-
-          #!/bin/bash
-          npm install
-          npm test
-      - name: Load Impact Test
-        type: tester
-        script: |-
-          #!/bin/bash
-          if [ ${LOAD_IMPACT_TEST_URL} == ''] || [ ${LOAD_IMPACT_LICENSE_KEY} == ''];
-          then
-            echo 'Load Impact Test URL or License Key is empty!'
-          else
-            curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
-          fi
-  - name: Deploy to Prod
-    inputs:
-      - type: job
-        stage: 'Run Tests - Performance & Scale'
-        job: New Relic
-    triggers:
-      - type: stage
-    properties:
-      - name: SLACK_WEBHOOK_PATH
-        value: ''
-        type: text
-      - name: SLACK_MESSAGE
-        value: '${CF_APP} - Prod deployment done.'
-        type: text
-    jobs:
-      - name: Deploy
-        type: deployer
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-          application: '${CF_APP}'
-        script: |-
-          #!/bin/bash
-          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-          if [ -f .newrelic/key ];
-          then
-            export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
-            cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
-            cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
-          fi
-          export CF_APP_NAME="$CF_APP"
-          cf start "${CF_APP}-blue"
-          cf delete "${CF_APP}-green" --f
-          cf rename "${CF_APP}-blue" "${CF_APP}-green"
-          #
-          # Instant Purging removes content from Fastly immediately so it can be refreshed from your origin servers.
-          # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
-          curl -X PURGE http://${CF_APP}.mybluemix.net
-      - name: Slack Notification
-        type: builder
-        build_type: shell
-        script: |-
-          #!/bin/bash
-          if [ ${SLACK_WEBHOOK_PATH} == ''];
-          then
-            echo 'Slack WebHook Path is empty!'
-          else
-            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
-          fi
+- name: Build
+  inputs:
+  - type: git
+    branch: master
+  triggers:
+  - type: commit
+  jobs:
+  - name: Changelog
+    type: builder
+    build_type: shell
+    script: |-
+      #!/bin/bash
+      # This script just dumps the changes included in this build into a file named changelog.txt
+      # This change log can be used later to be included in notifications
+      git log ${GIT_COMMIT}..HEAD --graph --oneline > changelog.txt
+      cat changelog.txt
+  - name: NPM
+    type: builder
+    build_type: npm
+    script: |-
+      #!/bin/bash
+      npm install
+- name: Build & Run Unit Tests
+  inputs:
+  - type: job
+    stage: Build
+    job: NPM
+  triggers:
+  - type: stage
+  properties:
+  - name: SLACK_WEBHOOK_PATH
+    value:
+    type: text
+  - name: SLACK_MESSAGE
+    value: Build done & all tests passed.
+    type: text
+  jobs:
+  - name: Linting
+    type: tester
+    script: |-
+      #!/bin/bash
+      npm install csslint
+      npm install gulp
+      npm install gulp-bower
+      npm install gulp-mocha
+      npm install gulp-shell
+      npm install jshint
+      npm install jshint-junit-reporter
+      npm install karma
+      npm install run-sequence
+      node ./node_modules/gulp/bin/gulp lint
+    enable_tests: true
+    test_file_pattern: test/*.xml
+  - name: Unit Tests
+    type: tester
+    script: |-
+      #!/bin/bash
+      npm install
+      # Karma Unit Test, output file: test/*.xml
+      node ./node_modules/gulp/bin/gulp dev-karma
+      # Mocha Unit Test, output file: test/*.xml
+      node ./node_modules/gulp/bin/gulp dev-mocha
+      # Mocha Api Unit Test, output file: xunit.xml
+      node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
+    enable_tests: true
+    test_file_pattern: '*.xml, test/*.xml'
+  - name: Slack Notification
+    type: tester
+    script: |-
+      #!/bin/bash
+      if [ ${SLACK_WEBHOOK_PATH} == ''];
+      then
+        echo 'Slack WebHook Path is empty!'
+      else
+        curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+      fi
+- name: Deploy to Test
+  inputs:
+  - type: job
+    stage: Build
+    job: Changelog
+  triggers:
+  - type: stage
+  properties:
+  - name: SLACK_WEBHOOK_PATH
+    value:
+    type: text
+  - name: SLACK_MESSAGE
+    value: ${CF_APP} - Test deployment done.
+    type: text
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+    script: |-
+      #!/bin/bash
+      cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
+      cf delete "${CF_APP}-test-green" --f
+      cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
+  - name: Slack Notification
+    type: tester
+    script: |-
+      #!/bin/bash
+      if [ ${SLACK_WEBHOOK_PATH} == ''];
+      then
+        echo 'Slack WebHook Path is empty!'
+      else
+        curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+      fi
+- name: Run Tests - Performance & Scale
+  inputs:
+  - type: job
+    stage: Build
+    job: NPM
+  triggers:
+  - type: stage
+  properties:
+  - name: APP_URL
+    value: http://${CF_APP}-test.mybluemix.net/
+    type: text
+  - name: NEW_RELIC_LICENSE_KEY
+    value: xxx
+    type: text
+  - name: SPEED_CURVE_LICENSE_KEY
+    value:
+    type: text
+  - name: SAUCE_USERNAME
+    value:
+    type: text
+  - name: SAUCE_ACCESS_KEY
+    value:
+    type: text
+  - name: LOAD_IMPACT_LICENSE_KEY
+    value:
+    type: text
+  - name: LOAD_IMPACT_TEST_URL
+    value: https://api.loadimpact.com/v2/test-configs/{id}/start
+    type: text
+  jobs:
+  - name: SpeedCurve
+    type: tester
+    script: |-
+      #!/bin/bash
+      if [ ${SPEED_CURVE_LICENSE_KEY} == ''];
+      then
+        echo 'Speed Curve License Key is empty!'
+      else
+        curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
+      fi
+  - name: New Relic
+    type: builder
+    build_type: shell
+    script: |-
+      #!/bin/bash
+      if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
+      then
+        echo "New Relic is disabled. Please specify your NewRelic API key.";
+      else
+        #npm install newrelic
+        cp node_modules/newrelic/newrelic.js ./
+        mkdir .newrelic
+        echo ${NEW_RELIC_LICENSE_KEY} > .newrelic/key;
+      fi
+  - name: Sauce Labs Tests
+    type: tester
+    enable_tests: true
+    test_file_pattern: test/*.xml
+    extension_id: ibm.devops.services.pipeline.saucelabs
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}'
+    ACCESS: ${SAUCE_ACCESS_KEY}
+    DL_ASSETS: 'false'
+    SELECT_CMD: custom
+    USER_ID: ${SAUCE_USERNAME}
+    COMMAND: |-
+      #!/bin/bash
+      if [ ${SAUCE_USERNAME} == ''] || [ ${SAUCE_ACCESS_KEY} == '' ];
+      then
+        echo 'Sauce Labs Username and/or License Key is empty!'
+      else
+        npm test
+      fi
+  - name: Load Impact Test
+    type: tester
+    script: |-
+      #!/bin/bash
+      if [ ${LOAD_IMPACT_TEST_URL} == ''] || [ ${LOAD_IMPACT_LICENSE_KEY} == ''];
+      then
+        echo 'Load Impact Test URL and/or License Key is empty!'
+      else
+        curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
+      fi
+- name: Deploy to Prod
+  inputs:
+  - type: job
+    stage: Run Tests - Performance & Scale
+    job: New Relic
+  triggers:
+  - type: stage
+  properties:
+  - name: SLACK_WEBHOOK_PATH
+    value:
+    type: text
+  - name: SLACK_MESSAGE
+    value: ${CF_APP} - Prod deployment done.
+    type: text
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      url: ${CF_TARGET_URL}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+    script: |-
+      #!/bin/bash
+      cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
+      if [ -f .newrelic/key ];
+      then
+        export NEW_RELIC_LICENSE_KEY=`cat .newrelic/key`
+        cf set-env "${CF_APP}-blue" NEW_RELIC_LICENSE_KEY "${NEW_RELIC_LICENSE_KEY}"
+        cf set-env "${CF_APP}-blue" NEW_RELIC_APP_NAME "${CF_APP}"
+      fi
+      export CF_APP_NAME="$CF_APP"
+      cf start "${CF_APP}-blue"
+      cf delete "${CF_APP}-green" --f
+      cf rename "${CF_APP}-blue" "${CF_APP}-green"
+      #
+      # Instant Purging removes content from Fastly immediately so it can be refreshed from your origin servers.
+      # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
+      curl -X PURGE http://${CF_APP}.mybluemix.net
+  - name: Slack Notification
+    type: builder
+    build_type: shell
+    script: |-
+      #!/bin/bash
+      if [ ${SLACK_WEBHOOK_PATH} == ''];
+      then
+        echo 'Slack WebHook Path is empty!'
+      else
+        curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+      fi
