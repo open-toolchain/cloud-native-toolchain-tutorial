@@ -22,7 +22,7 @@ stages:
         script: |-
           #!/bin/bash
           npm install
-  - name: 'Build & Run Unit Tests'
+  - name: 'Run Unit Tests'
     inputs:
       - type: job
         stage: Build
