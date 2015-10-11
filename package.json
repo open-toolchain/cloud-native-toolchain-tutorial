@@ -5,7 +5,7 @@
   "description": "DevOps Tutorial App",
   "scripts": {
     "start": "node app.js",
-    "mocha_unit_test_api": "/node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/",
+    "mocha_unit_test_api": "./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/",
     "karma_unit_test": "gulp dev-karma",
     "mocha_unit_test": "gulp dev-mocha",
     "lint": "gulp lint",
