@@ -21,7 +21,7 @@ chai.config.includeStack = false;
 var rewire_revert = false;
 
 
-describe('my test suite', function() {
+describe('Application Model', function() {
 
   var applicationModel = rewire('../../../api/models/application');
 
