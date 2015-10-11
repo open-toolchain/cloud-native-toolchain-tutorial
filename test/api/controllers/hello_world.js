@@ -30,7 +30,9 @@ describe('controllers', function() {
 
         request(server)
           .get('/hello')
-          .query({ name: 'Scott'})
+          .query({
+            name: 'Scott'
+          })
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200)
@@ -42,9 +44,40 @@ describe('controllers', function() {
             done();
           });
       });
+    });
+  });
+  describe('api', function() {
 
+    describe('GET /applications', function() {
+      it('should return a list of applications', function(done) {
+
+        request(server)
+          .get('/applications')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect(200)
+          .end(function(err, res) {
+            should.not.exist(err);
+            res.body.length.should.eql(6);
+            done();
+          });
+      });
     });
 
-  });
+    describe('GET /applications/:id', function() {
+      it('Should find an application by id', function(done) {
 
+        request(server)
+          .get('/applications/1234')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect(200)
+          .end(function(err, res) {
+            should.not.exist(err);
+            res.body.name.should.eql('Open Toolchain');
+            done();
+          });
+      });
+    });
+  });
 });
