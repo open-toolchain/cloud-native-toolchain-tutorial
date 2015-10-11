@@ -10,7 +10,7 @@ module.exports = {
 function getApplicationById(appId) {
   var foundApp = {};
   for (var i = 0; i < APPS.length; i++) {
-    if (APPS[i].id === appId) {
+    if (APPS[i].id == appId) {
       foundApp = APPS[i];
     }
   }

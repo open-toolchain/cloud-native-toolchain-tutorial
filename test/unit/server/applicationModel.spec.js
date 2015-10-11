@@ -50,7 +50,6 @@ describe('my test suite', function() {
 
     describe("#getApplicationById", function() {
       it("respond with matching application", function() {
-        console.log(JSON.stringify(applicationModel.__get__('APPS')));
         var apps = applicationModel.getApplicationById(8888);
         expect(apps.id).to.equal(8888);
       });
