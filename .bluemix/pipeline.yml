@@ -114,7 +114,7 @@ stages:
       - name: NEW_RELIC_LICENSE_KEY
         value: xxx
         type: text
-      - name: SPEED_CURVE_LICENSE_KEY
+      - name: SPEED_CURVE_API_KEY
         value: ''
         type: text
       - name: APP_URL
@@ -126,7 +126,7 @@ stages:
       - name: SAUCE_ACCESS_KEY
         value: ''
         type: text
-      - name: LOAD_IMPACT_LICENSE_KEY
+      - name: LOAD_IMPACT_API_TOKEN
         value: ''
         type: text
       - name: LOAD_IMPACT_TEST_URL
@@ -137,11 +137,11 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          if [[ ${SPEED_CURVE_LICENSE_KEY} == '' ]];
+          if [[ ${SPEED_CURVE_API_KEY} == '' ]];
           then
-            echo 'Speed Curve License Key is empty!'
+            echo 'Speed Curve API Key is empty!'
           else
-            curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_LICENSE_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
+            curl "https://api.speedcurve.com/v1/deploy" -u ${SPEED_CURVE_API_KEY}:x --request POST --data note=${CF_APP}-${BUILD_NUMBER}
           fi
       - name: New Relic
         type: builder
@@ -162,7 +162,7 @@ stages:
           #!/bin/bash
           if [[ ${SAUCE_USERNAME} == '' || ${SAUCE_ACCESS_KEY} == '' || ${APP_URL} == '' ]];
           then
-            echo 'App test Url, Sauce Labs Username and/or License Key is empty!'
+            echo 'App Test URL, Sauce Labs Username and/or Access Key is empty!'
           else
             npm test
           fi
@@ -172,11 +172,11 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          if [[ ${LOAD_IMPACT_TEST_URL} == '' || ${LOAD_IMPACT_LICENSE_KEY} == '' ]];
+          if [[ ${LOAD_IMPACT_TEST_URL} == '' || ${LOAD_IMPACT_API_TOKEN} == '' ]];
           then
-            echo 'Load Impact Test URL or License Key is empty!'
+            echo 'Load Impact Test URL or API Token is empty!'
           else
-            curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_LICENSE_KEY}:"
+            curl -X POST "${LOAD_IMPACT_TEST_URL}" -u "${LOAD_IMPACT_API_TOKEN}:"
           fi
   - name: Deploy to Prod
     inputs:
