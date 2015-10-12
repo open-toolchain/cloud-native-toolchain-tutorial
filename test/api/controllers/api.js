@@ -6,41 +6,35 @@ process.env.A127_ENV = 'test';
 
 describe('controllers', function() {
 
-  describe('hello_world', function() {
+  describe('api', function() {
 
-    describe('GET /hello', function() {
-
-      it('should return a default string', function(done) {
+    describe('GET /applications', function() {
+      it('should return a list of applications', function(done) {
 
         request(server)
-          .get('/hello')
+          .get('/applications')
           .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
+          .expect('Content-Type', 'application/json; charset=utf-8')
           .expect(200)
           .end(function(err, res) {
             should.not.exist(err);
-
-            res.body.should.eql('Hello, stranger!');
-
+            res.body.length.should.eql(6);
             done();
           });
       });
+    });
 
-      it('should accept a name parameter', function(done) {
+    describe('GET /applications/:id', function() {
+      it('Should find an application by id', function(done) {
 
         request(server)
-          .get('/hello')
-          .query({
-            name: 'Scott'
-          })
+          .get('/applications/1234')
           .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
+          .expect('Content-Type', 'application/json; charset=utf-8')
           .expect(200)
           .end(function(err, res) {
             should.not.exist(err);
-
-            res.body.should.eql('Hello, Scott!');
-
+            res.body.name.should.eql('Open Toolchain');
             done();
           });
       });
