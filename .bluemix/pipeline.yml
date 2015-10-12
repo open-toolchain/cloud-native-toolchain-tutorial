@@ -60,7 +60,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          if [ ${SLACK_WEBHOOK_PATH} == ''];
+          if [[ ${SLACK_WEBHOOK_PATH} == '' ]];
           then
             echo 'Slack WebHook Path is empty!'
           else
@@ -97,7 +97,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          if [ ${SLACK_WEBHOOK_PATH} == ''];
+          if [[ ${SLACK_WEBHOOK_PATH} == '' ]];
           then
             echo 'Slack WebHook Path is empty!'
           else
@@ -111,9 +111,6 @@ stages:
     triggers:
       - type: stage
     properties:
-      - name: APP_URL
-        value: 'http://${CF_APP}-test.mybluemix.net/'
-        type: text
       - name: NEW_RELIC_LICENSE_KEY
         value: xxx
         type: text
@@ -130,14 +127,14 @@ stages:
         value: ''
         type: text
       - name: LOAD_IMPACT_TEST_URL
-        value: 'https://api.loadimpact.com/v2/test-configs/{id}/start'
+        value: ''
         type: text
     jobs:
       - name: SpeedCurve
         type: tester
         script: |-
           #!/bin/bash
-          if [ ${SPEED_CURVE_LICENSE_KEY} == ''];
+          if [[ ${SPEED_CURVE_LICENSE_KEY} == '' ]];
           then
             echo 'Speed Curve License Key is empty!'
           else
@@ -148,7 +145,7 @@ stages:
         build_type: shell
         script: |-
           #!/bin/bash
-          if [ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ];
+          if [[ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ]];
           then
             echo "New Relic is disabled. Please specify your NewRelic API key.";
           else
@@ -158,30 +155,21 @@ stages:
           fi
       - name: Sauce Labs Tests
         type: tester
-        enable_tests: true
-        test_file_pattern: test/*.xml
-        extension_id: ibm.devops.services.pipeline.saucelabs
-        target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
-        ACCESS: '${SAUCE_ACCESS_KEY}'
-        DL_ASSETS: 'false'
-        SELECT_CMD: 'custom'
-        USER_ID: '${SAUCE_USERNAME}'
-        COMMAND: |-
+        script: |-
           #!/bin/bash
-          if [ ${SAUCE_USERNAME} == ''] || [ ${SAUCE_ACCESS_KEY} == '' ];
+          if [[ ${SAUCE_USERNAME} == '' || ${SAUCE_ACCESS_KEY} == '' ]];
           then
             echo 'Sauce Labs Username and/or License Key is empty!'
           else
             npm test
           fi
+        enable_tests: true
+        test_file_pattern: test/*.xml
       - name: Load Impact Test
         type: tester
         script: |-
           #!/bin/bash
-          if [ ${LOAD_IMPACT_TEST_URL} == ''] || [ ${LOAD_IMPACT_LICENSE_KEY} == ''];
+          if [[ ${LOAD_IMPACT_TEST_URL} == '' || ${LOAD_IMPACT_LICENSE_KEY} == '' ]];
           then
             echo 'Load Impact Test URL or License Key is empty!'
           else
@@ -231,7 +219,7 @@ stages:
         build_type: shell
         script: |-
           #!/bin/bash
-          if [ ${SLACK_WEBHOOK_PATH} == ''];
+          if [[ ${SLACK_WEBHOOK_PATH} == '' ]];
           then
             echo 'Slack WebHook Path is empty!'
           else

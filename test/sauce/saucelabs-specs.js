@@ -7,8 +7,8 @@ var chaiAsPromised = require('chai-as-promised');
 
 var url = 'http://localhost:3000/';
 
-if (process.env.APP_URL && process.env.APP_URL !== '') {
-  url = process.env.APP_URL;
+if (process.env.CF_APP && process.env.CF_APP !== '') {
+  url = 'http://' + process.env.CF_APP + '-test.mybluemix.net/';
 }
 
 var assert = require('assert');
