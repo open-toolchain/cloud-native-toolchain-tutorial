@@ -117,6 +117,9 @@ stages:
       - name: SPEED_CURVE_LICENSE_KEY
         value: ''
         type: text
+      - name: APP_URL
+        value: ''
+        type: text
       - name: SAUCE_USERNAME
         value: ''
         type: text
@@ -157,9 +160,9 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          if [[ ${SAUCE_USERNAME} == '' || ${SAUCE_ACCESS_KEY} == '' ]];
+          if [[ ${SAUCE_USERNAME} == '' || ${SAUCE_ACCESS_KEY} == '' || ${APP_URL} == '' ]];
           then
-            echo 'Sauce Labs Username and/or License Key is empty!'
+            echo 'App test Url, Sauce Labs Username and/or License Key is empty!'
           else
             npm test
           fi
