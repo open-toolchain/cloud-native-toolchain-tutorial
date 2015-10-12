@@ -215,8 +215,7 @@ stages:
           # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
           curl -X PURGE http://${CF_APP}.mybluemix.net
       - name: Slack Notification
-        type: builder
-        build_type: shell
+        type: tester
         script: |-
           #!/bin/bash
           if [[ ${SLACK_WEBHOOK_PATH} == '' ]];
