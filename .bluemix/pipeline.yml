@@ -132,6 +132,9 @@ stages:
       - name: LOAD_IMPACT_TEST_URL
         value: ''
         type: text
+      - name: ALPER_APP_NAME
+        value: '${CF_APP}'
+        type: text
     jobs:
       - name: SpeedCurve
         type: tester
