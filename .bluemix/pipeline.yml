@@ -111,8 +111,8 @@ stages:
     triggers:
       - type: stage
     properties:
-      - name: APP_URL
-        value: 'http://${CF_APP}-test.mybluemix.net/'
+      - name: APP_NAME
+        value: '${CF_APP}'
         type: text
       - name: NEW_RELIC_LICENSE_KEY
         value: xxx
