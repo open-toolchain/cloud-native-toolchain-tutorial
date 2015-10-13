@@ -30,6 +30,9 @@ stages:
     triggers:
       - type: stage
     properties:
+      - name: APP_NAME
+        value: '${CF_APP}'
+        type: text
       - name: SLACK_WEBHOOK_PATH
         value: ''
         type: text
@@ -64,7 +67,7 @@ stages:
           then
             echo 'Slack WebHook Path is empty!'
           else
-            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+            curl -X POST --data-urlencode 'payload={"text": "${APP_NAME}: ${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
           fi
   - name: Deploy to Test
     inputs:
@@ -74,11 +77,14 @@ stages:
     triggers:
       - type: stage
     properties:
+      - name: APP_NAME
+        value: '${CF_APP}'
+        type: text
       - name: SLACK_WEBHOOK_PATH
         value: ''
         type: text
       - name: SLACK_MESSAGE
-        value: '${CF_APP} - Test deployment done.'
+        value: 'Test deployment done.'
         type: text
     jobs:
       - name: Deploy
@@ -101,7 +107,7 @@ stages:
           then
             echo 'Slack WebHook Path is empty!'
           else
-            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+            curl -X POST --data-urlencode 'payload={"text": "${APP_NAME}: ${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
           fi
   - name: 'Run Tests - Performance & Scale'
     inputs:
@@ -186,11 +192,14 @@ stages:
     triggers:
       - type: stage
     properties:
+      - name: APP_NAME
+        value: '${CF_APP}'
+        type: text
       - name: SLACK_WEBHOOK_PATH
         value: ''
         type: text
       - name: SLACK_MESSAGE
-        value: '${CF_APP} - Prod deployment done.'
+        value: 'Prod deployment done.'
         type: text
     jobs:
       - name: Deploy
@@ -225,5 +234,5 @@ stages:
           then
             echo 'Slack WebHook Path is empty!'
           else
-            curl -X POST --data-urlencode 'payload={"text": "${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
+            curl -X POST --data-urlencode 'payload={"text": "${APP_NAME}: ${SLACK_MESSAGE}"}' ${SLACK_WEBHOOK_PATH}
           fi
