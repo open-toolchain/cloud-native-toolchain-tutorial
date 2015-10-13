@@ -111,13 +111,13 @@ stages:
     triggers:
       - type: stage
     properties:
+      - name: APP_URL
+        value: 'http://${CF_APP}-test.mybluemix.net/'
+        type: text
       - name: NEW_RELIC_LICENSE_KEY
         value: xxx
         type: text
       - name: SPEED_CURVE_API_KEY
-        value: ''
-        type: text
-      - name: APP_URL
         value: ''
         type: text
       - name: SAUCE_USERNAME
@@ -131,9 +131,6 @@ stages:
         type: text
       - name: LOAD_IMPACT_TEST_URL
         value: ''
-        type: text
-      - name: ALPER_APP_NAME
-        value: '${CF_APP}'
         type: text
     jobs:
       - name: SpeedCurve
