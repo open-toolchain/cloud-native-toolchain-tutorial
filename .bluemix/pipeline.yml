@@ -121,7 +121,7 @@ stages:
         value: '${CF_APP}'
         type: text
       - name: NEW_RELIC_LICENSE_KEY
-        value: xxx
+        value: ''
         type: text
       - name: SPEED_CURVE_API_KEY
         value: ''
@@ -154,7 +154,7 @@ stages:
         build_type: shell
         script: |-
           #!/bin/bash
-          if [[ ${NEW_RELIC_LICENSE_KEY} == 'xxx' ]];
+          if [[ ${NEW_RELIC_LICENSE_KEY} == '' ]];
           then
             echo "New Relic is disabled. Please specify your NewRelic API key.";
           else
