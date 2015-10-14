@@ -110,8 +110,8 @@ stages:
   - name: Deploy to Prod
     inputs:
       - type: job
-        stage: 'Run Tests - Performance & Scale'
-        job: Sauce Labs Tests
+        stage: 'Build'
+        job: Changelog
     triggers:
       - type: stage
     properties:
