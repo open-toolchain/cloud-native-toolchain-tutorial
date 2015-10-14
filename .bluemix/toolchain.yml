@@ -1,0 +1,12 @@
+---
+build:
+  capability: pipeline
+  metadata: pipeline.yml
+  env:
+    SAUCE_USER: ${test.parameters.username}
+    SAUCE_KEY: ${test.parameters.key}
+    SLACK_ACCESS_TOKEN: "${messaging.parameters.auth-token}"
+test:
+  capability: saucelabs
+messaging:
+  capability: slack
