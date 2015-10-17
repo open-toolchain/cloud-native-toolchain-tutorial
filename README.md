@@ -1,4 +1,4 @@
-# DevOps Tutorial Application (in progress)
+# DevOps Tutorial Application
 
 [DevOps](https://en.wikipedia.org/wiki/DevOps) is a methodology that aims to improve development and operational efficiencies while enhancing partnership with customers. DevOps is more than doing the same things faster; it establishes a delivery pipeline that spans from ideation to monitoring.  
 
