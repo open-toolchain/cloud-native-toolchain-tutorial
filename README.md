@@ -10,10 +10,4 @@ To set up and run certain stages of the pipeline, you might need to register for
 
 Create your DevOps project now!
 
-## Deploy
-
-PROD
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/oneibmcloud/devops-tutorial-2.git&otc=true)
-
-BETA3
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://beta3.hub.jazz.net/deploy/index.html?repository=https://github.com/oneibmcloud/devops-tutorial-2.git&otc=true)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/oneibmcloud/devops-tutorial-2.git)
