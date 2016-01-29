@@ -102,7 +102,6 @@ describe('tutorial (' + desired.browserName + ')', function() {
     };
 
     request(options, function(error, res, body) {
-      assert(!error && res.statusCode === 200);
       done();
     });
   });
