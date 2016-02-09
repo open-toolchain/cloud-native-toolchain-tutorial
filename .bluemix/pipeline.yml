@@ -21,6 +21,7 @@ stages:
         build_type: npm
         script: |-
           #!/bin/bash
+          npm install -g npm@3.7.1
           npm install
   - name: 'Run Unit Tests'
     inputs:
