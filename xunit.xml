@@ -1,0 +1,18 @@
+<testsuite name="Mocha Tests" tests="4" failures="2" errors="2" skipped="0" timestamp="2016-02-09T01:57:04" time="0.174">
+<testcase classname="controllers api GET /applications" name="should return a list of applications" time="0.025"/>
+<testcase classname="controllers api GET /applications/:id" name="Should find an application by id" time="0.006"/>
+<testcase classname="controllers hello_world GET /hello" name="should return a default string" time="0"><failure message="expected { name: 'Hello, stranger!' } to equal 'Hello, stranger!'"><![CDATA[AssertionError: expected { name: 'Hello, stranger!' } to equal 'Hello, stranger!'
+    at Assertion.fail (node_modules/should/lib/assertion.js:196:17)
+    at Assertion.prop.(anonymous function) [as eql] (node_modules/should/lib/assertion.js:81:17)
+    at Test.&lt;anonymous&gt; (test/api/controllers/hello_world.js:23:29)
+    at Test.assert (node_modules/supertest/lib/test.js:221:6)
+    at Server.assert (node_modules/supertest/lib/test.js:132:12)
+    at net.js:1276:10]]></failure></testcase>
+<testcase classname="controllers hello_world GET /hello" name="should accept a name parameter" time="0"><failure message="expected { name: 'Hello, Scott!' } to equal 'Hello, Scott!'"><![CDATA[AssertionError: expected { name: 'Hello, Scott!' } to equal 'Hello, Scott!'
+    at Assertion.fail (node_modules/should/lib/assertion.js:196:17)
+    at Assertion.prop.(anonymous function) [as eql] (node_modules/should/lib/assertion.js:81:17)
+    at Test.&lt;anonymous&gt; (test/api/controllers/hello_world.js:42:29)
+    at Test.assert (node_modules/supertest/lib/test.js:221:6)
+    at Server.assert (node_modules/supertest/lib/test.js:132:12)
+    at net.js:1276:10]]></failure></testcase>
+</testsuite>
