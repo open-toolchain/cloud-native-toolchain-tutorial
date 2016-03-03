@@ -23,6 +23,8 @@ stages:
           #!/bin/bash
           npm install -g npm@3.7.1
           npm install
+          tar -czf node_modules.tar.gz node_modules
+          rm -rf node_modules 
   - name: 'Run Unit Tests'
     inputs:
       - type: job
@@ -39,6 +41,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
+          tar -xzf node_modules.tar.gz
           node ./node_modules/gulp/bin/gulp lint
         enable_tests: true
         test_file_pattern: 'test/*.xml'
@@ -47,6 +50,7 @@ stages:
         script: |-
           #!/bin/bash
           # Karma Unit Test, output file: test/*.xml
+          tar -xzf node_modules.tar.gz
           node ./node_modules/gulp/bin/gulp dev-karma
           # Mocha Unit Test, output file: test/*.xml
           node ./node_modules/gulp/bin/gulp dev-mocha
@@ -100,6 +104,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
+          tar -xzf node_modules.tar.gz
           if [[ ${SAUCE_USERNAME} == '' || ${SAUCE_ACCESS_KEY} == '' || ${APP_NAME} == '' ]];
           then
             echo 'App Test URL, Sauce Labs Username and/or Access Key is empty!'
