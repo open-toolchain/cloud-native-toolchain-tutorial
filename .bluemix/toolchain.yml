@@ -1,12 +1,68 @@
 ---
-build:
-  capability: pipeline
-  metadata: pipeline.yml
-  env:
-    SAUCE_USER: ${test.parameters.username}
-    SAUCE_KEY: ${test.parameters.key}
-    SLACK_ACCESS_TOKEN: "${messaging.parameters.auth-token}"
-test:
-  capability: saucelabs
+default_locale: en
+locales: 
+  $ref: locales.yml
+name: "DevOps Tutorial"
+description: "With this toolchain, you can develop and deploy a Cloud Foundry application. By default, the toolchain uses a sample Node.js Hello World app, but you can link to your own GitHub repository instead. This toolchain is preconfigured for continuous delivery, source control, issue tracking, and online editing.\n\nTo get started, click **Create**."
+version: 0.1
+image: data:image/png;base64,$file(toolchain.png,base64)
+required: 
+ - deploy
+ - sample-repo
+
+# Github repos
+sample-repo:
+  service_id: githubpublic
+  parameters:
+    repo_name: "sample-{{name}}"
+    repo_url: https://github.com/open-toolchain/node-hello-world
+    type: clone
+    has_issues: true
+
+# Pipelines
+sample-build:
+  service_id: pipeline
+  parameters:
+    name: "sample-{{name}}"
+    ui-pipeline: true
+    configuration: 
+     content: $file(pipeline.yml)
+     env:
+      SAMPLE_REPO: "sample-repo"
+      CF_APP_NAME: "{{deploy.parameters.prod-app-name}}"
+      PROD_SPACE_NAME: "{{deploy.parameters.prod-space}}"
+      PROD_ORG_NAME: "{{deploy.parameters.prod-organization}}"
+      PROD_REGION_ID: "{{deploy.parameters.prod-region}}"
+     execute: true
+    services: ["sample-repo"]
+  hidden: [form, description]
+    
+#Slack
 messaging:
-  capability: slack
+  service_id: slack
+  include: slack.yml
+
+#Sauce Labs
+test:
+  service_id: saucelabs
+  include: saucelabs.yml
+
+#PagerDuty
+alerting:
+  service_id: pagerduty
+  include: pagerduty.yml
+  
+#Web IDE
+webide:
+  service_id: orion
+  
+#Deployment
+deploy:
+  schema: 
+    $ref: deploy.json
+  service-category: pipeline
+  parameters:
+    prod-region: "{{region}}"
+    prod-organization: "{{organization}}"
+    prod-space: "{{space}}"
+    prod-app-name: "{{sample-repo.parameters.repo_name}}"
