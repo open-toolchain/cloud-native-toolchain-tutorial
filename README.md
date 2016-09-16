@@ -8,6 +8,7 @@ The application is a simple Node.js [Express 4](http://expressjs.com/) sample th
 
 To set up and run certain stages of the pipeline, you might need to register for other tools or services. The tutorial guides you through those details.
 
-Create your DevOps project now!
+Create your DevOps toolchain now!
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/oneibmcloud/devops-tutorial-2.git)
+###To get started, click this button:
+[![Deploy To Bluemix](https://new-console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://new-console.ng.bluemix.net/devops/setup/deploy/?repository=https%3A//github.com/hmagph/devops-tutorial-3)
