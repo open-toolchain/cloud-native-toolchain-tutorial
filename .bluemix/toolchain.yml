@@ -15,7 +15,7 @@ sample-repo:
   service_id: githubpublic
   parameters:
     repo_name: "sample-{{name}}"
-    repo_url: https://github.com/open-toolchain/node-hello-world
+    repo_url: https://github.com/oneibmcloud/devops-tutorial-2
     type: clone
     has_issues: true
 
