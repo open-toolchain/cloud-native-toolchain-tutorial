@@ -4,6 +4,7 @@ stages:
     inputs:
       - type: git
         branch: master
+        service: ${SAMPLE_REPO}        
     triggers:
       - type: commit
     jobs:
@@ -73,9 +74,9 @@ stages:
       - name: Deploy
         type: deployer
         target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
+          region_id: ${TEST_REGION_ID}
+          organization: '${TEST_ORGANIZATION}'
+          space: '${TEST_SPACE}'
           application: '${CF_APP}'
         script: |-
           #!/bin/bash
@@ -128,9 +129,9 @@ stages:
       - name: Deploy
         type: deployer
         target:
-          url: '${CF_TARGET_URL}'
-          organization: '${CF_ORGANIZATION}'
-          space: '${CF_SPACE}'
+          region_id: ${PROD_REGION_ID}
+          organization: '${PROD_ORGANIZATION}'
+          space: '${PROD_SPACE}'
           application: '${CF_APP}'
         script: |-
           #!/bin/bash
