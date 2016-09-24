@@ -27,8 +27,11 @@ sample-build:
      env:
       SAMPLE_REPO: "sample-repo"
       CF_APP_NAME: "{{deploy.parameters.prod-app-name}}"
-      PROD_SPACE_NAME: "{{deploy.parameters.prod-space}}"
-      PROD_ORG_NAME: "{{deploy.parameters.prod-organization}}"
+      TEST_SPACE: "{{deploy.parameters.test-space}}"
+      TEST_ORGANIZATION: "{{deploy.parameters.test-organization}}"
+      TEST_REGION_ID: "{{deploy.parameters.test-region}}"
+      PROD_SPACE: "{{deploy.parameters.prod-space}}"
+      PROD_ORGANIZATION: "{{deploy.parameters.prod-organization}}"
       PROD_REGION_ID: "{{deploy.parameters.prod-region}}"
      execute: true
     services: ["sample-repo"]
