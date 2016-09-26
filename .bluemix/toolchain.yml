@@ -64,8 +64,8 @@ deploy:
   parameters:
     test-region: "{{region}}"
     test-organization: "{{organization}}"
-    test-space: "{{space}}"
+    test-space: test
     prod-region: "{{region}}"
     prod-organization: "{{organization}}"
-    prod-space: "{{space}}"
+    prod-space: prod
     app-name: "{{sample-repo.parameters.repo_name}}"
