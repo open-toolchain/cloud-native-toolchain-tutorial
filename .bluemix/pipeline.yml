@@ -71,7 +71,7 @@ stages:
         value: '${CF_APP}'
         type: text
     jobs:
-      - name: Deploy
+      - name: Blue/Green Deploy
         type: deployer
         target:
           region_id: ${TEST_REGION_ID}
