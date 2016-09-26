@@ -5,11 +5,23 @@
     "longDescription": "The Delivery Pipeline automates continuous deployment.",
     "type": "object",
     "properties": {
-        "prod-region": {
+       "test-region": {
             "description": "The bluemix region",
             "type": "string"
         },
-        "prod-organization": {
+       "test-organization": {
+            "description": "The bluemix org",
+            "type": "string"
+        },
+       "test-space": {
+            "description": "The bluemix space",
+            "type": "string"
+        },
+       "prod-region": {
+            "description": "The bluemix region",
+            "type": "string"
+        },
+       "prod-organization": {
             "description": "The bluemix org",
             "type": "string"
         },
@@ -17,12 +29,12 @@
             "description": "The bluemix space",
             "type": "string"
         },
-       "prod-app-name": {
+       "app-name": {
             "description": "The name of your Hello World app",
             "type": "string"
         }
     },
-    "required": ["prod-region", "prod-organization", "prod-space", "prod-app-name"],
+    "required": ["test-region", "test-organization", "test-space", "prod-region", "prod-organization", "prod-space", "app-name"],
     "form": [
        {
           "type": "validator",
@@ -32,7 +44,7 @@
           "type": "text",
           "readonly": false,
           "title": "App name",
-          "key": "prod-app-name"
+          "key": "app-name"
         },
         {
             "type": "table",
@@ -55,6 +67,23 @@
                   "type": "label",
                   "title": "Space"
                 },
+                {
+                  "type": "label",
+                  "title": "Test stage"
+                },
+                {
+                  "type": "select",
+                  "key": "test-region"
+                },
+                {
+                  "type": "select",
+                  "key": "test-organization"
+                },
+                {
+                  "type": "select",
+                  "key": "test-space",
+                  "readonly": false
+                },                
                 {
                   "type": "label",
                   "title": "Production stage"
