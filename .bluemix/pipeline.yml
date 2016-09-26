@@ -77,7 +77,7 @@ stages:
           region_id: ${TEST_REGION_ID}
           organization: '${TEST_ORGANIZATION}'
           space: '${TEST_SPACE}'
-          application: '${CF_APP}'
+          application: '${CF_APP_NAME}'
         script: |-
           #!/bin/bash
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
@@ -132,7 +132,7 @@ stages:
           region_id: ${PROD_REGION_ID}
           organization: '${PROD_ORGANIZATION}'
           space: '${PROD_SPACE}'
-          application: '${CF_APP}'
+          application: '${CF_APP_NAME}'
         script: |-
           #!/bin/bash
           cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
