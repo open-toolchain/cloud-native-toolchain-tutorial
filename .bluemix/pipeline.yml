@@ -75,9 +75,9 @@ stages:
         type: deployer
         target:
           region_id: ${TEST_REGION_ID}
-          organization: '${TEST_ORGANIZATION}'
-          space: '${TEST_SPACE}'
-          application: '${CF_APP_NAME}'
+          organization: ${TEST_ORGANIZATION}
+          space: ${TEST_SPACE}
+          application: ${CF_APP_NAME}
         script: |-
           #!/bin/bash
           cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
@@ -102,8 +102,8 @@ stages:
           - ${SAUCE_LABS}
         target:
           region_id: ${TEST_REGION_ID}
-          organization: '${TEST_ORGANIZATION}'
-          space: '${TEST_SPACE}'
+          organization: ${TEST_ORGANIZATION}
+          space: ${TEST_SPACE}
         DL_ASSETS: 'false'
         SELECT_CMD: custom
         COMMAND: |-
@@ -133,9 +133,9 @@ stages:
         type: deployer
         target:
           region_id: ${PROD_REGION_ID}
-          organization: '${PROD_ORGANIZATION}'
-          space: '${PROD_SPACE}'
-          application: '${CF_APP_NAME}'
+          organization: ${PROD_ORGANIZATION}
+          space: ${PROD_SPACE}
+          application: ${CF_APP_NAME}
         script: |-
           #!/bin/bash
           cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
