@@ -95,28 +95,28 @@ stages:
         value: '${CF_APP}'
         type: text
     jobs:
-      - name: Sauce Labs Tests
-        type: tester
-        extension_id: ibm.devops.services.pipeline.saucelabs
-        services:
-          - ${SAUCE_LABS}
-        target:
-          region_id: ${TEST_REGION_ID}
-          organization: '${TEST_ORGANIZATION}'
-          space: '${TEST_SPACE}'
-        DL_ASSETS: 'false'
-        SELECT_CMD: custom
-        COMMAND: |-
-          #!/bin/bash
-          tar -xzf node_modules.tar.gz
-          if [[ ${APP_NAME} == '' ]];
-          then
-            echo 'App Test URL is empty!'
-          else
-            npm test
-          fi      
-        enable_tests: true
-        test_file_pattern: '*.xml'        
+#      - name: Sauce Labs Tests
+#        type: tester
+#        extension_id: ibm.devops.services.pipeline.saucelabs
+#        services:
+#          - ${SAUCE_LABS}
+#        target:
+#          region_id: ${TEST_REGION_ID}
+#          organization: '${TEST_ORGANIZATION}'
+#          space: '${TEST_SPACE}'
+#        DL_ASSETS: 'false'
+#        SELECT_CMD: custom
+#        COMMAND: |-
+#          #!/bin/bash
+#          tar -xzf node_modules.tar.gz
+#          if [[ ${APP_NAME} == '' ]];
+#          then
+#            echo 'App Test URL is empty!'
+#          else
+#            npm test
+#          fi      
+#        enable_tests: true
+#        test_file_pattern: '*.xml'        
   - name: Deploy to Prod
     inputs:
       - type: job
