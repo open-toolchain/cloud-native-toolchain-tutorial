@@ -94,26 +94,29 @@ stages:
       - name: APP_NAME
         value: '${CF_APP}'
         type: text
-      - name: SAUCE_USERNAME
-        value: ${SAUCE_USER}
-        type: text
-      - name: SAUCE_ACCESS_KEY
-        value: ${SAUCE_KEY}
-        type: text
     jobs:
       - name: Sauce Labs Tests
         type: tester
-        script: |-
+        extension_id: ibm.devops.services.pipeline.saucelabs
+        services:
+          - ${SAUCE_LABS}
+        target:
+          region_id: ${TEST_REGION_ID}
+          organization: '${TEST_ORGANIZATION}'
+          space: '${TEST_SPACE}'
+        DL_ASSETS: 'false'
+        SELECT_CMD: custom
+        COMMAND: |-
           #!/bin/bash
           tar -xzf node_modules.tar.gz
-          if [[ ${SAUCE_USERNAME} == '' || ${SAUCE_ACCESS_KEY} == '' || ${APP_NAME} == '' ]];
+          if [[ ${APP_NAME} == '' ]];
           then
-            echo 'App Test URL, Sauce Labs Username and/or Access Key is empty!'
+            echo 'App Test URL is empty!'
           else
             npm test
-          fi
+          fi      
         enable_tests: true
-        test_file_pattern: test/*.xml
+        test_file_pattern: '*.xml'        
   - name: Deploy to Prod
     inputs:
       - type: job
