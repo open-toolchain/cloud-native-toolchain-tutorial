@@ -25,7 +25,7 @@ sample-build:
     configuration: 
      content: $file(pipeline.yml)
      env:
-      SAUCE_LABS: "test"
+#      SAUCE_LABS: "test"
       SAMPLE_REPO: "sample-repo"
       CF_APP_NAME: "{{deploy.parameters.app-name}}"
       TEST_SPACE: "{{deploy.parameters.test-space}}"
