@@ -35,7 +35,7 @@ sample-build:
       PROD_ORGANIZATION: "{{deploy.parameters.prod-organization}}"
       PROD_REGION_ID: "{{deploy.parameters.prod-region}}"
      execute: true
-    services: ["sample-repo"]
+    services: ["sample-repo", "test"]
   hidden: [form, description]
     
 #Slack
