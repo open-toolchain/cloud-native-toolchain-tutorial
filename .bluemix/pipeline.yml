@@ -33,10 +33,6 @@ stages:
         job: NPM
     triggers:
       - type: stage
-    properties:
-      - name: APP_NAME
-        value: '${CF_APP}'
-        type: text
     jobs:
       - name: Linting
         type: tester
@@ -66,10 +62,6 @@ stages:
         job: Changelog
     triggers:
       - type: stage
-    properties:
-      - name: APP_NAME
-        value: '${CF_APP}'
-        type: text
     jobs:
       - name: Blue/Green Deploy
         type: deployer
@@ -90,10 +82,6 @@ stages:
         job: NPM
     triggers:
       - type: stage
-    properties:
-      - name: APP_NAME
-        value: '${CF_APP}'
-        type: text
     jobs:
       - name: Sauce Labs Tests
         type: tester
@@ -109,9 +97,9 @@ stages:
         COMMAND: |-
           #!/bin/bash
           tar -xzf node_modules.tar.gz
-          if [[ ${APP_NAME} == '' ]];
+          if [[ ${CF_APP} == '' ]];
           then
-            echo 'App Test URL is empty!'
+            echo 'Test App is missing!'
           else
             npm test
           fi      
@@ -124,10 +112,6 @@ stages:
         job: Changelog
     triggers:
       - type: stage
-    properties:
-      - name: APP_NAME
-        value: '${CF_APP}'
-        type: text
     jobs:
       - name: Blue/Green Deploy
         type: deployer
@@ -139,12 +123,11 @@ stages:
         script: |-
           #!/bin/bash
           cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-          export CF_APP_NAME="$CF_APP"
           cf start "${CF_APP}-blue"
           cf delete "${CF_APP}-green" --f
           cf rename "${CF_APP}-blue" "${CF_APP}-green"
           #
           # Instant Purging removes content from Fastly immediately so it can be refreshed from your origin servers.
           # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
-          APP_URL=http://$(cf app $CF_APP_NAME | grep urls: | awk '{print $2}')
+          APP_URL=http://$(cf app $CF_APP-green | grep urls: | awk '{print $2}')
           curl -X PURGE ${APP_URL}
