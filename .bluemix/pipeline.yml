@@ -62,6 +62,13 @@ stages:
         job: Changelog
     triggers:
       - type: stage
+    properties:
+    - name: APP_NAME
+      value: undefined
+      type: text
+    - name: APP_URL
+      value: undefined
+      type: text	
     jobs:
       - name: Blue/Green Deploy
         type: deployer
@@ -72,9 +79,13 @@ stages:
           application: ${CF_APP_NAME}
         script: |-
           #!/bin/bash
-          cf push "${CF_APP}-test-blue" -n "${CF_APP}-test"
-          cf delete "${CF_APP}-test-green" --f
-          cf rename "${CF_APP}-test-blue" "${CF_APP}-test-green"
+          BLUE_APP="$CF_APP-test-blue"
+          GREEN_APP="$CF_APP-test-green"
+          cf push "${BLUE_APP}" -n "${CF_APP}-test"
+          cf delete "${GREEN_APP}" --f
+          cf rename "${BLUE_APP}" "${GREEN_APP}"
+          export APP_NAME="$GREEN_APP"
+          export APP_URL=http://$(cf app $APP_NAME | grep urls: | awk '{print $2}')
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
@@ -112,6 +123,13 @@ stages:
         job: Changelog
     triggers:
       - type: stage
+    properties:
+    - name: APP_NAME
+      value: undefined
+      type: text
+    - name: APP_URL
+      value: undefined
+      type: text	
     jobs:
       - name: Blue/Green Deploy
         type: deployer
@@ -122,12 +140,14 @@ stages:
           application: ${CF_APP_NAME}
         script: |-
           #!/bin/bash
-          cf push "${CF_APP}-blue" -n "${CF_APP}" --no-start
-          cf start "${CF_APP}-blue"
-          cf delete "${CF_APP}-green" --f
-          cf rename "${CF_APP}-blue" "${CF_APP}-green"
-          #
+          BLUE_APP="$CF_APP-blue"
+          GREEN_APP="$CF_APP-green"
+          cf push "${BLUE_APP}" -n "${CF_APP}"
+          cf delete "${GREEN_APP}" --f
+          cf rename "${BLUE_APP}" "${GREEN_APP}"
+          export APP_NAME="$GREEN_APP"
+          export APP_URL=http://$(cf app $APP_NAME | grep urls: | awk '{print $2}')
+
           # Instant Purging removes content from Fastly immediately so it can be refreshed from your origin servers.
           # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
-          APP_URL=http://$(cf app $CF_APP-green | grep urls: | awk '{print $2}')
           curl -X PURGE ${APP_URL}
