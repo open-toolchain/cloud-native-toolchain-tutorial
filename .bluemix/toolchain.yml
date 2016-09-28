@@ -12,7 +12,7 @@ sample-repo:
   service_id: githubpublic
   parameters:
     repo_name: "sample-{{name}}"
-    repo_url: https://github.com/oneibmcloud/devops-tutorial-2
+    repo_url: https://github.com/hmagph/devops-tutorial-app
     type: clone
     has_issues: true
 
