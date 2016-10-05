@@ -14,7 +14,19 @@ sample-repo:
     repo_name: "sample-{{name}}"
     repo_url: https://github.com/hmagph/devops-tutorial-app
     type: clone
-    has_issues: true
+    has_issues: false
+
+#Monitoring - New Relic
+ccm:
+  service_id: customtool
+  parameters:
+    type: Track & Plan
+    lifecyclePhase: "THINK"
+    imageUrl: ""
+    documentationUrl: ""
+    name: "Epics, Stories, tasks, defects..."
+    dashboard_url: "https://hub.jazz.net"
+    description: "DevOps Track and Plan"
 
 # Pipelines
 sample-build:
