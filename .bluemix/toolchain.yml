@@ -66,14 +66,14 @@ alerting:
   include: pagerduty.yml
 
 #Analytics - Google
-#ccm:
-#  service_id: customtool
-#  parameters:
-#    type: Google Analytics
-#    lifecyclePhase: "LEARN"
-#    name: "Analytics"
-#    dashboard_url: "https://analytics.google.com/"
-#    description: "Usage Details"  
+analytics:
+  service_id: customtool
+  parameters:
+    type: Google Analytics
+    lifecyclePhase: "LEARN"
+    name: "Analytics"
+    dashboard_url: "https://analytics.google.com/"
+    description: "Usage Details"  
   
 #Web IDE
 webide:
