@@ -7,7 +7,6 @@ required:
  - deploy
  - sample-repo
  - ccm
- - alerting
  - analytics
 
 # Github repos
