@@ -6,6 +6,9 @@ image: data:image/png;base64,$file(dra-toolchain2.png,base64)
 required: 
  - deploy
  - sample-repo
+ - ccm
+ - alerting
+ - analytics
 
 # Github repos
 sample-repo:
