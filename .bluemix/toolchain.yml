@@ -2,7 +2,7 @@
 name: "DevOps Tutorial"
 description: "With this toolchain, you can develop and deploy a Bluemix Node.js 'Hello World' application.  This toolchain demonstrates the DevOps practices featured in the IBM Bluemix Garage Method.  It is pre-configured for continuous delivery, source code editing and control, test automation, and automated monitoring and operations.\n\nTo get started, click **Create**."
 version: 0.1
-image: data:image/png;base64,$file(dra-toolchain2.png,base64)
+image: data:image/png;base64,$file(simpleCloudFoundry_NewRelic.png,base64)
 required: 
  - deploy
  - sample-repo
@@ -75,7 +75,7 @@ analytics:
     lifecyclePhase: "LEARN"
     name: "Analytics"
     dashboard_url: "https://analytics.google.com/"
-    description: "Usage Details"  
+    description: "Usage Details"
   
 #Web IDE
 webide:
