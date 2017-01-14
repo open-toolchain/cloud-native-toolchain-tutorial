@@ -82,8 +82,9 @@ stages:
           BLUE_APP="$CF_APP-test-blue"
           GREEN_APP="$CF_APP-test-green"
           cf push "${BLUE_APP}" -n "${CF_APP}-test"
-          cf delete "${GREEN_APP}" --f
-          cf rename "${BLUE_APP}" "${GREEN_APP}"
+          cf "${GREEN_APP}" && cf stop "${GREEN_APP}"
+          cf push "${GREEN_APP}" -n "${CF_APP}-test"
+          cf "${BLUE_APP}" && cf stop "${BLUE_APP}"
           export APP_NAME="$GREEN_APP"
           export APP_URL=http://$(cf app $APP_NAME | grep urls: | awk '{print $2}')
   - name: 'Run Tests - Performance & Scale'
@@ -143,8 +144,9 @@ stages:
           BLUE_APP="$CF_APP-blue"
           GREEN_APP="$CF_APP-green"
           cf push "${BLUE_APP}" -n "${CF_APP}"
-          cf delete "${GREEN_APP}" --f
-          cf rename "${BLUE_APP}" "${GREEN_APP}"
+          cf "${GREEN_APP}" && cf stop "${GREEN_APP}"
+          cf push "${GREEN_APP}" -n "${CF_APP}"
+          cf "${BLUE_APP}" && cf stop "${BLUE_APP}"
           export APP_NAME="$GREEN_APP"
           export APP_URL=http://$(cf app $APP_NAME | grep urls: | awk '{print $2}')
 
