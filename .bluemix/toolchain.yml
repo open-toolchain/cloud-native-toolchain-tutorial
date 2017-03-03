@@ -1,13 +1,10 @@
 version: '2'
 template:
-  name: DevOps Tutorial
-  description: >-
-    With this toolchain, you can develop and deploy a Bluemix Node.js 'Hello
-    World' application.  This toolchain demonstrates the DevOps practices
-    featured in the IBM Bluemix Garage Method.  It is pre-configured for
-    continuous delivery, source code editing and control, test automation, and
-    automated monitoring and operations.
+  name: Garage Method Cloud-native Tutorial
+  description: |-
+    This toolchain demonstrates the DevOps practices featured in the Bluemix Garage Method. The toolchain is preconfigured for continuous delivery, source control, test automation, and automated monitoring and operations. It comes with a sample app that is written in Node.js [Express 4](http://expressjs.com/), which you can further extend. This sample code is used in a tutorial that explains how to configure a toolchain for cloud-native development. 
 
+    To set up and run stages of the pipeline, you might need to register for other tools or services. The [tutorial](https://www.ibm.com/devops/method/content/course/gm_advocate) guides you through those details.
 
     To get started, click **Create**.
   header: '![](simpleCloudFoundry_NewRelic.svg "header image")'
@@ -17,18 +14,24 @@ template:
     - ccm
     - analytics
   info:
-    git url: >-
+    git url: |-
       [https://github.com/open-toolchain/cloud-native-toolchain-tutorial.git](https://github.com/open-toolchain/cloud-native-toolchain-tutorial.git)
-    git branch: >-
+    git branch: |-
       [master](https://github.com/open-toolchain/cloud-native-toolchain-tutorial/tree/master)
 toolchain:
   name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
+  template:
+    getting_started: |-
+      **Your toolchain is ready!**
+
+      **Quick start:** Commit a change to the Git repo to trigger a new build and deployment.
+      For step-by-step instructions, see the [tutorial] (https://www.ibm.com/devops/method/content/course/gm_advocate)  for this toolchain.
 services:
   sample-repo:
     service_id: githubpublic
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
-      repo_url: 'https://github.com/jploewen/devops-tutorial-app'
+      repo_url: 'https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app'
       type: clone
       has_issues: true
   sample-build:
