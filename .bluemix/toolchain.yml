@@ -10,7 +10,7 @@ template:
 
 
     To get started, click **Create**.
-  header: '![](simpleCloudFoundry_NewRelic.png "header image")'
+  header: '![](simpleCloudFoundry_NewRelic.svg "header image")'
   required:
     - sample-build
     - sample-repo
