@@ -41,7 +41,7 @@
 	.st35{opacity:0.5;fill:#AC5C51;enable-background:new    ;}
 	.st36{fill:#AC5C51;}
 	.st37{fill:#9CDAF0;}
-	.st38{font-family:'Arial-BoldMT';}
+	.st38{font-family:'Arial'; font-weight: bold}
 	.st39{font-size:12px;}
 	.st40{fill:#37808C;}
 	.st41{fill:#9BD3CD;}
