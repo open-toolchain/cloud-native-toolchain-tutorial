@@ -30,7 +30,7 @@ services:
   sample-repo:
     service_id: githubpublic
     parameters:
-      repo_name: 'sample-{{toolchain.name}}'
+      repo_name: 'cloud-native-toolchain-tutorial-app-{{timestamp}}'
       repo_url: 'https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app'
       type: clone
       has_issues: true
@@ -40,7 +40,7 @@ services:
       services:
         - sample-repo
         - test
-      name: 'sample-{{toolchain.name}}'
+      name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
       ui-pipeline: true
       configuration:
         content:
