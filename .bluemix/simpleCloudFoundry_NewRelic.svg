@@ -374,24 +374,24 @@
 	<line id="svg_473" class="st0" x1="276.8" y1="1090.1" x2="276.8" y2="1090.1"/>
 	<line id="svg_474" class="st0" x1="278.8" y1="1090" x2="278.7" y2="1090"/>
 </g>
-<text id="think" transform="matrix(1 0 0 1 120.35 1003.1)" class="st38 st39">THINK</text>
-<text id="code" transform="matrix(1 0 0 1 209.35 1003.1)" class="st38 st39">CODE</text>
-<text id="deliver" transform="matrix(1 0 0 1 335.35 1003.1)" class="st38 st39">DELIVER</text>
-<text id="run" transform="matrix(1 0 0 1 451.35 1003.1)" class="st38 st39">RUN</text>
-<text id="learn" transform="matrix(1 0 0 1 546.35 1003.1)" class="st38 st39">LEARN</text>
-<text id="manage" transform="matrix(1 0 0 1 624.35 1003.1)" class="st38 st39">MANAGE</text>
-<text id="culture" transform="matrix(1 0 0 1 701.35 1003.1)" class="st38 st39">CULTURE</text>
-<text id="issueTracker" transform="matrix(1 0 0 1 122.35 1114.1)" class="st38 st39">ISSUE TRACKER</text>
-<text id="gitHub1" transform="matrix(1 0 0 1 146.35 1128.1)" class="st38 st39">GitHub</text>
-<text id="repository1" transform="matrix(1 0 0 1 237.35 1114.1)" class="st38 st39">SAMPLE APP</text>
-<text id="gitHub2" transform="matrix(1 0 0 1 253.35 1127.1)" class="st38 st39">GitHub</text>
-<text id="pipeline1" transform="matrix(1 0 0 1 346.35 1114.1)" class="st38 st39">PIPELINE</text>
-<text id="bluemix" transform="matrix(1 0 0 1 449.35 1111.1)" class="st38 st39">BLUEMIX</text>
-<text id="webIde" transform="matrix(1 0 0 1 248.35 1334.0004)" class="st38 st39">WEB IDE</text>
-<text id="slack" transform="matrix(1.0228 0 0 1 722.9434 1113.0996)" class="st38 st39">SLACK</text>
-<text id="pagerDuty" transform="matrix(1.0228 0 0 1 624.5674 1113.0996)" class="st38 st39">PAGER DUTY</text>
-<text id="devops" transform="matrix(1 0 0 1 544.35 1114.1)" class="st38 st39">GOOGLE</text>
-<text id="insights" transform="matrix(1 0 0 1 537.35 1128.1)" class="st38 st39">ANALYTICS</text>
+<text id="headerSVG.think" transform="matrix(1 0 0 1 120.35 1003.1)" class="st38 st39">THINK</text>
+<text id="headerSVG.code" transform="matrix(1 0 0 1 209.35 1003.1)" class="st38 st39">CODE</text>
+<text id="headerSVG.deliver" transform="matrix(1 0 0 1 335.35 1003.1)" class="st38 st39">DELIVER</text>
+<text id="headerSVG.run" transform="matrix(1 0 0 1 451.35 1003.1)" class="st38 st39">RUN</text>
+<text id="headerSVG.learn" transform="matrix(1 0 0 1 546.35 1003.1)" class="st38 st39">LEARN</text>
+<text id="headerSVG.manage" transform="matrix(1 0 0 1 624.35 1003.1)" class="st38 st39">MANAGE</text>
+<text id="headerSVG.culture" transform="matrix(1 0 0 1 701.35 1003.1)" class="st38 st39">CULTURE</text>
+<text id="headerSVG.issueTracker" transform="matrix(1 0 0 1 122.35 1114.1)" class="st38 st39">ISSUE TRACKER</text>
+<text id="headerSVG.gitHub1" transform="matrix(1 0 0 1 146.35 1128.1)" class="st38 st39">GitHub</text>
+<text id="headerSVG.repository1" transform="matrix(1 0 0 1 237.35 1114.1)" class="st38 st39">SAMPLE APP</text>
+<text id="headerSVG.gitHub2" transform="matrix(1 0 0 1 253.35 1127.1)" class="st38 st39">GitHub</text>
+<text id="headerSVG.pipeline1" transform="matrix(1 0 0 1 346.35 1114.1)" class="st38 st39">PIPELINE</text>
+<text id="headerSVG.bluemix" transform="matrix(1 0 0 1 449.35 1111.1)" class="st38 st39">BLUEMIX</text>
+<text id="headerSVG.webIde" transform="matrix(1 0 0 1 248.35 1334.0004)" class="st38 st39">WEB IDE</text>
+<text id="headerSVG.slack" transform="matrix(1.0228 0 0 1 722.9434 1113.0996)" class="st38 st39">SLACK</text>
+<text id="headerSVG.pagerDuty" transform="matrix(1.0228 0 0 1 624.5674 1113.0996)" class="st38 st39">PAGER DUTY</text>
+<text id="headerSVG.google" transform="matrix(1 0 0 1 544.35 1114.1)" class="st38 st39">GOOGLE</text>
+<text id="headerSVG.analytics" transform="matrix(1 0 0 1 537.35 1128.1)" class="st38 st39">ANALYTICS</text>
 <line id="svg_18_1_" class="st9" x1="569.7" y1="1161.3" x2="569.7" y2="1135.1"/>
 <g id="svg_19_1_">
 	<g id="svg_20_1_">
@@ -457,6 +457,6 @@
 			l-14,14.1c7.4,3.4,16.1,0.1,19.5-7.3C289.4,1189.1,287,1181.1,280.6,1177.2L280.6,1177.2z"/>
 	</g>
 </g>
-<text id="saucelabs1_1_" transform="matrix(1 0 0 1 235.35 1231.1)" class="st38 st39">SAUCE LABS</text>
+<text id="headerSVG.sauceLabs" transform="matrix(1 0 0 1 235.35 1231.1)" class="st38 st39">SAUCE LABS</text>
 <line id="svg_18_2_" class="st9" x1="273.7" y1="1258.1" x2="273.7" y2="1237.5"/>
 </svg>
