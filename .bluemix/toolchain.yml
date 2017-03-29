@@ -1,12 +1,11 @@
 version: '2'
+messages:
+  $i18n: locales.yml
 template:
-  name: Garage Method Cloud-native Tutorial
-  description: |-
-    This toolchain demonstrates the DevOps practices featured in the Bluemix Garage Method. The toolchain is preconfigured for continuous delivery, source control, test automation, and automated monitoring and operations. It comes with a sample app that is written in Node.js [Express 4](http://expressjs.com/), which you can further extend. This sample code is used in a [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow) that explains how to configure a toolchain for cloud-native development.
-
-    To set up and run stages of the pipeline, you might need to register for other tools or services. The tutorial guides you through those details.
-
-    To get started, click **Create**.
+  name:
+    $ref: "#/messages/template.name"
+  description:
+    $ref: "#/messages/template.description"
   header: '![](simpleCloudFoundry_NewRelic.svg "header image")'
   icon: icon.svg
   required:
@@ -22,12 +21,8 @@ template:
 toolchain:
   name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
   template:
-    getting_started: |-
-      **Your toolchain is ready!**
-
-      **Quick start:** Commit a change to the Git repo to trigger a new build and deployment.
-
-      For step-by-step instructions, see the [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)  for this toolchain.
+    getting_started:
+      $ref: "#/messages/template.gettingStarted"
 services:
   sample-repo:
     service_id: githubpublic
