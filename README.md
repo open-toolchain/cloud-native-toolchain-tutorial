@@ -10,5 +10,5 @@ To set up and run certain stages of the pipeline, you might need to register for
 
 Create your DevOps toolchain now!
 
-###To get started, click this button:
+### To get started, click this button:
 [![Deploy To Bluemix](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy/)
