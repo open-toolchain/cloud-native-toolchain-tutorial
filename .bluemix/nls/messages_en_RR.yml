@@ -1,7 +1,6 @@
 ---
 template.name: "Garage Method Cloud-native Tutorial~otc-ui516"
 template.description: "This toolchain demonstrates the DevOps practices featured in the Bluemix Garage Method. The toolchain is preconfigured for continuous delivery, source control, test automation, and automated monitoring and operations. It comes with a sample app that is written in Node.js [Express 4](http://expressjs.com/), which you can further extend. This sample code is used in a [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow) that explains how to configure a toolchain for cloud-native development.\n\nTo set up and run stages of the pipeline, you might need to register for other tools or services. The tutorial guides you through those details.\n\nTo get started, click **Create**.~otc-ui517"
-template.gettingStarted: "**Your toolchain is ready!**\n**Quick start:** Commit a change to the Git repo to trigger a new build and deployment. For step-by-step instructions, see the [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)  for this toolchain.~otc-ui518"
 deploy.title: "Sample Deploy Stage~otc-ui519"
 deploy.description: "sample toolchain~otc-ui520"
 deploy.longDescription: "The Delivery Pipeline automates continuous deployment.~otc-ui521"

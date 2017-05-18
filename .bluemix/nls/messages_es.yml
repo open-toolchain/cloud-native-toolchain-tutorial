@@ -1,7 +1,6 @@
 ---
 template.name: "Guía de aprendizaje para cadena de herramientas nativas y de nube para Garage Method"
 template.description: "Esta cadena de herramientas demuestra las prácticas de DevOps destacadas en Bluemix Garage Method. La cadena de herramientas está configurada de forma previa para entrega continua, control de origen, automatización de pruebas y supervisión y pruebas automatizadas. Viene con una aplicación de ejemplo escrita en Node.js [Express 4](http://expressjs.com/), que puede ampliar con posterioridad. Este código de ejemplo se utiliza en la [guía de aprendizaje](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow) que explica cómo configurar una cadena de herramientas para el desarrollo nativo y de nube. \n\nPara configurar y ejecutar etapas del conducto, es posible que necesite registrarse para otras herramientas o servicios. La guía de aprendizaje le guía a través de esos detalles.\n\nPara comenzar, pulse **Crear**."
-template.gettingStarted: "**¡Su cadena de herramientas está lista!**\n**Inicio rápido:** Confirmar un cambio en el repositorio Git para desencadenar una nueva compilación y despliegue. Para obtener instrucciones detalladas paso a paso, consulte la [guía de aprendizaje](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)  para esta cadena de herramientas. "
 deploy.title: "Sample Deploy Stage"
 deploy.description: "cadena de herramientas de ejemplo"
 deploy.longDescription: "Delivery Pipeline automatiza el despliegue continuo."

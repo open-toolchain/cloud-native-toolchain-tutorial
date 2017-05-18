@@ -1,7 +1,6 @@
 ---
 template.name: "1:Garage Method Cloud-native Tutorial"
 template.description: "2:This toolchain demonstrates the DevOps practices featured in the Bluemix Garage Method. The toolchain is preconfigured for continuous delivery, source control, test automation, and automated monitoring and operations. It comes with a sample app that is written in Node.js [Express 4](http://expressjs.com/), which you can further extend. This sample code is used in a [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow) that explains how to configure a toolchain for cloud-native development.\n\nTo set up and run stages of the pipeline, you might need to register for other tools or services. The tutorial guides you through those details.\n\nTo get started, click **Create**."
-template.gettingStarted: "3:**Your toolchain is ready!**\n**Quick start:** Commit a change to the Git repo to trigger a new build and deployment. For step-by-step instructions, see the [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)  for this toolchain."
 deploy.title: "4:Sample Deploy Stage"
 deploy.description: "5:sample toolchain"
 deploy.longDescription: "6:The Delivery Pipeline automates continuous deployment."
