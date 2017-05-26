@@ -6,7 +6,7 @@ template:
     $ref: "#/messages/template.name"
   description:
     $ref: "#/messages/template.description"
-  header: '![](simpleCloudFoundry_NewRelic.svg "header image")'
+  header: '![](simpleCloudFoundry_NewRelic.svg?localize)'
   icon: icon.svg
   required:
     - sample-build
