@@ -383,7 +383,7 @@
 <text id="headerSVG.culture" transform="matrix(1 0 0 1 701.35 1003.1)" class="st38 st39">CULTURE</text>
 <text id="headerSVG.issueTracker" transform="matrix(1 0 0 1 122.35 1114.1)" textLength="89.7" lengthAdjust="spacingAndGlyphs" class="st38 st39">ISSUE TRACKER</text>
 <text id="headerSVG.gitHub1" transform="matrix(1 0 0 1 146.35 1128.1)" class="st38 st39">GitHub</text>
-<text id="headerSVG.repository1" transform="matrix(1 0 0 1 237.35 1114.1)" class="st38 st39">SAMPLE APP</text>
+<text id="headerSVG.repository" transform="matrix(1 0 0 1 237.35 1114.1)" class="st38 st39">SAMPLE APP</text>
 <text id="headerSVG.gitHub2" transform="matrix(1 0 0 1 253.35 1127.1)" class="st38 st39">GitHub</text>
 <text id="headerSVG.pipeline1" transform="matrix(1 0 0 1 346.35 1114.1)" class="st38 st39">PIPELINE</text>
 <text id="headerSVG.bluemix" transform="matrix(1 0 0 1 449.35 1111.1)" class="st38 st39">BLUEMIX</text>
