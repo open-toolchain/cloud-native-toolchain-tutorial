@@ -381,11 +381,11 @@
 <text id="headerSVG.learn" transform="matrix(1 0 0 1 546.35 1003.1)" class="st38 st39">LEARN</text>
 <text id="headerSVG.manage" transform="matrix(1 0 0 1 624.35 1003.1)" class="st38 st39">MANAGE</text>
 <text id="headerSVG.culture" transform="matrix(1 0 0 1 701.35 1003.1)" class="st38 st39">CULTURE</text>
-<text id="headerSVG.issueTracker" transform="matrix(1 0 0 1 122.35 1114.1)" textLength="89.7" lengthAdjust="spacingAndGlyphs" class="st38 st39">ISSUE TRACKER</text>
+<text id="headerSVG.issueTracker" transform="matrix(1 0 0 1 122.35 1114.1)">ISSUE TRACKER</text>
 <text id="headerSVG.gitHub1" transform="matrix(1 0 0 1 146.35 1128.1)" class="st38 st39">GitHub</text>
 <text id="headerSVG.repository" transform="matrix(1 0 0 1 237.35 1114.1)" class="st38 st39">SAMPLE APP</text>
 <text id="headerSVG.gitHub2" transform="matrix(1 0 0 1 253.35 1127.1)" class="st38 st39">GitHub</text>
-<text id="headerSVG.pipeline1" transform="matrix(1 0 0 1 346.35 1114.1)" class="st38 st39">PIPELINE</text>
+<text id="headerSVG.pipeline" transform="matrix(1 0 0 1 346.35 1114.1)" class="st38 st39">PIPELINE</text>
 <text id="headerSVG.bluemix" transform="matrix(1 0 0 1 449.35 1111.1)" class="st38 st39">BLUEMIX</text>
 <text id="headerSVG.webIde" transform="matrix(1 0 0 1 248.35 1334.0004)" class="st38 st39">WEB IDE</text>
 <text id="headerSVG.slack" transform="matrix(1.0228 0 0 1 722.9434 1113.0996)" class="st38 st39">SLACK</text>
@@ -441,7 +441,7 @@
 			C503.1,1141.4,502.8,1141.7,502.5,1141.7L502.5,1141.7L502.5,1141.7z"/>
 	</g>
 </g>
-<text id="newRelic" transform="matrix(1 0 0 1 538.35 1238.1)" class="st38 st39">NEW RELIC</text>
+<text id="headerSVG.newRelic" transform="matrix(1 0 0 1 538.35 1238.1)" class="st38 st39">NEW RELIC</text>
 <g>
 	<path d="M554,1082l4,4l17-17l-4-4L554,1082z M558,1083.2l-1.2-1.2l14.2-14.2l1.2,1.2L558,1083.2z"/>
 	<polygon points="583,1067 581,1067 581,1065 574,1058 566,1058 577,1069 579,1069 579,1071 580,1072 584,1068 	"/>
