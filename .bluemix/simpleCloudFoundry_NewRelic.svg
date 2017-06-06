@@ -380,7 +380,7 @@
 <text id="headerSVG.run" transform="matrix(1 0 0 1 451.35 1003.1)" class="st38 st39">RUN</text>
 <text id="headerSVG.learn" transform="matrix(1 0 0 1 546.35 1003.1)" class="st38 st39">LEARN</text>
 <text id="headerSVG.manage" transform="matrix(1 0 0 1 624.35 1003.1)" class="st38 st39">MANAGE</text>
-<text id="headerSVG.culture" transform="matrix(1 0 0 1 701.35 1003.1)" class="st38 st39">CULTURE</text>
+<text id="headerSVG.culture" class="st38 st39" transform="matrix(1 0 0 1 701.35 1003.1)" class="st38 st39">CULTURE</text>
 <text id="headerSVG.issueTracker" transform="matrix(1 0 0 1 122.35 1114.1)">ISSUE TRACKER</text>
 <text id="headerSVG.gitHub1" transform="matrix(1 0 0 1 146.35 1128.1)" class="st38 st39">GitHub</text>
 <text id="headerSVG.repository" transform="matrix(1 0 0 1 237.35 1114.1)" class="st38 st39">SAMPLE APP</text>
