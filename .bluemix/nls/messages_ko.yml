@@ -1,6 +1,6 @@
 ---
 template.name: "Garage Method 클라우드 네이티브 튜토리얼"
-template.description: "이 도구 체인은 Bluemix Garage Method에 제공되는 DevOps 사례를 보여줍니다. 이 도구 체인은 지속적 딜리버리, 소스 제어, 테스트 자동화, 자동화된 모니터링 및 오퍼레이션을 위해 사전 구성되어 있습니다. 추가로 확장할 수 있는 Node.js [Express 4](http://expressjs.com/)로 작성한 샘플 앱이 함께 제공됩니다. 이 샘플 코드는 클라우드 네이티브 개발에 맞게 도구 체인을 구성하는 방법을 설명하는 [튜토리얼](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)에서 사용됩니다. \n\n파이프라인의 단계를 설정하고 실행하려면 다른 도구나 서비스를 등록해야 할 수도 있습니다. 이 튜토리얼에서 세부사항을 안내합니다. \n\n계속하려면 **작성**을 클릭하십시오."
+template.description: "이 도구 체인은 Bluemix Garage Method에 제공되는 DevOps 사례를 보여줍니다. 이 도구 체인은 지속적 딜리버리, 소스 제어, 테스트 자동화, 자동화된 모니터링 및 오퍼레이션을 위해 사전 구성되어 있습니다. 추가로 확장할 수 있는 Node.js [Express 4](http://expressjs.com/)로 작성한 샘플 앱이 함께 제공됩니다. 이 샘플 코드는 클라우드 네이티브 개발에 맞게 도구 체인을 구성하는 방법을 설명하는 [튜토리얼](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)에서 사용됩니다. \n\n파이프라인의 단계를 설정하고 실행하려면 다른 도구나 서비스를 등록해야 할 수도 있습니다. 이 튜토리얼에서 세부사항을 안내합니다. \n\n시작하려면 **작성**을 클릭하십시오."
 template.gettingStarted: "**도구 체인이 준비되었습니다!**\n**빠른 시작:** Git 저장소에 변경사항을 커미트하여 새 빌드와 배치를 트리거하십시오. 단계별 지시사항은 이 도구 체인의 [튜토리얼](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)을 참조하십시오."
 deploy.title: "샘플 배치 단계"
 deploy.description: "샘플 도구 체인"

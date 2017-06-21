@@ -1,8 +1,8 @@
 ---
 template.name: "Garage Method 雲端原生指導教學"
-template.description: "此工具鏈示範 Bluemix Garage Method 中特有的 DevOps 作法。此工具鏈已針對持續交付、來源控制、測試自動化，以及自動監視及作業進行預先配置。其隨附以 Node.js 撰寫的範例應用程式 [Express 4](http://expressjs.com/)，您可以進一步擴充。此範例程式碼用於 [指導教學](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)，說明如何配置工具鏈進行雲端原生開發。\n\n若要設定及執行管線的暫置，您可能需要登錄其他工具或服務。此指導教學會引導您逐步瞭解這些細節。\n\n若要開始，請按一下**建立**。"
-template.gettingStarted: "**您的工具鏈已備妥！**\n**快速入門：** 確定 Git 儲存庫的變更，以觸發新的建置及部署。如需逐步指示，請參閱此工具鏈的 [指導教學](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)。"
-deploy.title: "範例服務部署暫置"
+template.description: "此工具鏈示範 Bluemix Garage Method 中特有的 DevOps 作法。此工具鏈已針對 Continuous Delivery、來源控制、測試自動化，以及自動監視及作業進行預先配置。其隨附以 Node.js 撰寫的範例應用程式 [Express 4](http://expressjs.com/)，您可以進一步擴充。此範例程式碼用於[指導教學](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)，說明如何配置工具鏈進行雲端原生開發。\n\n若要設定及執行管線的階段，您可能需要登錄其他工具或服務。此指導教學會引導您逐步瞭解這些細節。\n\n若要開始，請按一下**建立**。"
+template.gettingStarted: "**您的工具鏈已備妥！**\n**快速入門：** 確定 Git 儲存庫的變更，以觸發新的建置及部署。如需逐步指示，請參閱此工具鏈的[指導教學](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)。"
+deploy.title: "範例部署階段"
 deploy.description: "範例工具鏈"
 deploy.longDescription: "Delivery Pipeline 會自動執行連續部署。"
 deploy.appDescription: "Hello World 應用程式的名稱"
