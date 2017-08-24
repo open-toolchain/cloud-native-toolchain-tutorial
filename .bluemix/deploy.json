@@ -42,7 +42,8 @@
             "description": {
               "$ref": "#/messages/deploy.appDescription"
             },
-            "type": "string"
+            "type": "string",
+            "maxLength": 63
         }
     },
     "required": ["test-region", "test-organization", "test-space", "prod-region", "prod-organization", "prod-space", "app-name"],
