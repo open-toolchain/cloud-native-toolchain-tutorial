@@ -43,10 +43,7 @@
               "$ref": "#/messages/deploy.appDescription"
             },
             "type": "string",
-            "maxLength": 63,
-            "invalidMessage": {
-                "$ref": "#/messages/deploy.invalidAppName"
-            }
+            "maxLength": 63
         }
     },
     "required": ["test-region", "test-organization", "test-space", "prod-region", "prod-organization", "prod-space", "app-name"],
