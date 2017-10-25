@@ -1,6 +1,6 @@
 ---
 template.name: "Garage Method 云本机教程"
-template.description: "此工具链演示了 Bluemix Garage Method 中特有的 DevOps 实践。预先配置了此工具链，以进行持续交付、源代码控制、测试自动化和自动监视与操作。它随附用 Node.js [Express 4](http://expressjs.com/) 编写的样本应用程序，可以对其做进一步扩展。此样本代码在[教程](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)中用于说明如何配置工具链以用于云本机开发。\n\n要设置并运行管道的各阶段，可能需要注册其他工具或服务。此教程将指导您逐步了解这些详细信息。\n\n此工具链使用 Continuous Delivery 服务中的工具。如果所选组织中没有该服务的实例，当您单击**创建**时，会自动添加该服务实例并选择免费 [Lite](/catalog/services/continuous-delivery/) 套餐。\n\n单击**创建**以开始。"
+template.description: "此工具链演示了 Bluemix Garage Method 中特有的 DevOps 实践。预先配置了此工具链，以进行持续交付、源代码控制、测试自动化和自动监视与操作。它随附用 Node.js [Express 4](http://expressjs.com/) 编写的样本应用程序，您可以对其做进一步扩展。此样本代码在[教程](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)中用于说明如何配置工具链以用于云本机开发。\n\n要设置并运行管道的各阶段，可能需要注册其他工具或服务。此教程将指导您逐步了解这些详细信息。\n\n此工具链使用 Continuous Delivery 服务中的工具。如果所选组织中没有该服务的实例，那么当您单击**创建**时，会自动添加该服务实例并选择免费[轻量](/catalog/services/continuous-delivery/)套餐。\n\n单击**创建**以开始。"
 template.gettingStarted: "**工具链已就绪！**\n**快速启动：** 将更改提交到 Git 存储库以触发新的构建和部署。有关逐步指示信息，请参阅此工具链的[教程](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow)。"
 deploy.title: "样本部署暂存区"
 deploy.description: "样本工具链"
