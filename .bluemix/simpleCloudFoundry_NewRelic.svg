@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="184 1204 600 354.5" style="enable-background:new 184 1204 600 354.5;" xml:space="preserve">
+	 viewBox="164 1204 600 354.5" style="enable-background:new 164 1204 600 354.5;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:none;}
 	.st1{fill:#FFFFFF;stroke:#5AAAFA;stroke-miterlimit:10;}
@@ -37,7 +37,7 @@
 	.st31{opacity:0.5;fill:#AC5C51;enable-background:new    ;}
 	.st32{fill:#AC5C51;}
 	.st33{fill:#9CDAF0;}
-	.st34{font-family:'Arial'; font-weight: bold}
+	.st34{font-family:'Arial-BoldMT';}
 	.st35{font-size:12px;}
 	.st36{fill:#37808C;}
 	.st37{fill:#9BD3CD;}
@@ -55,7 +55,7 @@
 </style>
 <g>
 	<title>background</title>
-	<rect id="canvas_background" x="184" y="1204" class="st0" width="600" height="240"/>
+	<rect id="canvas_background" x="164" y="1204" class="st0" width="600" height="240"/>
 </g>
 <title>Layer 1</title>
 <g id="svg_1">
@@ -387,7 +387,7 @@
 <text id="headerSVG.repository" transform="matrix(1 0 0 1 258.35 1334.1)" class="st34 st35">SAMPLE APP</text>
 <text id="headerSVG.gitHub2" transform="matrix(1 0 0 1 274.35 1347.1)" class="st34 st35">GitHub</text>
 <text id="headerSVG.pipeline" transform="matrix(1 0 0 1 367.35 1334.1)" class="st34 st35">PIPELINE</text>
-<text id="headerSVG.ibmCloud" transform="matrix(1 0 0 1 469.35 1331.1)" class="st34 st35">IBM Cloud</text>
+<text id="headerSVG.bluemix" transform="matrix(1 0 0 1 469.35 1331.1)" class="st34 st35">IBM Cloud</text>
 <text id="headerSVG.webIde" transform="matrix(1 0 0 1 269.35 1554.0004)" class="st34 st35">WEB IDE</text>
 <text id="headerSVG.slack" transform="matrix(1.0228 0 0 1 743.9434 1333.0996)" class="st34 st35">SLACK</text>
 <text id="headerSVG.pagerDuty" transform="matrix(1.0228 0 0 1 645.5674 1333.0996)" class="st34 st35">PAGER DUTY</text>
