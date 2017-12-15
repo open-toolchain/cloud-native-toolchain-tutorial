@@ -148,7 +148,7 @@ stages:
           cf app "${GREEN_APP}" && cf delete "${GREEN_APP}" -f
           cf rename "${BLUE_APP}" "${GREEN_APP}"
           export APP_NAME="$GREEN_APP"
-          export APP_URL=http://$(cf app $APP_NAME | grep urls: | awk '{print $2}')
+          export APP_URL=http://$(cf app $APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
 
           # Instant Purging removes content from Fastly immediately so it can be refreshed from your origin servers.
           # The main entry point http://api.fastly.com/ for the API is not needed for an individual URL Instant Purge.
