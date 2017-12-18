@@ -46,7 +46,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
-          export PATH=/opt/IBM/node-v6.7.0/bin:$PATH
+          export PATH=/opt/IBM/node-v4.6.0/bin:$PATH
           # Karma Unit Test, output file: test/*.xml
           tar -xzf node_modules.tar.gz
           node ./node_modules/gulp/bin/gulp dev-karma
