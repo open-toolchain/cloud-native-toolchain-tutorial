@@ -46,6 +46,7 @@ stages:
         type: tester
         script: |-
           #!/bin/bash
+          export PATH=/opt/IBM/node-v6.7.0/bin:$PATH
           # Karma Unit Test, output file: test/*.xml
           tar -xzf node_modules.tar.gz
           node ./node_modules/gulp/bin/gulp dev-karma
@@ -86,7 +87,7 @@ stages:
           cf app "${GREEN_APP}" && cf delete "${GREEN_APP}" -f
           cf rename "${BLUE_APP}" "${GREEN_APP}"
           export APP_NAME="$GREEN_APP"
-          export APP_URL=http://$(cf app $APP_NAME | grep urls: | awk '{print $2}')
+          export APP_URL=http://$(cf app $APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
