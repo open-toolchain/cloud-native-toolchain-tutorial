@@ -88,12 +88,6 @@ services:
 form:
   pipeline:
     parameters:
-      test-region: '{{region}}'
-      test-organization: '{{organization}}'
-      test-space: test
-      prod-region: '{{region}}'
-      prod-organization: '{{organization}}'
-      prod-space: prod
       app-name: '{{services.sample-repo.parameters.repo_name}}'
     schema:
       $ref: deploy.json
