@@ -78,6 +78,7 @@ stages:
           organization: ${TEST_ORGANIZATION}
           space: ${TEST_SPACE}
           application: ${CF_APP_NAME}
+          api_key: ${API_KEY}
         script: |-
           #!/bin/bash
           BLUE_APP="$CF_APP-test-blue"
@@ -140,6 +141,7 @@ stages:
           organization: ${PROD_ORGANIZATION}
           space: ${PROD_SPACE}
           application: ${CF_APP_NAME}
+          api_key: ${API_KEY}
         script: |-
           #!/bin/bash
           BLUE_APP="$CF_APP-blue"
