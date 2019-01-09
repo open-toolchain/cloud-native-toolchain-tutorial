@@ -14,7 +14,7 @@ sample-repo:
   service_id: githubpublic
   parameters:
     repo_name: "sample-{{name}}"
-    repo_url: https://github.com/jploewen/devops-tutorial-app
+    repo_url: https://github.com/open-toolchain/devops-tutorial-app
     type: clone
     has_issues: true
 
