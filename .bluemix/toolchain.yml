@@ -19,7 +19,7 @@ template:
     git branch: |-
       [master](https://github.com/open-toolchain/cloud-native-toolchain-tutorial/tree/master)
 toolchain:
-  name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
+  name: 'gary-cloud-native-toolchain-tutorial-{{timestamp}}'
   template:
     getting_started:
       $ref: "#/messages/template.gettingStarted"
