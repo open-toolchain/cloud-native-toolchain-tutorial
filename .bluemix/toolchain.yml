@@ -14,10 +14,15 @@ template:
     - ccm
     - analytics
   info:
-    git url: |-
-      [https://github.com/open-toolchain/cloud-native-toolchain-tutorial.git](https://github.com/open-toolchain/cloud-native-toolchain-tutorial.git)
-    git branch: |-
-      [master](https://github.com/open-toolchain/cloud-native-toolchain-tutorial/tree/master)
+    # compute the git url and branch values dynamically so that they remain correct when repo is forked etc. 
+    # note: `repository` url param must always be provided while the `branch` url param is optional
+    # the computed urls are of the same format as the original static urls shown above
+    git url: >
+        '[' + $env.repository + '](' + $env.repository + ')'
+    git branch: >
+        $env.branch ?
+          '[' + $env.branch + ']('+ $env.repository + '/tree/' + $env.branch + ')' :
+          '[master]('+ $env.repository + '/tree/master)'
 toolchain:
   name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
   template:
