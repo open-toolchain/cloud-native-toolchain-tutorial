@@ -96,6 +96,10 @@ stages:
         job: NPM
     triggers:
       - type: stage
+    properties:
+      - name: APP_URL
+        value: undefined
+        type: text	
     jobs:
       - name: Sauce Labs Tests
         type: tester
