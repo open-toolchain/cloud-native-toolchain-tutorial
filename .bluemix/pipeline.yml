@@ -107,10 +107,6 @@ stages:
         extension_id: ibm.devops.services.pipeline.saucelabs
         services:
           - ${SAUCE_LABS}
-        target:
-          region_id: ${TEST_REGION_ID}
-          organization: ${TEST_ORGANIZATION}
-          space: ${TEST_SPACE}
         DL_ASSETS: 'false'
         SELECT_CMD: custom
         COMMAND: |-
