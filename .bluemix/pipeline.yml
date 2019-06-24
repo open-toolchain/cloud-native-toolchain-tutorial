@@ -1,5 +1,5 @@
 ---
-defaultBaseImageVersion: 2.0
+defaultBaseImageVersion: latest
 stages:
   - name: Build
     inputs:
