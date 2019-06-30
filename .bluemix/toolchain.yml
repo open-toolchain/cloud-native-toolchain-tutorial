@@ -33,7 +33,7 @@ services:
     service_id: githubconsolidated
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
-      repo_url: 'https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app'
+      repo_url: 'https://github.com/padraic-edwards/cloud-native-toolchain-tutorial-app'
       type: clone
       has_issues: true
       enable_traceability: true
