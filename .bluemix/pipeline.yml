@@ -58,7 +58,7 @@ stages:
           # Mocha Unit Test, output file: test/*.xml
           node ./node_modules/gulp/bin/gulp dev-mocha
           # Mocha Api Unit Test, output file: xunit.xml
-          node ./node_modules/mocha/bin/mocha --recursive --reporter --exit xunit-file test/api/
+          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/ --exit
         enable_tests: true
         test_file_pattern: '*.xml, test/*.xml'
   - name: Deploy to Test
