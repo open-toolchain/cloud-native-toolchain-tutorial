@@ -1,4 +1,5 @@
 ---
+defaultBaseImageVersion: latest
 stages:
   - name: Build
     inputs:
@@ -11,6 +12,7 @@ stages:
       - name: Changelog
         type: builder
         build_type: shell
+        curatedDockerImage: latest
         script: |-
           #!/bin/bash
           # This script just dumps the changes included in this build into a file named changelog.txt
@@ -20,9 +22,10 @@ stages:
       - name: NPM
         type: builder
         build_type: npm
+        curatedDockerImage: latest
         script: |-
           #!/bin/bash
-          npm install -g npm@3.7.1
+          apt-get install -y bzip2
           npm install
           tar -czf node_modules.tar.gz node_modules
           rm -rf node_modules 
@@ -36,6 +39,7 @@ stages:
     jobs:
       - name: Linting
         type: tester
+        curatedDockerImage: latest
         script: |-
           #!/bin/bash
           tar -xzf node_modules.tar.gz
@@ -44,6 +48,7 @@ stages:
         test_file_pattern: 'test/*.xml'
       - name: Unit Tests
         type: tester
+        curatedDockerImage: latest
         script: |-
           #!/bin/bash
           export PATH=/opt/IBM/node-v4.6.0/bin:$PATH
@@ -53,7 +58,7 @@ stages:
           # Mocha Unit Test, output file: test/*.xml
           node ./node_modules/gulp/bin/gulp dev-mocha
           # Mocha Api Unit Test, output file: xunit.xml
-          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/
+          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/ --exit
         enable_tests: true
         test_file_pattern: '*.xml, test/*.xml'
   - name: Deploy to Test
