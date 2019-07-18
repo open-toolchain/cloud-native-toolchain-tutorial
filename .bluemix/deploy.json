@@ -94,7 +94,7 @@
     "required": ["test-region", "test-organization", "test-space", "prod-region", "prod-organization", "prod-space", "app-name", "api-key"],
     "form": [{
             "type": "validator",
-            "url": "/devops/setup/bm-helper/validator-v1.html"
+            "url": "/devops/validator/validator-v1.html"
         },
         {
             "type": "text",
