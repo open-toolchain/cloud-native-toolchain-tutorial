@@ -5,7 +5,7 @@ stages:
     inputs:
       - type: git
         branch: master
-        service: ${SAMPLE_REPO}        
+        service: ${SAMPLE_REPO}
     triggers:
       - type: commit
     jobs:
@@ -28,7 +28,7 @@ stages:
           apt-get install -y bzip2
           npm install
           tar -czf node_modules.tar.gz node_modules
-          rm -rf node_modules 
+          rm -rf node_modules
   - name: 'Run Unit Tests'
     inputs:
       - type: job
@@ -65,7 +65,7 @@ stages:
     inputs:
       - type: job
         stage: 'Build'
-        job: Changelog
+        job: NPM
     triggers:
       - type: stage
     properties:
@@ -74,7 +74,7 @@ stages:
       type: text
     - name: APP_URL
       value: undefined
-      type: text	
+      type: text
     jobs:
       - name: Blue/Green Deploy
         type: deployer
@@ -94,17 +94,28 @@ stages:
           cf rename "${BLUE_APP}" "${GREEN_APP}"
           export APP_NAME="$GREEN_APP"
           export APP_URL=http://$(cf app $APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
+      - name: Deployment Manifest
+        type: build
+        build_type: shell
+        curatedDockerImage: latest
+        script: |-
+          #!/bin/bash
+          # This script just dumps the deployment APP_URL, APP_NAME and CF_APP_NAME
+          # into a file named deployment.properties that will be used in subsequent stage(s)
+          echo "APP_NAME=${APP_NAME}" > deployment.properties
+          echo "APP_URL=${APP_URL}" >> deployment.properties
+          echo "CF_APP_NAME=${APP_NAME}" >> deployment.properties
   - name: 'Run Tests - Performance & Scale'
     inputs:
       - type: job
-        stage: 'Build'
-        job: NPM
+        stage: 'Deploy to Test'
+        job: 'Deployment Manifest'
     triggers:
       - type: stage
     properties:
-      - name: APP_URL
-        value: undefined
-        type: text	
+      - name: deployment_properties
+        value: deployment.properties
+        type: file	
     jobs:
       - name: Sauce Labs Tests
         type: tester
@@ -115,20 +126,22 @@ stages:
         SELECT_CMD: custom
         COMMAND: |-
           #!/bin/bash
+          # restore node_modules
           tar -xzf node_modules.tar.gz
-          if [[ ${CF_APP} == '' ]];
+          # ensure app is deployed
+          if [[ ${CF_APP_NAME} == '' ]];
           then
             echo 'Test App is missing!'
           else
             npm test
-          fi      
+          fi
         enable_tests: true
-        test_file_pattern: '*.xml'        
+        test_file_pattern: 'test/saucelabs-results.xml'
   - name: Deploy to Prod
     inputs:
       - type: job
         stage: 'Build'
-        job: Changelog
+        job: NPM
     triggers:
       - type: stage
     properties:
@@ -137,7 +150,7 @@ stages:
       type: text
     - name: APP_URL
       value: undefined
-      type: text	
+      type: text
     jobs:
       - name: Blue/Green Deploy
         type: deployer
