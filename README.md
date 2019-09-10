@@ -11,4 +11,4 @@ To set up and run certain stages of the pipeline, you might need to register for
 Create your DevOps toolchain now!
 
 ### To get started, click this button:
-[![Deploy To IBM Cloud](https://cloud.ibm.com/devops/graphics/create_toolchain_button.png)](https://cloud.ibm.com/devops/setup/deploy/)
+[![Deploy To IBM Cloud](https://cloud.ibm.com/devops/graphics/create_toolchain_button.png)](https://cloud.ibm.com/devops/setup/deploy?repository=https://github.com/open-toolchain/cloud-native-toolchain-tutorial)
