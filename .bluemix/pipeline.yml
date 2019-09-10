@@ -95,7 +95,7 @@ stages:
           export APP_NAME="$GREEN_APP"
           export APP_URL=http://$(cf app $APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
       - name: Deployment Manifest
-        type: build
+        type: builder
         build_type: shell
         curatedDockerImage: latest
         script: |-
