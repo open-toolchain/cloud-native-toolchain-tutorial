@@ -1,6 +1,6 @@
 ---
 template.name: "Tutoriel Garage Method avec Cloud Foundry"
-template.description: "Cette chaîne d'outils illustre les pratiques DevOps appliquées dans IBM Cloud Garage Method. Elle est préconfigurée pour la distribution continue, le contrôle des sources et l'automatisation des tests, ainsi que pour la surveillance et les opérations automatisées. Elle est fournie avec un modèle d'application écrit en Node.js [Express 4](http://expressjs.com/), que vous pouvez continuer à étendre. Cet exemple de code est utilisé dans un [tutoriel](https://www.ibm.com/cloud/garage/content/course/garage-method-for-cloud-advocate/0) qui explique comment configurer une chaîne d'outils pour le développement natif du cloud.
+template.description: "Cette chaîne d'outils illustre les pratiques DevOps appliquées dans IBM Cloud Garage Method. Elle est préconfigurée pour la distribution continue, le contrôle des sources et l'automatisation des tests, ainsi que pour la surveillance et les opérations automatisées. Elle est fournie avec un modèle d'application écrit en Node.js [Express 4](http://expressjs.com/), que vous pouvez continuer à étendre. Cet exemple de code est utilisé dans un [tutoriel](https://www.ibm.com/cloud/garage/content/course/garage-method-for-cloud-advocate/0) qui explique comment configurer une chaîne d'outils pour un développement natif du cloud.
   
   Pour configurer et exécuter les phases du pipeline, vous devrez peut-être vous enregistrer auprès d'autres outils ou services. Le tutoriel vous guide tout au long de ce processus.
   
