@@ -35,11 +35,12 @@ stages:
           apt-get install -y bzip2
           npm install
           tar -czf node_modules.tar.gz node_modules
+          rm -rf node_modules
           source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/fetch_git_creds.sh")
           BUILD_STATUS=pass
           if jq -e '.services[] | select(.service_id=="draservicebroker")' _toolchain.json; then
-            ibmcloud login --apikey ${IBM_CLOUD_API_KEY} --no-region
-            ibmcloud doi publishbuildrecord --branch ${GIT_BRANCH} --repositoryurl ${GIT_URL} --commitid ${GIT_COMMIT} --buildnumber ${BUILD_NUMBER} --logicalappname ${IMAGE_NAME} --status pass
+            ibmcloud login --apikey ${API_KEY} --no-region
+            ibmcloud doi publishbuildrecord --logicalappname="$MY_APP_NAME" --buildnumber=$BUILD_NUMBER --branch=$GIT_BRANCH --repositoryurl=$GIT_URL --commitid=$GIT_COMMIT --status=$BUILD_STATUS
           fi
   - name: 'Run Unit Tests'
     inputs:
