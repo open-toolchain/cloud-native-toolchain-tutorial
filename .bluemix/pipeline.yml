@@ -4,15 +4,16 @@ properties:
 - name: API_KEY
   value: ${API_KEY}
   type: secure
-- name: MY_APP_NAME
-  value: ${CF_APP_NAME}
-  type: text
 stages:
   - name: Build
     inputs:
       - type: git
         branch: master
         service: ${SAMPLE_REPO}
+    properties:
+    - name: APP_NAME
+      value: ${CF_APP_NAME}
+      type: text
     triggers:
       - type: commit
     jobs:
@@ -40,7 +41,7 @@ stages:
           BUILD_STATUS=pass
           if jq -e '.services[] | select(.service_id=="draservicebroker")' _toolchain.json; then
             ibmcloud login --apikey ${API_KEY} --no-region
-            ibmcloud doi publishbuildrecord --logicalappname="$MY_APP_NAME" --buildnumber=$BUILD_NUMBER --branch=$GIT_BRANCH --repositoryurl=$GIT_URL --commitid=$GIT_COMMIT --status=$BUILD_STATUS
+            ibmcloud doi publishbuildrecord --logicalappname="$APP_NAME" --buildnumber=$BUILD_NUMBER --branch=$GIT_BRANCH --repositoryurl=$GIT_URL --commitid=$GIT_COMMIT --status=$BUILD_STATUS
           fi
   - name: 'Run Unit Tests'
     inputs:
