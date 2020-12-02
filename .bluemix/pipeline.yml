@@ -1,11 +1,19 @@
 ---
 defaultBaseImageVersion: latest
+properties:
+- name: API_KEY
+  value: ${API_KEY}
+  type: secure
 stages:
   - name: Build
     inputs:
       - type: git
         branch: master
         service: ${SAMPLE_REPO}
+    properties:
+    - name: APP_NAME
+      value: ${CF_APP_NAME}
+      type: text
     triggers:
       - type: commit
     jobs:
@@ -29,11 +37,21 @@ stages:
           npm install
           tar -czf node_modules.tar.gz node_modules
           rm -rf node_modules
+          source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/fetch_git_creds.sh")
+          BUILD_STATUS=pass
+          if jq -e '.services[] | select(.service_id=="draservicebroker")' _toolchain.json; then
+            ibmcloud login --apikey ${API_KEY} --no-region
+            ibmcloud doi publishbuildrecord --logicalappname="$APP_NAME" --buildnumber=$BUILD_NUMBER --branch=$GIT_BRANCH --repositoryurl=$GIT_URL --commitid=$GIT_COMMIT --status=$BUILD_STATUS
+          fi
   - name: 'Run Unit Tests'
     inputs:
       - type: job
         stage: Build
         job: NPM
+    properties:
+    - name: APP_NAME
+      value: ${CF_APP_NAME}
+      type: text
     triggers:
       - type: stage
     jobs:
@@ -52,15 +70,22 @@ stages:
         script: |-
           #!/bin/bash
           export PATH=/opt/IBM/node-v4.6.0/bin:$PATH
-          # Karma Unit Test, output file: test/*.xml
-          tar -xzf node_modules.tar.gz
-          node ./node_modules/gulp/bin/gulp dev-karma
-          # Mocha Unit Test, output file: test/*.xml
-          node ./node_modules/gulp/bin/gulp dev-mocha
-          # Mocha Api Unit Test, output file: xunit.xml
-          node ./node_modules/mocha/bin/mocha --recursive --reporter xunit-file test/api/ --exit
-        enable_tests: true
-        test_file_pattern: '*.xml, test/*.xml'
+          if [ -f ./test/run-tests.sh ]; then
+            source ./test/run-tests.sh
+            ibmcloud login --apikey $API_KEY --no-region
+            IFS=';' read -ra locations <<< "$FILE_LOCATIONS"
+            IFS=';' read -ra types <<< "$TEST_TYPES"
+            if jq -e '.services[] | select(.service_id=="draservicebroker")' _toolchain.json; then
+              for i in "${!locations[@]}"
+              do
+                echo "$i ${locations[i]} ${types[i]}"
+                ibmcloud doi publishtestrecord --logicalappname=${APP_NAME} --buildnumber=$BUILD_NUMBER --filelocation=${locations[i]} --type=${types[i]}
+              done
+            fi
+          else
+           echo "Test runner script not found: ./test/run-tests.sh"
+          fi
+          rm -rf node_modules
   - name: Deploy to Test
     inputs:
       - type: job
