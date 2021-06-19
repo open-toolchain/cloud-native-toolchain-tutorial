@@ -27,7 +27,7 @@ template:
         $env.branch ?
           '[' + $env.branch + ']('+ $env.repository + '/tree/' + $env.branch + ')' :
           '[master]('+ $env.repository + '/tree/master)'
-    hosted_region: ""
+    hosted_region: "test"
 toolchain:
   name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
   template:
