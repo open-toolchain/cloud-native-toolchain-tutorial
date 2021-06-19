@@ -35,11 +35,8 @@ services:
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
       source_repo_url: >
-        if ( $env.template.info.hosted_region !== "" ) {
-          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
-        } else {
-          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
-        }
+        $env.template.info.hosted_region !== "" ? "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app" :
+        "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
       type: clone
       has_issues: true
       enable_traceability: true
