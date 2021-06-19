@@ -31,7 +31,7 @@ toolchain:
       $ref: "#/messages/template.gettingStarted"
 services:
   sample-repo:
-    service_id: githubconsolidated
+    service_id: hostedgit
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
       source_repo_url: >
