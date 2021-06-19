@@ -38,6 +38,12 @@ services:
     service_id: hostedgit
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
+      repo_url: >
+        if ( $env.template.info.hosted_region !== "" ) {
+          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        } else {
+          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        }
       source_repo_url: >
         if ( $env.template.info.hosted_region !== "" ) {
           "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
