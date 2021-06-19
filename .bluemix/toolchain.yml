@@ -35,22 +35,23 @@ toolchain:
       $ref: "#/messages/template.gettingStarted"
 services:
   sample-repo:
-    service_id: hostedgit
+    service_id: >
+      $env.source_provider ? $env.source_provider : 'hostedgit'
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
       repo_url: >
         if ( $env.template.info.hosted_region !== "" ) {
-          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
         } else {
           "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
         }
       source_repo_url: >
         if ( $env.template.info.hosted_region !== "" ) {
-          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
         } else {
           "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
         }
-      type: clone
+      type: $env.type || 'clone'
       has_issues: true
       enable_traceability: true
   sample-build:
