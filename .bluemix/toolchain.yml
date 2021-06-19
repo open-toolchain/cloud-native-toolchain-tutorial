@@ -23,7 +23,7 @@ template:
         $env.branch ?
           '[' + $env.branch + ']('+ $env.repository + '/tree/' + $env.branch + ')' :
           '[master]('+ $env.repository + '/tree/master)'
-    hosted_region : ""
+    hosted_region: ""
 toolchain:
   name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
   template:
@@ -34,7 +34,12 @@ services:
     service_id: hostedgit
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
-      source_repo_url: "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+      source_repo_url: >
+        if ( $env.template.info.hosted_region !== "" ) {
+          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        } else {
+          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        }
       type: clone
       has_issues: true
       enable_traceability: true
