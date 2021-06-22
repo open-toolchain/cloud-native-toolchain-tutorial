@@ -13,6 +13,10 @@ template:
     - sample-repo
     - ccm
     - analytics
+  $configuration:
+     ENABLE_EXTENSIONS: true
+     ENABLE_IF_ELSE: true
+     EXPRESSION_MAXLENGTH: 1000
   info:
     # compute the git url and branch values dynamically so that they remain correct when repo is forked etc. 
     # note: `repository` url param must always be provided while the `branch` url param is optional
@@ -23,6 +27,7 @@ template:
         $env.branch ?
           '[' + $env.branch + ']('+ $env.repository + '/tree/' + $env.branch + ')' :
           '[master]('+ $env.repository + '/tree/master)'
+    hosted_region: ""
 toolchain:
   name: 'cloud-native-toolchain-tutorial-{{timestamp}}'
   template:
@@ -30,10 +35,22 @@ toolchain:
       $ref: "#/messages/template.gettingStarted"
 services:
   sample-repo:
-    service_id: githubconsolidated
+    service_id: >
+      $env.source_provider ? $env.source_provider : 'hostedgit'
     parameters:
       repo_name: 'sample-{{toolchain.name}}'
-      source_repo_url: 'https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app'
+      repo_url: >
+        if ( $env.template.info.hosted_region !== "" ) {
+          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        } else {
+          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        }
+      source_repo_url: >
+        if ( $env.template.info.hosted_region !== "" ) {
+          "https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        } else {
+          "https://github.com/open-toolchain/cloud-native-toolchain-tutorial-app"
+        }
       type: clone
       has_issues: true
       enable_traceability: true
@@ -60,6 +77,11 @@ services:
           PROD_ORGANIZATION: '{{form.pipeline.parameters.prod-organization}}'
           PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
           API_KEY: '{{form.pipeline.parameters.api-key}}'
+          APP_REPO_BRANCH: >
+            $env.template.info.hosted_region !== "" ? 'main': 'master'
+          COMMONS_HOSTED_REGION: >
+            $env.template.info.hosted_region !== "" ? 'https://{{template.info.hosted_region}}.git.cloud.ibm.com/open-toolchain/commons/-/raw/main':
+            'https://raw.githubusercontent.com/open-toolchain/commons/master'
         execute: true
   messaging:
     service_id: slack

@@ -4,11 +4,18 @@ properties:
 - name: API_KEY
   value: ${API_KEY}
   type: secure
+- name: COMMONS_HOSTED_REGION
+  value: ${COMMONS_HOSTED_REGION}
+  type: text
+  default: "https://raw.githubusercontent.com/open-toolchain/commons/master"
+- name: APP_REPO_BRANCH
+  value: ${APP_REPO_BRANCH}
+  type: text
 stages:
   - name: Build
     inputs:
       - type: git
-        branch: master
+        branch: ${APP_REPO_BRANCH}
         service: ${SAMPLE_REPO}
     properties:
     - name: APP_NAME
@@ -37,7 +44,7 @@ stages:
           npm install
           tar -czf node_modules.tar.gz node_modules
           rm -rf node_modules
-          source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/fetch_git_creds.sh")
+          source <(curl -sSL "${COMMONS_HOSTED_REGION}/scripts/fetch_git_creds.sh")
           BUILD_STATUS=pass
           if jq -e '.services[] | select(.service_id=="draservicebroker")' _toolchain.json; then
             ibmcloud login --apikey ${API_KEY} --no-region
