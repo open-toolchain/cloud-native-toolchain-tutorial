@@ -112,8 +112,7 @@ services:
       lifecyclePhase: LEARN
       dashboard_url: 'https://analytics.google.com/'
   devops-insights:
-      service_id: >
-        $env.env_id === 'ibm:yp:us-south' || $env.env_id === 'ibm:yp:eu-de' || $env.env_id === 'ibm:yp:eu-gb' || $env.env_id === 'ibm:yp:au-syd' ? 'draservicebroker' : ''
+      service_id:  'draservicebroker'
   webide:
     service_id: orion
 form:
