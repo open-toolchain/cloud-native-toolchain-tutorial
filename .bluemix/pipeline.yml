@@ -76,7 +76,7 @@ stages:
         curatedDockerImage: latest
         script: |-
           #!/bin/bash
-          export PATH=/opt/IBM/node-v4.6.0/bin:$PATH
+          export PATH=/opt/IBM/node-v15.14.0/bin:$PATH
           if [ -f ./test/run-tests.sh ]; then
             source ./test/run-tests.sh
             ibmcloud login --apikey $API_KEY --no-region
@@ -118,6 +118,7 @@ stages:
           api_key: ${API_KEY}
         script: |-
           #!/bin/bash
+          npm install phantomjs
           BLUE_APP="$CF_APP-test-blue"
           GREEN_APP="$CF_APP-test-green"
           cf push "${BLUE_APP}" -n "${CF_APP}-test"
@@ -194,6 +195,7 @@ stages:
           api_key: ${API_KEY}
         script: |-
           #!/bin/bash
+          npm install phantomjs
           BLUE_APP="$CF_APP-blue"
           GREEN_APP="$CF_APP-green"
           cf push "${BLUE_APP}" -n "${CF_APP}"
