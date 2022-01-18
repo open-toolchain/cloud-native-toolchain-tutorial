@@ -117,7 +117,7 @@ stages:
           api_key: ${API_KEY}
         script: |-
           #!/bin/bash
-          npm install phantomjs
+          npm install phantomjs-prebuilt
           BLUE_APP="$CF_APP-test-blue"
           GREEN_APP="$CF_APP-test-green"
           cf push "${BLUE_APP}" -n "${CF_APP}-test"
@@ -194,7 +194,7 @@ stages:
           api_key: ${API_KEY}
         script: |-
           #!/bin/bash
-          npm install phantomjs
+          npm install phantomjs-prebuilt
           BLUE_APP="$CF_APP-blue"
           GREEN_APP="$CF_APP-green"
           cf push "${BLUE_APP}" -n "${CF_APP}"
