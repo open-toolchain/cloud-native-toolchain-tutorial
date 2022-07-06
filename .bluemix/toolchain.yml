@@ -113,8 +113,6 @@ services:
       dashboard_url: 'https://analytics.google.com/'
   devops-insights:
       service_id:  'draservicebroker'
-  webide:
-    service_id: orion
 form:
   pipeline:
     parameters:

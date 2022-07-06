@@ -77,10 +77,6 @@ analytics:
     dashboard_url: "https://analytics.google.com/"
     description: "Usage Details"
   
-#Web IDE
-webide:
-  service_id: orion
-  
 #Deployment
 deploy:
   schema: 
