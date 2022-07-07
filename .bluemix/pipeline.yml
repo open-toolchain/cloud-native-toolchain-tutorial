@@ -67,7 +67,7 @@ stages:
         script: |-
           #!/bin/bash
           tar -xzf node_modules.tar.gz
-          node ./node_modules/gulp/bin/gulp lint
+          npx eslint -f jslint-xml --fix public/ > test/jslint.xml
         enable_tests: true
         test_file_pattern: 'test/*.xml'
       - name: Unit Tests
